@@ -1,0 +1,244 @@
+#invoke("../_sub/_global.vm")
+#set($layout = "master.vm")
+#set($left_template = "/dlog_admin/_sub/_left_adminuser.vm")
+#set($nav_template = "/dlog_admin/_sub/_nav_adminuser.vm")
+#if($g_user&&$admin_tool.roleIsAdmin($manager))##用户是否登录 角色是否为超级管理员
+
+[管理员列表]
+#set($COUNT_PER_PAGE = 10)##每页显示
+#set($_count = $admin_tool.managerCount())##站点总数
+#set($p_page = $dlog.param("p", 1))##当前页 默认1
+#set($page_count = $dlog.page_count($_count, $COUNT_PER_PAGE))##总页数(计算)
+
+##检查当前页索引
+#if($p_page > $page_count)
+	#set($p_page = $page_count)
+		#elseif($p_page < 1)
+				#set($p_page = 1)
+#end
+#set($pre_page = $p_page - 1)##上一页
+#set($next_page = $p_page + 1)##下一页
+
+#set($list=$admin_tool.managerList($p_page, $COUNT_PER_PAGE))
+#set($url="$dlog.root()/dlog_admin/manager/managers.vm")
+<form action="$link.setAction('/html/admin/query')"  method="POST" name="form1" id="form1">
+	<input type="hidden" name="sid" id="sid" value="">
+	<input type="hidden" name="fromPage" id="fromPage" value="$url?p=$p_page">
+	<input type="hidden" name="" id="submit" value="HTML">
+	<input type="submit" id="button"  style="display:none">
+</form>
+
+<div class="page_top">
+	<div class="p_left">总共有&nbsp;$page_count&nbsp;页&nbsp;&nbsp;当前第&nbsp;$p_page&nbsp;页&nbsp&nbsp&nbsp&nbsp;</div>
+	<div class="p_left">
+		<input type="text" value="" name="p" id="p" class="text_50"/>
+		<input type="button" value="跳转" class="button" onclick="gotoPage('p')"/>
+	</div>
+	<div class="p_right">
+		#if($p_page!="1")
+		<a href="$url?p=1">首页</a>&nbsp;
+		#end
+		#if($p_page!="1")
+		<a href="$url?p=$pre_page">上一页</a>&nbsp;
+		#end
+		#if(1==1)
+			#set($p_temp=$p_page - 3)
+			#if($p_temp < 1)
+				#set($p_temp=1)
+				#end
+		<a href="$url?p=$p_temp">&nbsp;&lt;&lt;&nbsp</a>
+		#end
+		#foreach($index in $admin_tool.index_page($p_page, $page_count))
+		<a href="$url?p=$index">
+			#if($index==$p_page)&nbsp;<u>$index</u>&nbsp;
+				#else
+			&nbsp;$index&nbsp;
+			#end</a>			
+		#end
+		#if(1==1)
+			#set($p_temp=$p_page + 3)
+			#if($p_temp > $page_count)
+				#set($p_temp=$page_count)
+				#end
+		<a href="$url?p=$p_temp">&nbsp;&gt;&gt;&nbsp</a>
+		#end
+		#if(!($p_page>=$page_count))
+		<a href="$url?p=$next_page">下一页</a>&nbsp;
+		#else
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		#end
+		#if(!($p_page>=$page_count))
+		<a href="$url?p=$page_count">末页</a>&nbsp;
+		#else
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		#end
+	</div>
+</div>
+<div class="clear"></div>
+<div class="page_content">
+	<table  border="0" cellpadding="3" cellspacing="1" class="table_list">
+		<tr class="titles">
+			<td>ID</td>
+			<td>用户名</td>
+			<td>昵称</td>
+			<td>权限</td>
+			<td>角色</td>
+			<td>操作</td>
+			
+		</tr>
+		
+		
+		#foreach($l in $list)
+			<tr class="contents">
+			<td>$!{l.id}</td>
+			<td>$!{l.name}</td>
+			<td>$!{l.nickname}</td>
+			<td id="popname_$l.id">
+				#if($!{l.popedom}==5)
+					最高权限
+				#elseif($!{l.popedom}==4)
+					访问列表
+				#elseif($!{l.popedom}==3)
+					修改 删除
+				#elseif($!{l.popedom}==2)
+					推荐 屏蔽
+				#elseif($!{l.popedom}==1)
+					修改 删除 推荐 屏蔽
+				#elseif($!{l.popedom}==0)
+					无权限
+				#end
+			</td>
+			<td id="rolename_$l.id">
+				<div>
+				#if($!{l.role}==4)
+					VIP
+				#elseif($!{l.role}==3)
+					美工
+				#elseif($!{l.role}==2)
+					管理员
+				#elseif($!{l.role}==1)
+					巡视者
+				#end
+				</td>
+			<td>
+				#if($!{l.popedom}!=5&&$!{g_user.popedom}==5)
+					<a href="javascript:reworkPop($l.id)">修改权限</a>
+					&nbsp;|&nbsp;<a href="javascript:reworkPwd($l.id)">修改口令</a>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:setSID($l.id,'eventSubmit_CancelPop')">取消权限</a>	
+					
+				#end</td>
+			</tr>
+		#end
+</td>
+
+	</table>
+</div>
+<div class="page_top">
+	<div class="p_left">总共有&nbsp;$page_count&nbsp;页&nbsp;&nbsp;当前第&nbsp;$p_page&nbsp;页&nbsp&nbsp&nbsp&nbsp;</div>
+	<div class="p_left">
+		<input type="text" value="" name="p2" id="p2" class="text_50"/>
+		<input type="button" value="跳转" class="button" onclick="gotoPage('p2')"/>
+	</div>
+	<div class="p_right">
+		#if($p_page!="1")
+		<a href="$url?p=1">首页</a>&nbsp;
+		#end
+		#if($p_page!="1")
+		<a href="$url?p=$pre_page">上一页</a>&nbsp;
+		#end
+		#if(1==1)
+			#set($p_temp=$p_page - 3)
+			#if($p_temp < 1)
+				#set($p_temp=1)
+				#end
+		<a href="$url?p=$p_temp">&nbsp;&lt;&lt;&nbsp</a>
+		#end
+		#foreach($index in $admin_tool.index_page($p_page, $page_count))
+		<a href="$url?p=$index">
+			#if($index==$p_page)&nbsp;<u>$index</u>&nbsp;
+				#else
+			&nbsp;$index&nbsp;
+			#end</a>			
+		#end
+		#if(1==1)
+			#set($p_temp=$p_page + 3)
+			#if($p_temp > $page_count)
+				#set($p_temp=$page_count)
+				#end
+		<a href="$url?p=$p_temp">&nbsp;&gt;&gt;&nbsp</a>
+		#end
+		#if(!($p_page>=$page_count))
+		<a href="$url?p=$next_page">下一页</a>&nbsp;
+		#else
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		#end
+		#if(!($p_page>=$page_count))
+		<a href="$url?p=$page_count">末页</a>&nbsp;
+		#else
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		#end
+	</div>
+</div>
+<link rel="stylesheet" href="$dlog.root()/css/default_002.css" type="text/css" media="all"/>
+<link rel="stylesheet" href="$dlog.root()/css/alphacube.css" type="text/css" media="all"/>
+<script type="text/javascript" src="$dlog.root()/js/prototype_160.js"></script>
+<script type="text/javascript" src="$dlog.root()/js/window.js"></script>
+
+<script>
+function gotoPage(textName)
+{
+	var p=$(textName).value
+	var url="$url?p="+p;	
+	if(p!='')
+	document.location.href=url
+}
+
+function setSID(sid,event)
+{
+	$('sid').value=sid;
+	$('submit').name=event;
+	$('button').click();
+	closeReworkPop();
+}
+
+function reworkPop(id)
+{
+	if(!$("__reworkPop"))
+	{
+		var url="$dlog.root()/dlog_admin/manager/ajax/rework_pop.vm?rid="+id;	
+		Window.hasEffectLib = false;
+		var win = new Window("__reworkPop", {className: "alphacube", title:"修改权限", url: url,width:300,height:350,maximizable:false,minimizable:false});
+		win.setDestroyOnClose();
+		win.showCenter();
+	}
+}
+
+
+function reworkPwd(id)
+{
+	if(!$("__reworkPwd"))
+	{
+		var url="$dlog.root()/dlog_admin/manager/ajax/rework_password.vm?rid="+id;	
+		Window.hasEffectLib = false;
+		var win = new Window("__reworkPwd", {className: "alphacube", title:"修改口令", url: url,width:300,height:200,maximizable:false,minimizable:false});
+		win.setDestroyOnClose();
+		win.showCenter();
+	}
+}
+
+function closeReworkPow(){	
+	Windows.close('__reworkPwd');
+}
+
+function closeReworkPop(pop,role,id){
+	//alert($('popname').innerText)
+	$('popname_'+id).innerText=pop;
+	$('rolename_'+id).innerText=role;
+	Windows.close('__reworkPop');
+}
+</script>
+
+#else
+	##没有超级管理员权限
+	对不起,您没有权限.
+#end

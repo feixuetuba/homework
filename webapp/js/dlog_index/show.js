@@ -1,0 +1,16 @@
+var focus_width=282;
+var focus_height=175;
+var swf_height = focus_height;
+var pics='http://www.dlog.cn/images/ad/show/1.jpg|http://www.dlog.cn/images/ad/show/2.jpg|http://www.dlog.cn/images/ad/show/3.jpg|http://www.dlog.cn/images/ad/show/4.jpg|http://www.dlog.cn/images/ad/show/5.jpg|http://www.dlog.cn/images/ad/show/6.jpg';
+var links=escape('http://www.dlog.cn/maggie|http://www.dlog.cn/dinosaur|http://www.dlog.cn/huihuiwt|http://www.dlog.cn/miao5871|http://www.dlog.cn/shirley|http://www.dlog.cn/newidea');
+var texts='No.7|恐龙的窝|小考拉的桉树林|夏日里的梦|爱上提拉米苏|猪窝窝';
+document.write('<object codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="'+ focus_width +'" height="'+ swf_height +'">');
+document.write('<param name="allowScriptAccess" value="sameDomain"></param>');
+document.write('<param name="movie" value="images/ad/pixviewer.swf"></param>');
+document.write('<param name="quality" value="high"></param>');
+document.write('<param name="bgcolor" value="#F2F2F2"></param>');
+document.write('<param name="menu" value="false"></param>');
+document.write('<param name="wmode" value="opaque"></param>');
+document.write('<param name="FlashVars" value="pics='+pics+'&amp;links='+links+'&amp;texts='+texts+'&amp;borderwidth='+focus_width+'&amp;borderheight='+focus_height+'"></param>');
+document.write('<embed src="images/ad/pixviewer.swf" wmode="opaque" FlashVars="pics='+pics+'&amp;links='+links+'&amp;texts='+texts+'&amp;borderwidth='+focus_width+'&amp;borderheight='+focus_height+'" menu="false" bgcolor="#DADADA" quality="high" width="'+ focus_width +'" height="'+ swf_height +'" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"></embed>');
+document.write('</object>');

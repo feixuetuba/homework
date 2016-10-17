@@ -1,0 +1,29 @@
+	#if($g_user)
+		
+		<div class="embed_module_top"></div>
+<div class="embed_module">
+	<div class="module_title"><b>站点管理分类</b></div>
+    <div class="module_content">
+        <span class="link_top"><b>站点管理</b></span>
+    	<span class="link"><a href="$dlog.root()/dlog_admin/site/site_new_create.vm">最新站点列表</a></span>
+    	<span class="link"><a href="$dlog.root()/dlog_admin/site/site_hot.vm">热门站点列表</a></span>
+    	<span class="link"><a href="$dlog.root()/dlog_admin/site/site_new_update.vm">最新更新的站点</a></span>
+		##<span class="link"><a href="$dlog.root()/dlog_admin/site/site_not_update.vm">月无更新的站点</a></span>
+		<span class="link"><a href="$dlog.root()/dlog_admin/site/site_recommend.vm?selected=$selected">推荐站点管理</a></span>
+		<span class="link_top"><b>站点排行榜</b></span>
+		<span class="link"><a href="$dlog.root()/dlog_admin/site/site_rank.vm?&status=1">月站点排行榜</a></span>
+    	<span class="link"><a href="$dlog.root()/dlog_admin/site/site_rank.vm?&status=2">周站点排行榜</a></span>
+    	<span class="link"><a href="$dlog.root()/dlog_admin/site/site_rank.vm?&status=3">日站点排行榜</a></span>
+		<span class="link_top"><b>注册用户管理</b></span>
+		<span class="link"><a href="$dlog.root()/dlog_admin/site/site_user.vm?status=1">未开通站点的用户</a></span>
+    	<span class="link"><a href="$dlog.root()/dlog_admin/site/site_user.vm?status=2">开通站点的用户</a></span>
+    	<span class="link"><a href="$dlog.root()/dlog_admin/site/site_user.vm?status=3">月无登录用户</a></span>
+    </div>
+    <div class="module_foot"></div>
+</div>
+<div class="embed_module_bottom"></div>
+#else
+	#invoke("../login.vm")
+	#end
+
+

@@ -1,0 +1,20 @@
+
+
+<div class="channel_bar_left fleft"></div><div class="channel_bar_right fright"></div>
+<div class="channel_bar_bg">
+	<div class="fleft sitenav">
+		<a href="$dlog.root()/dlog_admin/index.vm" class="selected">管理首页</a>
+		<a class="split"></a>
+		<a href="$dlog.root()/dlog_admin/site.vm">站点管理</a>
+		<a class="split"></a>
+		<a href="$dlog.root()/dlog_admin/diary.vm">日记列表</a>
+		<a class="split"></a>
+		<a href="$dlog.root()/dlog_admin/photo.vm">图片管理</a>
+		<a class="split"></a>
+		<a href="$dlog.root()/dlog_admin/style.vm">风格管理</a>
+		<a class="split"></a>
+		<a href="$dlog.root()/dlog_admin/admin_user.vm">管理员设置</a>
+		<a class="split"></a>
+	</div>
+</div>
+

@@ -1,0 +1,20 @@
+#if($log)
+<h2 class="title">
+	<span class="log_writeTime">$date.format("yyyy/MM/dd EEEEE HH:mm",${log.writeTime})</span>
+	#if(${log.client.type}==2)
+		<span title="此文章使用手机编写发布！" class="Mobile"><b>[手机]</b></span>
+	#else
+		<span title="此文章使用电脑编写发布！" class="Computer"><b>[电脑]</b></span>
+	#end
+	<a href="$dlog.root()/html/diary/showlog.vm?sid=$g_site_id&amp;cat_id=$catalog_id&amp;log_id=${log.id}"><span class="log_lock" title="禁止回复！">#if(${log.lock}==1)<b>[锁]</b>#end</span>$text.html(${log.title})</a>
+	##<span class="log_viewCount">&nbsp;&#8212;&nbsp;(${log.viewCount})</span>
+	##<a href="$dlog.root()/html/diary/showlog.vm?sid=$g_site_id&amp;cat_id=$catalog_id&amp;log_id=${log.id}"><span class="log_lock">#if(${log.lock}==1)<b>锁</b>#end</span>$text.html(${log.title})</a><span class="log_catalog_name"><a href="$dlog.root()/html/diary/?sid=$g_site_id&amp;cat_id=$log.catalog.id">${log.catalog.name}</a></span>
+</h2>
+<div class="log_info">
+	<ul>
+		<li class="log_author"><b>$text.ui("label.diary.author"):</b><a href="$!{log.authorUrl}">${log.author}</a></li>
+		<li class="log_moodLevel"><b>$text.ui("label.diary.mood"):</b>$html.img("html/mood/default/${log.moodLevel}.gif",null,null,"absmiddle",0)</li>
+		<li class="log_weather"><b>天气:</b>$html.img("html/weather/default/${log.weather}.gif",${log.weather},${log.weather},"absmiddle",0)</li>
+	</ul>
+</div>
+#end

@@ -1,0 +1,23 @@
+<div class="side_module">
+	<div class="side_module_top">本周热门照片<span>(<a href="$dlog.root()/dlog/photos.vm">更多...</a>)</span></div>
+    <div class="side_module_Pcontent">
+        <table border="0" cellspacing="5" cellpadding="0" width="100%">
+        #set($photos = $DLOG4J_tool.list_hot_photos(7, 10))
+        #set($ROW_COUNT = 2)  ##三行
+        #foreach($row in [0..$ROW_COUNT]) ##最多显示三行
+            <tr>
+                #set($begin_idx = $row * $ROW_COUNT)
+                #set($end_idx = $begin_idx + $ROW_COUNT - 1)				
+                #foreach($idx in [$begin_idx..$end_idx])
+                #if($idx < $photos.size())
+                    #set($_photo = $photos.get($idx))
+            		<td class="photo_box">
+            			<div class="photo_cen"><a href="$dlog.root()/html/photo/show.vm?sid=${_photo.site.id}&amp;pid=${_photo.id}"><img src="$dlog.root()${_photo.previewURL}" border="0" title="$text.html(${_photo.name})"/></a></div>
+                    </td>
+        		#end
+        		#end
+            </tr>
+        #end
+        </table>
+    </div>
+</div>

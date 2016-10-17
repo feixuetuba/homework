@@ -1,0 +1,40 @@
+<div class="logo">$html.img("home/logo/dlog.gif",null,"网记个人信息门户 Logo","absmiddle",0)</div>
+<div class="float_bar">
+<style >
+.text_50{ height:12px; width:50px}
+.text_100{ height:12px; width:100px}
+.button{ height:20px}
+</style>	
+
+	#if($g_user)##用户是否登录	
+		#if((!$manager.role>0)||!$admin_tool.isAdministrators($g_user))##是否有角色和权限
+			
+			<script >
+			alert("您不是管理员")
+			location='$dlog.root()/index.vm';			
+			</script>
+			
+		#end
+	用户登录信息 | <a href="/dlog/user.do?sid=$g_user.id&amp;eventSubmit_Logout=$dlog.root()/dlog_admin/">注销</a><br />
+	当前登录用户:$!g_user.name<br />
+	角色:#if($!{manager.role}==4)VIP#elseif($!{manager.role}==3) 美工 #elseif($!{manager.role}==2) 管理员 #elseif($!{manager.role}==1)巡视者
+				#else 无角色 #end</td><br />
+	权限:#if($!{manager.popedom}==5)##超级管理员
+					系统权限
+					#elseif($!{manager.popedom}==4)##VIP
+						访问列表
+						#elseif($!{manager.popedom}==3)##美工
+							修改 删除
+							#elseif($!{manager.popedom}==2)##管理员
+								推荐 屏蔽
+								#elseif($!{manager.popedom}==1)
+									修改 删除 推荐 屏蔽
+									#else
+										无权限
+								#end
+#else
+	请先登录
+#end
+
+</div>
+<div class="clear"></div>

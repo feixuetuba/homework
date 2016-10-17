@@ -1,0 +1,60 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  show all topics of all sites
+##
+###############################################################################
+#parse("/wml/_sub/_global.vm")
+#set($page_title="最新讨论话题")
+#set($PAGE_SIZE = 10)
+#set($p_page = $dlog.param("p", 1))
+#set($pre_page = $p_page - 1)
+#set($next_page = $p_page + 1)
+#set($topic_count = 500)
+#set($page_count = $dlog.page_count(${topic_count}, $PAGE_SIZE))
+<p>
+最新${topic_count}篇帖子,每页${PAGE_SIZE}篇,页次:${p_page}/${page_count}<br/>
+<input type="text" name="key" size="10" emptyok="true"/>
+    <anchor>$text.wml("search")
+        <go href="$dlog.root()/wml/search.vm" method="get">
+            <postfield name="sid" value="$g_site_id"/>
+            <postfield name="scope" value="3"/>
+            <postfield name="key" value="$(key)"/>
+        </go>
+    </anchor>
+</p>
+<p>
+#macro(new_topic_page_navigator)
+#if($page_count > 1)
+	#if($p_page > 1)<a href="topics.vm">首页</a>#end
+	#if($p_page>1)<a href="topics.vm?p=$pre_page">上页</a>#end
+	#if($p_page < $page_count)<a href="topics.vm?p=$next_page">下页</a>#end
+	#if($p_page < $page_count)<a href="topics.vm?p=$page_count">尾页</a>#end
+#end
+#end
+#new_topic_page_navigator()
+	<br/>
+	#set($base_idx = ($p_page - 1)*$PAGE_SIZE)
+#set($topics = $BBS_tool.list_new_topics($p_page, $PAGE_SIZE))
+#foreach($topic in $topics)
+	#set($idx = $base_idx + $velocityCount)
+	${idx}.
+	<a href="bbs/topic.vm?sid=${topic.site.id}&amp;fid=${topic.forum.id}&amp;tid=${topic.id}">
+		#if($topic.top)[顶]#elseif($topic.elite)[精]#end
+		$text.html(${topic.title})
+	</a>(${topic.replyCount}评/${topic.viewCount}阅,$date.format("MM-dd HH:mm",${topic.createTime}) 作者:<a href="viewuser.vm?sid=${topic.site.id}&amp;uid=${topic.user.id}">$text.html(${topic.username})</a>)<br/>
+#end
+#new_topic_page_navigator()
+</p>

@@ -1,0 +1,119 @@
+#invoke("/html/_sub/_global.vm")
+#select_layout("p_main.vm")
+#set($page_title="我的好友")
+#set($frindegrouplist = $FRIEND_tool.showFriendV($!{g_user.id}))
+#set($fgcount=$frindegrouplist.size())
+	#if($!{fgcount})
+<div class="page_top">
+	<div class="pagecontent">
+		<div class="pagecontent_left fleft">
+			<b>好友分组</b>&nbsp;&nbsp;共有 $!{fgcount} 个分组
+		</div>
+		<div class="pagecontent_right fright">
+			今天是: $date.get("MMMMM d, yyyy  EEEEE")
+		</div>
+	</div>
+	<div class="spacer_1"></div>
+</div>
+	#end
+	#if($fgcount>0)	
+	<div class="page_content">
+    	<div class="setting_body">	
+			<table cellspacing="1" cellpadding="3" border="0" width="100%" class="table">
+    			<tr class="table_head">
+					<td>名称</td>
+					<td>类型</td>
+        			
+    			</tr>
+				<tr class="table_cell">	
+					<td ><a href="$dlog.root()/dlog/accounts/blacklist.vm?sid=$g_site.id">[黑名单]</a></td>
+					<td >&lt;系统&gt;</td>
+				</tr>
+				#foreach(${friend} in ${frindegrouplist})
+					<tr class="table_cell">						
+    					<td><a href="$dlog.root()/dlog/accounts/show_friend.vm?sid=$g_site_id&group_id=$!{friend.groupid}">
+								[$!{friend.groupname}]</a></td>
+    					<td>#if(${friend.grouptype}==0)<公开>#elseif($!{friend.grouptype}==1)<私有>#elseif($!{friend.grouptype}==2)<默认>#end</td>												
+    					
+					</tr>
+				#end
+    		</table>
+    	</div>
+    </div>
+	<div class="spacer_10"></div>
+</div>
+#end
+
+#if($fgcount>0)
+<div class="form_row">
+	<div class="form_row_submit">
+		<a href="javascript://" onclick="history.go(-1)" >返回上页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    	<a href="javascript://"	onclick="location.href='$dlog.root()/#if($g_site)?sid=${g_site_id}#end';">返回首页</a>	
+	</div>
+</div>
+			</div>
+#end	
+<link rel="stylesheet" href="$dlog.root()/css/default_002.css" type="text/css" media="all"/>
+<link rel="stylesheet" href="$dlog.root()/css/alphacube.css" type="text/css" media="all"/>
+<script type="text/javascript" src="$dlog.root()/js/prototype_160.js"></script>
+<script type="text/javascript" src="$dlog.root()/js/window.js"></script>
+<script language="javascript">
+		function list_logs_of_friends(){
+		$('data_of_friends1').innerHTML = "正在读取数据,请稍候...";
+		new Ajax.Updater("data_of_friends1","$dlog.root()/html/friend/ajax/group_logs_of_friends.vm?group_id=$groupid&userid=$!{g_site.owner.id}&r="+Math.random());
+		}
+		function list_photos_of_friends(){
+		$('data_of_friends2').innerHTML = "正在读取数据,请稍候...";
+		new Ajax.Updater("data_of_friends2","$dlog.root()/html/friend/ajax/group_photos_of_friends.vm?group_id=$groupid&userid=$!{g_site.owner.id}&r="+Math.random());
+		}
+		function list_songs_of_friends(){
+		$('data_of_friends3').innerHTML = "正在读取数据,请稍候...";
+		new Ajax.Updater("data_of_friends3","$dlog.root()/html/friend/ajax/group_songs_of_friends.vm?group_id=$groupid&userid=$!{g_site.owner.id}&r="+Math.random());
+		}
+		#if($friends.size()>0)
+		list_logs_of_friends();
+		list_photos_of_friends();
+		list_songs_of_friends();
+		#end
+		//写短信
+		function sendMessage(name,uid)	
+		{
+			var title ='发送短信给[' +name+ ']';	
+			if(!$("__sendMessage"))
+			{
+				var url="$dlog.root()/html/friend/ajax/send_message.vm?sid=${g_site.id}&uid="+uid;
+				Window.hasEffectLib = false;
+				var win = new Window("__sendMessage", {className: "alphacube", title:title, url: url,width:600,height:400,maximizable:false,minimizable:false});
+				win.setDestroyOnClose();
+				win.showCenter();
+			}
+		}
+		function closeSendMessage()
+		{
+			Windows.close('__sendMessage');
+		}
+		
+		//转移分组
+		function friendDivert(name,uid,fid,groupid)	
+		{
+		#if($dlog.is_owner($g_site, $g_user))
+			var title ='转移好友[' +name+ ']';	
+			if(!$("__divert"))
+			{
+				var url="$dlog.root()/html/friend/ajax/friend_divert.vm?sid=${g_site.id}&uid="+uid+"&groupid="+groupid+"&fid="+fid;
+				Window.hasEffectLib = false;
+				var win = new Window("__divert", {className: "alphacube", title:title, url: url,width:300,height:200,maximizable:false,minimizable:false});
+				win.setDestroyOnClose();
+				win.showCenter();
+			}
+		#end
+		}
+		function closeFriendDivert()
+		{
+			Windows.close('__divert');			
+		}
+		function hide_div(id)
+		{
+			$("friend_"+id).style.display="none";
+		}		
+		</script>

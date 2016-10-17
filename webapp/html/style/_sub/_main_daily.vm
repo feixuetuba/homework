@@ -1,0 +1,25 @@
+#if(!$TOP_DIARY_COUNT)
+	#set($TOP_DIARY_COUNT = 10)
+#end
+
+<div class="module_title"><b>最新日记</b></div>
+<div class="module_content">
+	<ul>
+		#set($logs = $DIARY_tool.top_diary($g_site, $g_user, 1, $TOP_DIARY_COUNT, false))
+		#foreach($log in $logs)
+		<li><a href="$dlog.root()/html/diary/showlog.vm?sid=${log.site.id}&amp;log_id=${log.id}">$text.html(${log.title})</a></li>
+		#end
+	</ul>
+</div>
+<div class="module_foot"></div>
+
+<div class="module_title"><b>热门日记</b></div>
+<div class="module_content">
+	<ul>
+		#set($logs = $DIARY_tool.list_hot_articles($g_site, 30, $TOP_DIARY_COUNT))
+		#foreach($log in $logs)
+			<li><a href="$dlog.root()/html/diary/showlog.vm?sid=${log.site.id}&amp;log_id=${log.id}">$text.html(${log.title})</a></li>
+		#end
+	</ul>
+</div>
+<div class="module_foot"></div>

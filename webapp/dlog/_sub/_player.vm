@@ -1,0 +1,27 @@
+<div id="mplayer_div" align="center"></div>
+<script language="javascript" type="text/javascript">
+function play(id){
+	var url = "$link.encodeURL("$link.getContextURL()/mlist.vm?sid=$!{g_site_id}&mid=")" + id;
+	var r = "$dlog.root()/html/music/_media_player.vm?url="+url+"&r="+Math.random();
+	new Ajax.Updater('mplayer_div',r);
+    return false;
+}
+function play_selected(mid){
+    var ids = "";
+    var selected = false;
+    var s = document.getElementsByTagName('input');
+    for (var i=0,c;c=s[i];i++){
+        if (c.name==mid && c.checked == true){
+            ids += c.value;
+            ids += "%2C";//¶ººÅ
+            selected = true;
+        }
+    }
+    if(selected){	
+		var url = "$link.encodeURL("$link.getContextURL()/mlist.vm?sid=$!{g_site_id}&mid=")" + ids;
+    	var r = "$dlog.root()/html/music/_media_player.vm?url="+url+"&r="+Math.random();
+    	new Ajax.Updater('mplayer_div',r);
+    }
+    return false;
+}
+</script>

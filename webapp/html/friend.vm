@@ -1,0 +1,250 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  Home page of DLOG4J
+##
+###############################################################################
+#invoke("_sub/_global.vm")
+#select_layout("p_main.vm")
+#set($page_title="我的好友")
+###############################################################################
+#if($g_user)
+    #set($friend_count = $USER_tool.friend_count($g_user.id))
+    #if($friend_count>0)
+    <div class="page_top">
+    	<div class="pagecontent">
+    		<div class="pagecontent_left fleft">
+    			猪窝窝&nbsp;共有${friend_count}个好友！
+    		</div>      
+    	</div>
+    	<div class="clear"></div>
+    </div>
+	
+	<div class="clear"></div>
+	
+    <div class="page_content">
+		
+		<div class="friend_help">
+    		<ul>
+    			<li><img alt="去 大猪 的小站踩踩留言本" src="$dlog.root()/images/addguestbook.gif" align="absmiddle" />&nbsp;&nbsp;访问此站点的留言本!</li>
+    			<li><img alt="给 大猪 发一封短消息" src="$dlog.root()/images/sendmsg.gif" align="absmiddle" />&nbsp;&nbsp;给站长发个站内短信息!</li>
+    			<li><img alt="加 大猪 到我的好友列表" src="$dlog.root()/images/addfriend.gif" align="absmiddle" />&nbsp;&nbsp;加此站站长到好友列表!</li>
+    			<li><img alt="加 大猪 到我的友情链接" src="$dlog.root()/images/addlink.gif" align="absmiddle" />&nbsp;&nbsp;添加此站点到友情链接!</li>
+    			<li><img alt="加 大猪 到我的站点书签" src="$dlog.root()/images/mark.gif" align="absmiddle" />&nbsp;&nbsp;收录此站点到书签!</li>
+    		</ul>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+		
+    	<div class="friend_site">
+    		<ul>
+    			<li>
+    				<div class="frd_photo fleft">
+        				<img class="site_img" alt="猪窝窝" src="$dlog.root()/uploads/portrait/0/3.gif" />
+    				</div>
+    				<div class="frd_set fright">
+    					<div><img alt="去 大猪 的小站踩踩留言本" src="$dlog.root()/images/addguestbook.gif" /></div>
+        				<div><img alt="给 大猪 发一封短消息" src="$dlog.root()/images/sendmsg.gif" /></div>
+        				<div><img alt="加 大猪 到我的好友列表" src="$dlog.root()/images/addfriend.gif" /></div>
+        				<div><img alt="加 大猪 到我的友情链接" src="$dlog.root()/images/addlink.gif" /></div>
+        				<div><img alt="加 大猪 到我的站点书签" src="$dlog.root()/images/mark.gif" /></div>
+    				</div>
+    				<div class="clear"></div>
+    				<div class="frd_info">猪窝窝</div>
+    				<div class="frd_info"><b>站长:</b>&nbsp;大猪&nbsp;<img alt="在线情况" src="$dlog.root()/images/online.gif" align="absmiddle" /></div>
+    				<div class="frd_info"><b>性别:</b>&nbsp;<img alt="在线情况" src="$dlog.root()/images/male.gif" align="absmiddle" /></div>
+    				<div class="frd_info"><b>年龄:</b>&nbsp;30岁</div>
+    				<div class="frd_info"><b>地区:</b>&nbsp;广东 广州</div>
+    				<div class="clear"></div>
+    			</li>
+				<li>
+    				<div class="frd_photo fleft">
+        				<img class="site_img" alt="猪窝窝" src="$dlog.root()/uploads/portrait/0/3.gif" />
+    				</div>
+    				<div class="frd_set fright">
+    					<div><img alt="去 大猪 的小站踩踩留言本" src="$dlog.root()/images/addguestbook.gif" /></div>
+        				<div><img alt="给 大猪 发一封短消息" src="$dlog.root()/images/sendmsg.gif" /></div>
+        				<div><img alt="加 大猪 到我的好友列表" src="$dlog.root()/images/addfriend.gif" /></div>
+        				<div><img alt="加 大猪 到我的友情链接" src="$dlog.root()/images/addlink.gif" /></div>
+        				<div><img alt="加 大猪 到我的站点书签" src="$dlog.root()/images/mark.gif" /></div>
+    				</div>
+    				<div class="clear"></div>
+    				<div class="frd_info">猪窝窝</div>
+    				<div class="frd_info"><b>站长:</b>&nbsp;大猪&nbsp;<img alt="在线情况" src="$dlog.root()/images/online.gif" align="absmiddle" /></div>
+    				<div class="frd_info"><b>性别:</b>&nbsp;<img alt="在线情况" src="$dlog.root()/images/male.gif" align="absmiddle" /></div>
+    				<div class="frd_info"><b>年龄:</b>&nbsp;30岁</div>
+    				<div class="frd_info"><b>地区:</b>&nbsp;广东 广州</div>
+    				<div class="clear"></div>
+    			</li>
+				<li>
+    				<div class="frd_photo fleft">
+        				<img class="site_img" alt="猪窝窝" src="$dlog.root()/uploads/portrait/0/3.gif" />
+    				</div>
+    				<div class="frd_set fright">
+    					<div><img alt="去 大猪 的小站踩踩留言本" src="$dlog.root()/images/addguestbook.gif" /></div>
+        				<div><img alt="给 大猪 发一封短消息" src="$dlog.root()/images/sendmsg.gif" /></div>
+        				<div><img alt="加 大猪 到我的好友列表" src="$dlog.root()/images/addfriend.gif" /></div>
+        				<div><img alt="加 大猪 到我的友情链接" src="$dlog.root()/images/addlink.gif" /></div>
+        				<div><img alt="加 大猪 到我的站点书签" src="$dlog.root()/images/mark.gif" /></div>
+    				</div>
+    				<div class="clear"></div>
+    				<div class="frd_info">猪窝窝</div>
+    				<div class="frd_info"><b>站长:</b>&nbsp;大猪&nbsp;<img alt="在线情况" src="$dlog.root()/images/online.gif" align="absmiddle" /></div>
+    				<div class="frd_info"><b>性别:</b>&nbsp;<img alt="在线情况" src="$dlog.root()/images/male.gif" align="absmiddle" /></div>
+    				<div class="frd_info"><b>年龄:</b>&nbsp;30岁</div>
+    				<div class="frd_info"><b>地区:</b>&nbsp;广东 广州</div>
+    				<div class="clear"></div>
+    			</li>
+				<li>
+    				<div class="frd_photo fleft">
+        				<img class="site_img" alt="猪窝窝" src="$dlog.root()/uploads/portrait/0/3.gif" />
+    				</div>
+    				<div class="frd_set fright">
+    					<div><img alt="去 大猪 的小站踩踩留言本" src="$dlog.root()/images/addguestbook.gif" /></div>
+        				<div><img alt="给 大猪 发一封短消息" src="$dlog.root()/images/sendmsg.gif" /></div>
+        				<div><img alt="加 大猪 到我的好友列表" src="$dlog.root()/images/addfriend.gif" /></div>
+        				<div><img alt="加 大猪 到我的友情链接" src="$dlog.root()/images/addlink.gif" /></div>
+        				<div><img alt="加 大猪 到我的站点书签" src="$dlog.root()/images/mark.gif" /></div>
+    				</div>
+    				<div class="clear"></div>
+    				<div class="frd_info">猪窝窝</div>
+    				<div class="frd_info"><b>站长:</b>&nbsp;大猪&nbsp;<img alt="在线情况" src="$dlog.root()/images/online.gif" align="absmiddle" /></div>
+    				<div class="frd_info"><b>性别:</b>&nbsp;<img alt="在线情况" src="$dlog.root()/images/male.gif" align="absmiddle" /></div>
+    				<div class="frd_info"><b>年龄:</b>&nbsp;30岁</div>
+    				<div class="frd_info"><b>地区:</b>&nbsp;广东 广州</div>
+    				<div class="clear"></div>
+    			</li>
+				<li>
+    				<div class="frd_photo fleft">
+        				<img class="site_img" alt="猪窝窝" src="$dlog.root()/uploads/portrait/0/3.gif" />
+    				</div>
+    				<div class="frd_set fright">
+    					<div><img alt="去 大猪 的小站踩踩留言本" src="$dlog.root()/images/addguestbook.gif" /></div>
+        				<div><img alt="给 大猪 发一封短消息" src="$dlog.root()/images/sendmsg.gif" /></div>
+        				<div><img alt="加 大猪 到我的好友列表" src="$dlog.root()/images/addfriend.gif" /></div>
+        				<div><img alt="加 大猪 到我的友情链接" src="$dlog.root()/images/addlink.gif" /></div>
+        				<div><img alt="加 大猪 到我的站点书签" src="$dlog.root()/images/mark.gif" /></div>
+    				</div>
+    				<div class="clear"></div>
+    				<div class="frd_info">猪窝窝</div>
+    				<div class="frd_info"><b>站长:</b>&nbsp;大猪&nbsp;<img alt="在线情况" src="$dlog.root()/images/online.gif" align="absmiddle" /></div>
+    				<div class="frd_info"><b>性别:</b>&nbsp;<img alt="在线情况" src="$dlog.root()/images/male.gif" align="absmiddle" /></div>
+    				<div class="frd_info"><b>年龄:</b>&nbsp;30岁</div>
+    				<div class="frd_info"><b>地区:</b>&nbsp;广东 广州</div>
+    				<div class="clear"></div>
+    			</li>
+				<li>
+    				<div class="frd_photo fleft">
+        				<img class="site_img" alt="猪窝窝" src="$dlog.root()/uploads/portrait/0/3.gif" />
+    				</div>
+    				<div class="frd_set fright">
+    					<div><img alt="去 大猪 的小站踩踩留言本" src="$dlog.root()/images/addguestbook.gif" /></div>
+        				<div><img alt="给 大猪 发一封短消息" src="$dlog.root()/images/sendmsg.gif" /></div>
+        				<div><img alt="加 大猪 到我的好友列表" src="$dlog.root()/images/addfriend.gif" /></div>
+        				<div><img alt="加 大猪 到我的友情链接" src="$dlog.root()/images/addlink.gif" /></div>
+        				<div><img alt="加 大猪 到我的站点书签" src="$dlog.root()/images/mark.gif" /></div>
+    				</div>
+    				<div class="clear"></div>
+    				<div class="frd_info">猪窝窝</div>
+    				<div class="frd_info"><b>站长:</b>&nbsp;大猪&nbsp;<img alt="在线情况" src="$dlog.root()/images/online.gif" align="absmiddle" /></div>
+    				<div class="frd_info"><b>性别:</b>&nbsp;<img alt="在线情况" src="$dlog.root()/images/male.gif" align="absmiddle" /></div>
+    				<div class="frd_info"><b>年龄:</b>&nbsp;30岁</div>
+    				<div class="frd_info"><b>地区:</b>&nbsp;广东 广州</div>
+    				<div class="clear"></div>
+    			</li>
+				<li>
+    				<div class="frd_photo fleft">
+        				<img class="site_img" alt="猪窝窝" src="$dlog.root()/uploads/portrait/0/3.gif" />
+    				</div>
+    				<div class="frd_set fright">
+    					<div><img alt="去 大猪 的小站踩踩留言本" src="$dlog.root()/images/addguestbook.gif" /></div>
+        				<div><img alt="给 大猪 发一封短消息" src="$dlog.root()/images/sendmsg.gif" /></div>
+        				<div><img alt="加 大猪 到我的好友列表" src="$dlog.root()/images/addfriend.gif" /></div>
+        				<div><img alt="加 大猪 到我的友情链接" src="$dlog.root()/images/addlink.gif" /></div>
+        				<div><img alt="加 大猪 到我的站点书签" src="$dlog.root()/images/mark.gif" /></div>
+    				</div>
+    				<div class="clear"></div>
+    				<div class="frd_info">猪窝窝</div>
+    				<div class="frd_info"><b>站长:</b>&nbsp;大猪&nbsp;<img alt="在线情况" src="$dlog.root()/images/online.gif" align="absmiddle" /></div>
+    				<div class="frd_info"><b>性别:</b>&nbsp;<img alt="在线情况" src="$dlog.root()/images/male.gif" align="absmiddle" /></div>
+    				<div class="frd_info"><b>年龄:</b>&nbsp;30岁</div>
+    				<div class="frd_info"><b>地区:</b>&nbsp;广东 广州</div>
+    				<div class="clear"></div>
+    			</li>
+    			<li>
+    				<div class="frd_photo fleft">
+        				<img class="site_img" alt="猪窝窝" src="$dlog.root()/uploads/portrait/0/3.gif" />
+    				</div>
+    				<div class="frd_set fright">
+    					<div><img alt="去 大猪 的小站踩踩留言本" src="$dlog.root()/images/addguestbook.gif" /></div>
+        				<div><img alt="给 大猪 发一封短消息" src="$dlog.root()/images/sendmsg.gif" /></div>
+        				<div><img alt="加 大猪 到我的好友列表" src="$dlog.root()/images/addfriend.gif" /></div>
+        				<div><img alt="加 大猪 到我的友情链接" src="$dlog.root()/images/addlink.gif" /></div>
+        				<div><img alt="加 大猪 到我的站点书签" src="$dlog.root()/images/mark.gif" /></div>
+    				</div>
+    				<div class="clear"></div>
+    				<div class="frd_info">猪窝窝</div>
+    				<div class="frd_info"><b>站长:</b>&nbsp;大猪&nbsp;<img alt="在线情况" src="$dlog.root()/images/online.gif" align="absmiddle" /></div>
+    				<div class="frd_info"><b>性别:</b>&nbsp;<img alt="在线情况" src="$dlog.root()/images/male.gif" align="absmiddle" /></div>
+    				<div class="frd_info"><b>年龄:</b>&nbsp;30岁</div>
+    				<div class="frd_info"><b>地区:</b>&nbsp;广东 广州</div>
+    				<div class="clear"></div>
+    			</li>
+    		</ul>
+    		<div class="clear"></div>
+    	</div>
+    	<div class="friend_user">
+    		<ul>
+    			#set($friends = $USER_tool.friends(${g_user.id}, 1, -1))
+    			#foreach($user in $friends)
+    				#set($show_user_url = "$dlog.root()/dlog/viewuser.vm?sid=$g_site_id&amp;uid=${user.friend.id}")
+        			<li>
+						<div class="frd_photo fleft">
+            				<img class="site_img" alt="猪窝窝" src="$dlog.root()/uploads/portrait/0/3.gif" />
+        				</div>
+        				<div class="frd_set fright">
+            				<div><img alt="给 大猪 发一封短消息" src="$dlog.root()/images/sendmsg.gif" /></div>
+            				<div><img alt="加 大猪 到我的好友列表" src="$dlog.root()/images/addfriend.gif" /></div>
+        				</div>
+        				<div class="clear"></div>
+        				<div class="frd_info">
+    						#if(${user.friend.ownSiteId}<1)
+    							#set($user_link = "$dlog.root()/dlog/viewuser.vm?sid=$g_site_id&amp;uid=${user.friend.id}")
+    						#else
+    							#set($user_link = "$dlog.root()/?sid=${user.friend.ownSiteId}")
+							#end
+							<a href="${user_link}">$text.html(${user.friend.nickname})</a>
+							#if(${user.friend.onlineStatus}==1)$html.img("online.gif","当前在线",null,"absmiddle",0)#else$html.img("offline.gif","当前离线",null,"absmiddle",0)#end
+							
+    					</div>
+        				<div class="clear"></div>
+        			</li>
+    			#end
+    		</ul>
+    		<div class="clear"></div>
+    	</div>
+        
+    	<div class="clear"></div>
+    </div>
+    
+    <div class="page_footer">
+    	<div class="clear"></div>
+    </div>
+    #else
+    	#show_msg_box("您还没有添加任何好友，你可以在查看某个用户资料时点击按钮‘加为好友’即可。")             
+    #end
+#else
+	#show_msg_box($text.ui("login.tip","$dlog.root()/dlog/login.vm?sid=$g_site_id&fromPage=$link.encodeURL($dlog.get_request_url())"))
+#end

@@ -1,0 +1,19 @@
+#invoke("_sub/_global.vm")
+#set($page_title="导入图片测试")
+<p>
+	<select name="album">
+		<option value="1">我的相册</option>
+	</select>
+    <anchor>确定
+    	<go href="/wml/photo.do" method="post">
+            <postfield name="sid" value="1"/>
+            <postfield name="album" value="$(album)"/>
+            <postfield name="path" value="D:\Documents and Settings\Administrator\My Documents\M-POPO.jpg"/>
+            <postfield name="eventSubmit_Import" value="ASP"/>
+            <postfield name="name" value="MOMO"/>
+            <postfield name="desc" value="MOMO的LOGO"/>
+            <postfield name="keyword" value="MOMO"/>
+            <postfield name="status" value="0"/>
+        </go>
+    </anchor>
+</p>

@@ -1,0 +1,5 @@
+<div class="embed_module_top"></div>
+<div class="embed_module">#parse("/html/sitemgr/_manager_friend_tree.vm")</div>
+<div class="embed_module">#parse("/html/sitemgr/_left_menu.vm")</div>
+
+<div class="embed_module_bottom"></div>

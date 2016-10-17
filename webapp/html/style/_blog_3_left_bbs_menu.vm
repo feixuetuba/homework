@@ -1,0 +1,11 @@
+<div class="side_left fleft">
+	<div class="embed_module">#parse("/html/style/_sub/_main_daily.vm")</div>
+	<div class="embed_module">#parse("/html/style/_sub/_main_photo.vm")</div>
+</div>
+<div class="side_right fright">
+    <div class="embed_module">#parse("/html/bbs/_catalog_tree.vm")</div>
+    <div class="embed_module">#parse("/html/bbs/_bbs_search.vm")</div>
+    <div class="embed_module">#parse("/html/bbs/_bbs_topic.vm")</div>
+    <div class="embed_module">#parse("/html/bbs/_bbs_hot_topic.vm")</div>
+    <div class="embed_module">#parse("/html/_sub/_site_support.vm")</div>
+</div>

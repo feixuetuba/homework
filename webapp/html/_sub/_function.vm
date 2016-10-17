@@ -1,0 +1,80 @@
+#set($menus_name = [$text.ui("label.home"),$text.diary($g_site),$text.photo($g_site),$text.music($g_site),$text.bbs($g_site),$text.guestbook($g_site),$text.friend($g_site)])
+#set($menus_link = ["$dlog.root()/${g_site.uniqueName}","$dlog.root()/html/diary/?sid=$g_site_id","$dlog.root()/html/photo/?sid=$g_site_id","$dlog.root()/html/music/?sid=$g_site_id","$dlog.root()/html/bbs/?sid=$g_site_id","$dlog.root()/html/guestbook.vm?sid=$g_site_id","$dlog.root()/html/friend/?sid=$g_site_id"])
+#if(${g_site.functionStatus.friend}==2)
+	#set($__nothing = $menus_name.set(6, ""))
+	#set($__nothing = $menus_link.set(6, ""))
+#end
+#if(${g_site.functionStatus.guestbook}==2)
+	#set($__nothing = $menus_name.set(5, ""))
+	#set($__nothing = $menus_link.set(5, ""))
+#end
+#if(${g_site.functionStatus.forum}==2)
+	#set($__nothing = $menus_name.set(4, ""))
+	#set($__nothing = $menus_link.set(4, ""))
+#end
+#if(${g_site.functionStatus.music}==2)
+	#set($__nothing = $menus_name.set(3, ""))
+	#set($__nothing = $menus_link.set(3, ""))
+#end
+#if(${g_site.functionStatus.photo}==2)
+	#set($__nothing = $menus_name.set(2, ""))
+	#set($__nothing = $menus_link.set(2, ""))
+#end
+#if(${g_site.functionStatus.diary}==2)
+	#set($__nothing = $menus_name.set(1, ""))
+	#set($__nothing = $menus_link.set(1, ""))
+#end
+<div class="Menu_outer">
+	<div class="Menu_inner">
+    	<div class="Navigation">
+    		<ul>
+    		#foreach($menu in $menus_name)
+    			#if($dlog.not_empty($menu))
+        			#set($idx = $velocityCount - 1)
+        			#set($m_link = $menus_link.get($idx))
+					#set($show_line = $velocityCount < $menus_name.size())
+        			#if($velocityCount == $current_menu_item)
+    					<li class="current"><a href="${m_link}">${menu}</a></li>
+						#if($show_line)<li class="split"></li>#end
+        			#else
+        				<li><a href="${m_link}">${menu}</a></li>
+        				#if($show_line)<li class="split"></li>#end
+        			#end
+    			#end
+    		#end
+    		</ul>
+			<div class="clear"></div>
+    	</div>
+		<div class="Accessibility">
+			<ul>
+				#set($owner = $USER_tool.user(${g_site.owner.id}))
+				#if($current_menu_item==8)
+					<li class="current"><a href="$dlog.root()/dlog/accounts/viewuser.vm?sid=${g_site.id}&amp;uid=${owner.id}">站长</a></li>
+					<li class="split"></li>
+				#else
+					<li><a href="$dlog.root()/dlog/accounts/viewuser.vm?sid=${g_site.id}&amp;uid=${owner.id}">站长</a></li>
+					<li class="split"></li>
+				#end
+				
+				#if($current_menu_item==9)
+    				<li class="current"><a href="$dlog.root()/html/tag/?sid=$g_site_id">标签</a></li>
+					<li class="split"></li>
+				#else
+					<li><a href="$dlog.root()/html/tag/?sid=$g_site_id">标签</a></li>
+					<li class="split"></li>
+				#end
+				
+				
+				
+            	#if($dlog.is_owner($g_site, $g_user))
+            		#if($current_menu_item==10)
+						<li class="current"><a href="$dlog.root()/html/sitemgr/?sid=$g_site_id">$text.ui("channel.settings")</a></li>
+            		#else
+            			<li><a href="$dlog.root()/html/sitemgr/?sid=$g_site_id">$text.ui("channel.settings")</a></li>
+            		#end
+    			#end
+			</ul>
+			<div class="clear"></div>
+		</div>
+	</div>
+</div>

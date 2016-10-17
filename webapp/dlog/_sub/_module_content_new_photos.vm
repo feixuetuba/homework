@@ -1,0 +1,26 @@
+<div class="content_module">
+	<div class="content_module_top">
+		最新上传照片  <span>(<a href="$dlog.root()/rss.vm?tid=2">RSS订阅</a>)</span>
+	</div>
+	<div class="content_module_Pcontent">
+		<table border="0" cellspacing="5" cellpadding="0" width="100%">
+		#set($photos = $DLOG4J_tool.list_new_photos(0,10))
+		#set($COL_COUNT = 5)
+        #set($ROW_COUNT = $dlog.page_count($photos.size(),$COL_COUNT) - 1)  ##两行
+        #foreach($row in [0..$ROW_COUNT])
+            <tr>
+                #set($begin_idx = $row * $COL_COUNT)
+                #set($end_idx = $begin_idx + $COL_COUNT - 1)				
+                #foreach($idx in [$begin_idx..$end_idx])
+                #if($idx < $photos.size())
+                    #set($_photo = $photos.get($idx))
+            		<td class="photo_box">
+            			<div class="photo_cen"><a href="$dlog.root()/html/photo/show.vm?sid=${_photo.site.id}&amp;pid=${_photo.id}"><img src="$dlog.root()${_photo.previewURL}" border="0" title="$text.html(${_photo.name})"/></a></div>
+                    </td>
+				#end
+				#end
+            </tr>
+		#end
+		</table>
+	</div>
+</div>

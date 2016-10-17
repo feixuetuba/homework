@@ -1,0 +1,41 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  show message in xhtml
+##
+###############################################################################
+#parse("/wml/_sub/_xhtml_global.vm")
+#set($page_title="阅读短消息")
+#set($msgid = $dlog.param("mid",-1))
+#set($p_page = $dlog.param("p", 1))
+#if($g_user)#set($msg = $dlog.get_msg($msgid))#end
+<div id="msg_nav_bar">
+	#invoke("_sub/_nav_bar.vm")&gt;<a href="$dlog.root()/wml/listmsg.vm?sid=$g_site_id&amp;p=$p_page">短消息</a>
+</div>
+#if($msg && ${msg.toUser.id} == $g_user_id)
+<div id="msg_outline">
+	发件人:<a href="$dlog.root()/wml/viewuser.vm?sid=$g_site_id&amp;uid=${msg.fromUser.id}">#if($dlog.not_empty(${msg.fromUserName}))$text.html(${msg.fromUserName})#else$text.html(${msg.fromUser.nickname})#end</a><br/>
+	$date.format("yyyy/MM/dd EEE HH:mm", ${msg.sendTime})<br/>
+	<a href="$dlog.root()/wml/sendmsg.vm?sid=$g_site_id&amp;uid=${msg.fromUser.id}&amp;mid=${msg.id}&amp;r=$math.random(1,1000)">回复</a>
+	<a href="$link.setAction("wml/message")?sid=$g_site_id&amp;eventSubmit_Delete=${msg.id}&amp;p=$p_page">删除</a><br/>
+	*** 内容 ***
+</div>
+<div id="msg_content">${msg.content}</div>
+#else
+<div id="error_msg">
+	您要阅读的短消息不存在！！
+</div>
+#end
+<div><a href="$dlog.root()/wml/listmsg.vm?sid=$g_site_id&amp;p=$p_page">返回上页</a></div>

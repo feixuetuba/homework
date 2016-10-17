@@ -1,0 +1,138 @@
+#if(${log.lock}==0 && ${log.status}==0)
+	<div class="reply">
+    	<form action="$link.setAction("html/reply")" method="post" onsubmit="return validateReplyForm(this);" name="rplform">
+    		#if($reply_to_edit)
+    			#set($author=${reply_to_edit.author})
+    			#set($author_url=${reply_to_edit.authorURL})
+    			#set($author_email=${reply_to_edit.authorEmail})
+    		#elseif($g_user)
+    			#set($author = ${g_user.nickname})
+    			#set($author_url = ${g_user.contactInfo.homePage})
+    			#set($author_email = ${g_user.contactInfo.email})
+				#set($quote_author=${reply_to_quote.author})
+    			#set($quote_author_url=${reply_to_quote.authorURL})
+    			#set($quote_author_email=${reply_to_quote.authorEmail})
+				
+				#if(${reply_to_quote.ownerOnly}==0 || $dlog.is_owner($g_site,$g_user) || ($g_user && ${g_user.id}==${reply_to_quote.user.id})) 
+    				#set($quote_author_content=${reply_to_quote.content})
+    			#else
+					#set($quote_author_content="<i>[此评论只能由评论者或者是写日记的人可以查阅。]</i>")
+				#end
+				
+				#set($quote_author_content=${reply_to_quote.content})
+				#set($no_id = $dlog.param("no_id",-1))
+			#elseif($reply_to_quote)
+				#set($author = "匿名网友")
+    			#set($author_url = ${g_user.contactInfo.homePage})
+    			#set($author_email = ${g_user.contactInfo.email})
+				#set($quote_author=${reply_to_quote.author})
+    			#set($quote_author_url=${reply_to_quote.authorURL})
+    			#set($quote_author_email=${reply_to_quote.authorEmail})
+				#if(${reply_to_quote.ownerOnly}==0 || $dlog.is_owner($g_site,$g_user) || ($g_user && ${g_user.id}==${reply_to_quote.user.id})) 
+    				#set($quote_author_content=${reply_to_quote.content})
+    			#else
+					#set($quote_author_content="<i>[此评论只能由评论者或者是写日记的人可以查阅。]</i>")
+				#end
+				#set($no_id = $dlog.param("no_id",-1))
+			#else
+				#set($author = "匿名网友")
+    		#end
+    		<div class="comment_form">
+				#show_error_msg()
+    			#set($fbean = $form.getBean())
+				<div class="form_title"><b>发表评论</b><a name="reply"></a></div>
+				#if($reply_to_edit)<input type="hidden" name="reply_id" value="${reply_to_edit.id}"/>#end
+				#if($reply_to_quote)<input type="hidden" name="quote_id" value="${reply_to_quote.id}"/>#end
+				#if($reply_to_edit)
+    				<input type="hidden" value="HTML" name="eventSubmit_UpdateDiaryReply" />
+    			#else
+    				<input type="hidden" value="HTML" name="eventSubmit_AddDiaryReply" />
+    			#end
+    			<input type="hidden" name="clientType" value="0" />
+    			<input type="hidden" name="sid" value="$g_site_id" />
+    			<input type="hidden" name="log_id" value="${log.id}" />
+    			<input type="hidden" name="__ClientId" value="$dlog.gen_client_id()" />
+    			<input type="hidden" name="parentId" value="${log.id}" />
+				
+            	<div class="form_module">
+            		<div class="form_module_title">称呼:</div>
+            		<div class="form_module_content">
+            			<input type="text" name="author" value="#if($fbean)$!{fbean.author}#else$!escape.html($author)#end" size="10" maxlength="20" />
+            		</div>
+            		<div class="clear"></div>
+            	</div>
+    			<div class="form_module">
+            		<div class="form_module_title">邮箱:</div>
+            		<div class="form_module_content">
+            			<input type="text" name="authorEmail" value="$!author_email" size="20" maxlength="50" />{可选}
+            		</div>
+            		<div class="clear"></div>
+            	</div>
+    			<div class="form_module">
+            		<div class="form_module_title">网址:</div>
+            		<div class="form_module_content">
+            			<input type="text" name="authorURL" value="$!author_url" size="20" maxlength="50" />{可选}
+						<input type="checkbox" name="ownerOnly" value="1" #if($reply_to_edit && ${reply_to_edit.ownerOnly}==1)checked#end/>
+    					此评论只有我和写日记的人查阅
+            		</div>
+            		<div class="clear"></div>
+            	</div>
+    			<div class="form_module_textarea">
+    				<textarea name="content" style="height:150px;width:100%">
+						#if($fbean)
+							$!{fbean.content}
+						#elseif($reply_to_edit)
+							$!{reply_to_edit.content}
+						#elseif($reply_to_quote)
+							<table width="100%" border="0" cellspacing="0" cellpadding="5" class="quote">
+                            	<tr>
+									<td class="quote_title"><a href="#comment_$!no_id">&#35;$!no_id楼</a>&nbsp;<span class="quote_author">$!quote_author</span>&nbsp;原帖：</td>
+                            	</tr>
+                            	<tr>
+                            		<td class="quote_content">$!quote_author_content</td>
+                            	</tr>
+                            </table>
+							<p>点评：</p>
+						#end
+					</textarea>
+    			</div>
+    			<div class="form_module_submit">
+    				#if(!$g_user)
+    					校验码:&nbsp;<input type="text" size="5" maxlength="4" name="verifyCode">&nbsp;<img src="$dlog.root()/servlet/verify.img" class="verifyCode" />
+    				#end
+    				#if($reply_to_edit)
+    					<input type="submit" value="更新评论" class="button" name="eventSubmit_UpdateDiaryReply" onClick="this.disabled=true;rplform.submit();"/>
+    				#else
+    					<input type="submit" value="添加评论" class="button" name="eventSubmit_AddDiaryReply" onClick="this.disabled=true;rplform.submit();"/>
+    				#end
+    			</div>
+    		</div>
+    	</form>
+    </div>
+    <script type="text/javascript">
+    	window.onload = function(){
+    		#richeditor('content')            
+    		oFCKeditor.Height = 180;
+    		oFCKeditor.ToolbarSet = "Basic";
+    		oFCKeditor.ReplaceTextarea() ;
+    	}
+    	function validateReplyForm(theForm){
+    		with(theForm){
+    			if(is_empty(author.value)){
+    				alert("username is required.");
+    				author.focus();
+    				return false;
+    			}
+    			if(not_empty(authorEmail.value) && !is_email(authorEmail.value)){
+    				alert("email error.");
+    				authorEmail.focus();
+    				return false;
+    			}
+    		}
+    		return true;
+    	}
+    	function SetFont(size){
+    		document.getElementById("imlog_content").style.fontSize=size
+    	}
+    </script>
+#end

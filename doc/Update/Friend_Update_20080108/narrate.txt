@@ -1,0 +1,5 @@
+dlog_friend 表添加字段 group_id 对应表 dlog_user_f_group 的 group_id
+
+alter table dlog_friend add constraint fk_r_u_f_group foreign key (group_id)
+      references dlog_user_f_group (group_id) on delete restrict on update restrict;
+

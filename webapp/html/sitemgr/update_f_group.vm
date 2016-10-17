@@ -1,0 +1,64 @@
+#invoke("/html/_sub/_global.vm")
+#select_layout("p_manager_friend.vm")
+#set($groupid = $dlog.param("group_id",0))
+#set($userGroup_=$FRIEND_tool.getUserFriendGroupBean(${groupid}))
+#set($page_title="修改分组")
+<div class="page_content">
+	<form action="$link.setAction("/html/friend")" method="post" name="friendForm" onsubmit="return validate();">
+		<input type="hidden" name="sid" value="$g_site_id"/>
+		<input type="hidden" name="id" value="$!{g_user.id}"/>
+		<input type="hidden" name="__ClientId" value="$dlog.gen_client_id()"/>
+		<input type="hidden" name="groupid" value="${userGroup_.groupid}"/>
+<div class="form_row">	
+	<div class="form_row">
+    		<div class="form_note">		
+				<li>分组名称长度不得超过20个字符！</li>				
+			</div>
+    	</div>
+	
+		<div class="form_row_content">
+			<input type="hidden" name="name" value="$!{g_user.name}" disabled/>
+		</div>
+</div>		
+<div class="form_row">	
+		<div class="form_row_title fleft">
+			分组名称
+		</div>
+		<div class="form_row_content">
+			<input type="text" name="groupname" id="groupValue" value="$!userGroup_.groupname"/>&nbsp;&nbsp;{必须填写}
+			#struts_message("group_name")
+		</div>
+	</div>	
+	<div class="spacer_1"></div>
+			<div class="form_row">
+				<div class="form_row_content">
+					<div class="spacer_5"></div>
+					#if(${userGroup_.grouptype}!=2)
+    				<input type="radio" name="grouptype" value="0" #if(${userGroup_.grouptype}==0) checked #end> 完全公开 <br/>
+                    <input type="radio" name="grouptype" value="1" #if(${userGroup_.grouptype}==1) checked #end> 私人分组 <br/>
+						#else
+							<input type="radio" name="grouptype" value="2" checked> 系统默认 <br/>
+							#end
+            		<div class="spacer_5"></div>
+    			</div>
+    		</div>	
+		<div class="form_row">
+		<div class="form_row_submit">
+		<input type="submit" name="eventSubmit_UpdateGroup" value="提交分组"/>
+		<input type="button" value="返回上页" onclick="history.go(-1)"/>
+    	<input type="button" value="返回首页" onclick="location.href='$dlog.root()/#if($g_site)?sid=${g_site_id}#end';"/>
+		
+		</div>
+			</div>
+				</form>
+<script language="javascript">
+	function validate()
+	{	
+		var str=$('groupValue').value;
+		if(is_empty(str))
+		{
+			alert('名称不能为空');
+			return false;
+		}	
+}
+</script>

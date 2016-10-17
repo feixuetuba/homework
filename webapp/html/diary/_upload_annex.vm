@@ -1,0 +1,66 @@
+##set($annex_num=$dlog.param("annex_num"))
+##set($annex_uid=$dlog.param("annex_uid"))
+##set($annex_vid=$dlog.param("annex_vid"))
+#set($sid=$dlog.param("sid"))
+#set($diaryID=$dlog.param("diaryID"))
+#set($id=$dlog.param("id"))
+#set($valiDate=$dlog.param("valiDate"))
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>upload</title>
+    <style>
+    	body,input {font-size: 12px; font-family: "Verdana", "Verdana"}
+    	.button { border-width: 1px; height:18px;}
+    </style>
+</head>
+<body leftmargin='10' topmargin='0' marginwidth='0' marginheight='0'>
+<form method="POST" enctype="multipart/form-data" action="$link.setAction('/html/upload/annex')" onsubmit="return check(this);">	
+	<input type="hidden" name="fromPage" value="$dlog.root()/html/diary/_upload_annex.vm?sid=$!sid&id=$!id&diaryID=$!diaryID&valiDate=$!valiDate">
+	<input type="hidden" name="valiDate" id="valiDate" value="$!valiDate">
+	<input type="hidden" name="userid" id="userid" value="$!id">
+    <input type="file" name="fileName" size="38" class="button" value="">	
+    <input type="submit" value="上传" name="eventSubmit_UploadAnnex" class="button">##diaryID=$diaryID   sid=$sid
+	<input type="hidden" name="sid" id="sid" value="$!sid">
+	<input type="hidden" name="diaryID" id="diaryID" value="$!diaryID">
+</form>
+<form method="POST" action="$link.setAction('/html/upload/annex')" id="delete">	
+<input type="hidden" name="fromPage" value="$dlog.root()/html/diary/_upload_annex.vm?sid=$!sid&id=$!id&diaryID=$!diaryID&valiDate=$!valiDate">
+	<input type="hidden" name="valiDate" id="valiDate" value="$!valiDate">
+	<input type="hidden" name="userid" id="userid" value="$!id">
+	<input type="hidden" name="annexID" id="annexID" value="">
+	<input type="hidden" name="sid" id="sid" value="$!sid">
+	<input type="hidden" name="eventSubmit_DeleteAnnex" value="删除">	
+
+</form>
+
+	<input type="hidden" name="innerHtml" id="innerHtml">		
+</body>
+<script type="text/javascript" src="$dlog.root()/js/common.js"></script>
+<script src="$dlog.root()/js/prototype.js" type="text/javascript"></script>
+<script language="javascript">
+function check(theForm){
+
+	if(is_empty(theForm.fileName.value)){
+		alert("请选择要上传的文件.");
+		return false;
+	}
+	return true;
+}
+function deleteAnnex(index){
+	document.getElementById('annexID').value=index;
+	document.getElementById('delete').submit();	
+}	
+
+
+#if(!($validate&&$!id))
+	var annexTable=parent.document.getElementById('annexList');
+	annexTable.innerHTML="";
+	annexTable.style.display='';
+	var HTML='$DIARY_tool.annex_table("$id","$valiDate")';
+	if(HTML=="NULL")
+	annexTable.style.display='none';
+	annexTable.innerHTML=HTML
+#end
+</script>
+</html>

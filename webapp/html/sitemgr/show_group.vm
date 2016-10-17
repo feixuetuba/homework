@@ -1,0 +1,110 @@
+#invoke("/html/_sub/_global.vm")
+#select_layout("p_manager_friend.vm")
+#set($groupid = $dlog.param("group_id"))
+#set($page_title="好友分组")
+#set($slist= "")
+#set($slist= $FRIEND_tool.showGroupFriend($!{g_user.id},$!{groupid}))
+
+#if($slist.size()<=0)
+		<div class="msgbox">
+			对不起,此分组还未添加好友.
+		</div>		
+		#else
+		#if($g_user)
+    #if($slist.size()>0)
+        <div class="page_top">
+			<strong>分组共有$slist.size()个好友！</strong>&nbsp;&nbsp;&nbsp;&nbsp;
+			
+		</div>
+		<div id="data_of_friends"></div>
+        <hr size="1" noshade color="#CCCCCC"/>
+        <form action="$link.setAction("dlog/user")" method="post" onsubmit="return confirm('是否真的把选中的用户从好友列表中删除吗？');">
+        <input type="hidden" name="__ClientId" value="$dlog.gen_client_id()"/>
+        <input type="hidden" name="fromPage" value="$dlog.get_request_url()"/>
+        <input type="hidden" name="sid" value="$g_site_id"/>		
+		<div class="page_body">
+        <table cellspacing="1" cellpadding="3" border="0" class="table" width="100%">
+		<tr class="table_head">
+			#if($dlog.is_owner($g_site, $g_user))<td nowrap></td>#end
+			<td nowrap>名称</td>
+			<td nowrap>电邮</td>
+			<td align="center" nowrap>在线状态</td>
+			<td nowrap>最近登录时间</td>
+    		<td align="center" nowrap>短消息</td>
+			<td align="center" nowrap>更改分组</td>
+		</tr>
+        #set($friends = $USER_tool.friends(${g_user.id}, 1, -1))
+        #foreach($user in $slist)
+            #set($show_user_url = "$dlog.root()/dlog/viewuser.vm?sid=$g_site_id&amp;uid=${user.friend.id}")
+            <tr class="table_cell">
+               #if($dlog.is_owner($g_site, $g_user))
+				<td><input type="checkbox" name="uid" value="${user.friend.id}"/></td>
+				#end
+               <td>
+				#if(${user.friend.ownSiteId}<1)
+					#set($user_link = "$dlog.root()/dlog/viewuser.vm?sid=$g_site_id&amp;uid=${user.friend.id}")
+			    #else
+					#set($user_link = "$dlog.root()/?sid=${user.friend.ownSiteId}")
+				#end
+                <a href="${user_link}">
+                  $text.html(${user.friend.nickname})
+                </a>
+               </td>
+                <td><a href="mailto:$!{user.friend.contactInfo.email}">$!{user.friend.contactInfo.email}</a></td>
+                <td align="center">
+					#if(${user.friend.onlineStatus}==1)
+            		$html.img("online.gif","当前在线",null,"absmiddle",0)
+            		#else
+            		$html.img("offline.gif","当前离线",null,"absmiddle",0)
+            		#end
+				</td>
+                <td>$!date.format("yyyy-MM-dd HH:mm",${user.friend.lastTime})</td>
+                <td align="center">
+                    <a href="$dlog.root()/dlog/sendmsg.vm?sid=$g_site_id&amp;uid=${user.friend.id}" title="给该用户发送短消息">
+                        $html.img("msg.gif")
+                    </a>
+                </td>
+				<td align="center">
+				#if($dlog.is_owner($g_site, $g_user))					
+						<a  href="#" onclick="showdiv('${user.groupid}','${user.friend.nickname}','${user.friend.id}')">
+								$html.img("settings.gif",null,"setting","absmiddle",0)
+								</A>
+								#else
+									无权操作				
+					#end</td>
+            </tr>
+        #end
+        </table>
+		</div>
+		#if($dlog.is_owner($g_site, $g_user))
+			<div class="page_footer">
+            <input type="checkbox" name="bt_all" value="" onclick="select_all('uid',this.checked)"/>全选		
+            <input type="submit" name="eventSubmit_DelFriend" value="删除选中"/>
+			<input type="button" class="button" name="btn_return" value="返回上页" onclick="history.go(-1)" />
+		</div>
+		#end
+        </form>
+		<div  class="page_top"  id="showdiv" style="display:none">
+		#invoke("/html/friend/friend_divert.vm")		
+		</div>
+		<script language="javascript">
+		
+	function showdiv(groupid,username,friendid)
+		{
+		var divobj=document.getElementById("showdiv");
+		var hidden_friendid_obj=document.getElementById("friendid_hidden");	
+		var spanobj=document.getElementById("span_userid");
+		if(divobj.style.display=='')
+			divobj.style.display='none';
+		else
+			divobj.style.display='';			
+			if(groupid!=null)
+			{
+				hidden_friendid_obj.value=friendid		
+				spanobj.innerHTML=username;
+			}			
+		}
+		</script>
+	#end
+	#end
+#end

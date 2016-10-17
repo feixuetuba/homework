@@ -1,0 +1,36 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  DLOG4J的WML版本的首页内容
+##
+###############################################################################
+#set($g_close_bottom_navigator = true)
+<p align="center"><img src="$dlog.root()/images/home/logo/wap_logo.gif" alt="logo"/></p>
+<p>#invoke("_sub/_user_bar.vm")<br/>
+	<a href="$dlog.root()/wml/logs.vm">日记.</a><a href="$dlog.root()/wml/photos.vm">照片.</a><a href="$dlog.root()/wml/music/songs.vm">音乐.</a><a href="$dlog.root()/wml/links.vm?sid=1">友链</a><br/><a href="$dlog.root()/wml/sites.vm">新站.</a><a href="$dlog.root()/wml/topics.vm">讨论.</a><a href="$dlog.root()/wml/tags.vm">标签.</a><a href="$dlog.root()/wml/search.vm?sid=$g_site_id">$text.wml("search")</a><br/>
+	#invoke("_tag/_hot_tag.vm")
+</p>
+<p><b>+热门日记</b>(<a href="$dlog.root()/wml/logs.vm?s=hot">$text.wml("more")</a>)<br/>
+	#set($logs=$DLOG4J_tool.list_hot_articles(14, 50))
+	#foreach($log in $logs)#if($velocityCount<6)${velocityCount}.<a href="$dlog.root()/wml/diary/show.vm?sid=${log.site.id}&amp;log_id=${log.id}">$text.html($dlog.abbreviate(${log.title},15))</a><br/>#end#end	
+</p>
+<p><b>+热门照片</b>(<a href="$dlog.root()/wml/photos.vm?s=hot">$text.wml("more")</a>)<br/>
+	#set($photos=$DLOG4J_tool.list_hot_photos(14, 50))
+	#foreach($photo in $photos)#if($velocityCount>5 && $velocityCount<8)<a href="$dlog.root()/wml/photo/show.vm?sid=${photo.site.id}&amp;aid=${photo.album.id}&amp;pid=${photo.id}"><img src="$dlog.root()${photo.previewURL}" alt="$text.html($photo.name)"/></a>#end#end
+</p>
+<p><b>+热门网记</b>(<a href="$dlog.root()/wml/sites.vm?s=diary&amp;p=2">$text.wml("more")</a>)<br/>
+	#set($sites = $dlog.random($DLOG4J_tool.list_hot_sites_via_diary(1,100),10))
+	#foreach($site in $sites)<a href="$dlog.root()/${site.uniqueName}">$escape.html(${site.friendlyName}),</a>#end	
+</p>

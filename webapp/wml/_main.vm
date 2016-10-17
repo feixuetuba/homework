@@ -1,0 +1,58 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  main page of WAP
+##
+###############################################################################
+<p>
+	#invoke("_sub/_user_bar.vm")<br/>
+	----------<br/>
+	#invoke("_sub/_channel_bar.vm")<br/>
+	#if(${g_site.functionStatus.diary}!=2)
+	#set($logs = $DIARY_tool.list_diary($g_site, $g_user, -1, -1,-1,-1, 1, 5, false))
+	#if($logs.size()>0)
+    	<b>+最新日记</b>(<a href="$dlog.root()/wml/diary/logs.vm?sid=$g_site_id&amp;p=2">$text.wml("more")</a>)<br/>
+    	#foreach($log in $logs)
+    		${velocityCount}.<a href="$dlog.root()/wml/diary/show.vm?sid=$g_site_id&amp;log_id=${log.id}">$text.html(${log.title})</a>(<a href="$dlog.root()/wml/diary/diary_rpls.vm?sid=$g_site_id&amp;log_id=${log.id}">${log.replyCount}</a>,${log.viewCount})<br/>
+    	#end
+	#else
+		+$text.wml("no_diary")<br/>
+	#end
+	#end
+	#if(${g_site.functionStatus.photo}!=2)
+	#set($photos = $PHOTO_tool.list_photos($g_site, $g_user, -1, 0, 1, 2))
+	#if($photos.size()>0)
+    	<b>+最新照片</b>(<a href="$dlog.root()/wml/photo/photos.vm?sid=$g_site_id">$text.wml("more")</a>)<br/>
+    	#foreach($photo in $photos)
+    		<a href="$dlog.root()/wml/photo/show.vm?sid=$g_site_id&amp;pid=${photo.id}"><img src="$dlog.root()${photo.previewURL}" alt=""/></a>
+		#end
+	#else
+		+$text.wml("no_photo")
+	#end<br/>
+	#end
+	#if(${g_site.functionStatus.music}!=2)
+	#set($songs = $MUSIC_tool.list_new_songs($g_site, 5))
+	#if($songs.size()>0)
+    	<b>+最新音乐</b>(<a href="$dlog.root()/wml/music/?sid=$g_site_id">$text.wml("more")</a>)<br/>
+    	#foreach($song in $songs)
+    		${velocityCount}.<a href="$dlog.root()/wml/music/show.vm?sid=$g_site_id&amp;mid=${song.id}">$text.html(${song.title})</a><br/>
+    	#end		
+	#else
+		+$text.wml("no_song")<br/>
+	#end
+	#end
+	$text.wml("site_owner")<a href="$dlog.root()/wml/viewuser.vm?sid=$g_site_id&amp;uid=${g_site.owner.id}">$text.html(${g_site.owner.nickname})</a>(#if(${g_site.owner.onlineStatus}==1)$text.wml("online")#else$text.wml("offline")#end,<a href="$dlog.root()/wml/sendmsg.vm?sid=$g_site_id&amp;uid=${g_site.owner.id}&amp;r=$math.random(1,1000)">短消息</a>,<a href="$link.setAction("wml/user")?sid=$g_site_id&amp;uid=${g_site.owner.id}&amp;__ClientId=$dlog.gen_client_id()&amp;fromPage=$link.encodeURL("/?sid=$g_site_id")&amp;eventSubmit_AddFriend=WML">加为好友</a>)<br/>
+	此站：<a href="$link.setAction("wml/bookmark")?sid=${g_site_id}&amp;parentId=${g_site_id}&amp;parentType=5&amp;eventSubmit_Add=WML&amp;title=$link.encodeURL(${g_site.friendlyName})&amp;fromPage=$link.encodeURL("/wml/site.vm?sid=$g_site_id")">加为书签</a>,<a href="$link.setAction("wml/link")?sid=${g_site_id}&amp;eventSubmit_AddSiteToLink=${g_site_id}&amp;__ClientId=$dlog.gen_client_id()&amp;fromPage=$link.encodeURL("/wml/site.vm?sid=$g_site_id")">加为友链</a>
+</p>

@@ -1,0 +1,18 @@
+	#if($g_user)
+		
+	<div class="embed_module_top"></div>
+<div class="embed_module">
+	<div class="module_title"><b>图片管理分类</b></div>
+    <div class="module_content">
+    	<span class="link"><a href="$dlog.root()/dlog_admin/images/diary_images.vm">日记图片管理</a></span>
+    	<span class="link"><a href="$dlog.root()/dlog_admin/images/album_images.vm">相册图片管理</a></span>
+    </div>
+    <div class="module_foot"></div>
+</div>
+<div class="embed_module_bottom"></div>	
+#else
+	#invoke("../login.vm")
+	#end
+
+
+

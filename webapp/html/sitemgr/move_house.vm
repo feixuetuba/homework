@@ -1,0 +1,138 @@
+#parse("/html/_sub/_global.vm")
+#select_layout("p_setting.vm")
+#set($catalogs = $DIARY_tool.catalogs($g_site, $g_user, true))##日记分类
+[搬家]
+<form action="$link.setAction('/html/move')" method="post" id="form1">
+	<input type="hidden" name="" value="HTML" id="submit">
+	<input type="hidden" name="sid" value="$g_site_id" />
+	<input type="hidden" name="id" value="$g_user_id" />
+	<input type="hidden" name="clientType" value="0" />
+	<input type="hidden" name="__method" value="" />
+	<input type="hidden" name="__ClientId" value="$dlog.gen_client_id()" />
+	<input type="hidden" name="author" value="$!g_user.nickname" />
+	<input type="hidden" name="authorUrl"  value="$dlog.root()/dlog/viewuser.vm?sid=$g_site_id&uid=$g_user_id" />
+	<input type="hidden" id="error" value="" />
+	<table >		
+		<div class="form_row">
+    		<div class="form_row_title fleft">
+				<b>请输入地址:</b>
+    		</div>
+    		<div class="form_row_content">
+				<input size="30" value="" type="text" name="url" id="url"/>
+				<input value="检测地址" type="button" name="test" id="test" onclick="testing_('eventSubmit_TestURL')" />
+				<input value="预览生成" type="button" name="preview" id="preview" onclick="preview_('eventSubmit_Preview')"/>
+			</div>
+		</div>	
+	
+			
+		<div class="form_row_content" id="form_row_content" style="display:none">
+		<div class="form_row">
+    		<b>天气:</ b>
+    		
+    			#set($weathers = ["sunny","ptcloudy","cloudy","showers","rain","storms","snow","flurries","ice","dark"])
+                <select id="select" name="weather"  onchange="changeWeather(options[selectedIndex].value)">
+                #foreach($w in $weathers)
+                    <option value="$w">$w</option>
+                #end
+                </select>
+				<img id="img_weather" height="20" alt="weather" src="" align="absmiddle" />
+				<script language="javascript" type="text/javascript">
+				function changeWeather(weather){
+					var img = '$html.image_src("html/weather/default/")'+weather+'.gif';
+					document.images['img_weather'].src=img;
+				}
+				changeWeather("sunny");
+				</script>
+    		
+	
+	
+			<b>选择分类:</b>		
+				<select name="catalogId">
+				#foreach($cat in $catalogs)
+					<option value="${cat.id}" #if(${cat.id}==$catalog_id)selected#end>$text.html(${cat.name})</option>
+					#end
+				</select>	
+			<input  value="确定" type="button" id="MoveDiary" name="" onclick="moveDiary('eventSubmit_MoveDiary')" />
+		</div>
+		</div>
+	</table>
+</form>
+	<link rel="stylesheet" href="$dlog.root()/css/default_002.css" type="text/css" media="all"/>
+<link rel="stylesheet" href="$dlog.root()/css/alphacube.css" type="text/css" media="all"/>
+<script type="text/javascript" src="$dlog.root()/js/prototype_160.js"></script>
+<script type="text/javascript" src="$dlog.root()/js/window.js"></script>
+	<script type="text/javascript">
+
+function testing_(sub)
+{	
+	$('submit').name=sub
+	$('test').value="检测中..."
+	if(1==1)
+	{	//alert((new Date()).getTime())
+		$('test').disabled=true;
+		new Ajax.Request("$link.setAction('/html/move')",{method: 'get',parameters:  $('form1').serialize()+"&t="+((new Date()).getTime()),onComplete: testing_response});
+	}
+}
+
+function testing_response(response)
+{
+	
+	alert(response.responseText.split(";")[0]);	
+	$('test').disabled=false;
+	$('test').value="检测地址"
+	if(response.responseText.split(";")[1]=="1")
+	{
+		$('form_row_content').style.display=""
+		$('error').value=response.responseText.split(";")[1]
+	}esle
+	{
+		$('form_row_content').style.display="none"
+		$('error').value=response.responseText.split(";")[1]
+	}
+		
+}
+
+
+function preview_(sub)
+{
+
+	if(!$("__preview"))
+	{		
+		var url="$link.setAction('/html/move')?"+sub+"=1"+"&url="+$('url').value+"&t="+(new Date().getTime());
+		//alert(url)
+		Window.hasEffectLib = false;
+		var win = new Window("__preview", {className: "alphacube", title:"预览", url: url,width:750,height:500,maximizable:false,minimizable:false});
+		win.setDestroyOnClose();
+		win.showCenter();
+		}
+	}
+function closePreview(){
+Windows.close('__preview');
+}
+
+
+function moveDiary(sub)
+{
+	if($('error').value=="1")
+	{
+		$('submit').name=sub
+		$('MoveDiary').disabled=true;
+		//alert("$link.setAction('/html/move')?"+$('form1').serialize())
+		new Ajax.Request("$link.setAction('/html/move')",{method: 'get',parameters:  $('form1').serialize(),onComplete: move_response});
+	}
+	
+}
+
+
+function move_response(response)
+{
+	alert(response.responseText);
+	$('MoveDiary').disabled=false;
+}
+
+</script>
+
+	
+	
+	
+	

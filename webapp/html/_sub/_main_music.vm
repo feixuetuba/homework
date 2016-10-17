@@ -1,0 +1,56 @@
+<div class="music_module">
+	<div class="music_module_top"><b>最新歌曲<span class="top_music_more"><a href="javascript:void(0)" onclick="return play_selected('mid')">播放选中</a>&nbsp;|&nbsp;<a href="javascript:void(0)" onclick="return select_all('mid',true)">全选</a>&nbsp;|&nbsp;<a href="javascript:void(0)" onclick="return select_all('mid',false)">取消</a></span></b></div>
+	<div class="music_module_content">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="song_table">
+			<thead>
+				<tr>
+					<th width="1%" nowrap class="select_all"><a href="javascript:void(0)" onclick="select_all('mid',true);return false;"><h4>全选</h4></a></th>
+					<th width="30%" nowrap>歌曲名称</th>
+					<th width="15%" nowrap>歌手</th>
+					<th width="15%" nowrap>专辑</th>
+					<th width="1%" nowrap>播放</th>
+					<th width="1%" nowrap>下载</th>
+					<th width="1%" nowrap>歌词</th>
+				</tr>
+			</thead>
+			<tbody>
+				#set($songs = $MUSIC_tool.list_new_songs($g_site, 10))
+                #foreach($song in $songs)
+                    <tr>
+                    	<td align="center" valign="top" nowrap>
+                            <input name="mid" type="checkbox" value="${song.id}">
+                        </td>
+                        <td nowrap align="left" valign="top" class="song_title">${song.title}
+                    		<div class="bvsection" id="song_${song.id}">
+                    			发布时间:$date.format("yy/MM/dd", ${song.createTime})
+                                <DIV Class="spacer_5"></DIV>
+                                <DIV Class="line_dashed"></DIV>
+                                <DIV Class="spacer_5"></DIV>
+                        		歌词:(<a href="javascript:void(0)" onclick="hide_div('song_$song.id');return false;">关闭</a>)<br />$!{song.word}
+                    		</div></td>
+                		<td width="15%" align="left" nowrap valign="top" class="song_singer">$!{song.singer}</td>
+                		<td width="15%" align="left" nowrap valign="top" class="song_album">$!{song.album}</td>
+                		<td width="1%" align="center" valign="top" nowrap class="song_play">
+                    		#if($dlog.not_empty(${song.url}))
+        						<a href="javascript:void(0)" onclick="return play(${song.id});"><h4>播放</h4></a>
+                    		#end
+                		</td>
+                		<td width="1%" align="center" valign="top" nowrap class="song_down">
+                    		#if($dlog.not_empty(${song.url}))
+        						<a href="${song.url}"><h4>下载</h4></a>
+                    		#end
+                		</td> 
+                		<td width="1%" align="center" valign="top" nowrap class="song_word">
+                    		#if($dlog.not_empty(${song.word}))
+    							<a href="javascript:void(0)" title="点击查看歌词" onclick="show_div('song_$song.id');return false;"><h4>歌词</h4></a>
+                    		#end
+                		</td>
+                	</tr>
+                #end
+			</tbody>
+        </table>
+	</div>
+	<div class="music_module_bottom">#if($songs.size()>0)#invoke("/html/music/_player.vm")#end</div>
+</div>
+				
+		

@@ -1,0 +1,57 @@
+#invoke("../_sub/_global.vm")
+#set($layout = "master.vm")
+#set($left_template = "/dlog_admin/_sub/_left_adminuser.vm")
+#set($nav_template = "/dlog_admin/_sub/_nav_adminuser.vm")
+
+#set($pop1=($admin_tool.popIsAll($manager)||$admin_tool.popIsOperate($manager)||$admin_tool.popIsSuper($manager)))
+##用户是否登录&&(角色是否为超级管理员||权限是否为 修改 删除)
+#if($g_user&&$admin_tool.roleIsAdmin($manager)&&$pop1)
+
+#set($url="$dlog.root()/dlog_admin/manager/send_affiche.vm" )
+[公告]
+<div class="page_content">	
+<form method="POST" action='$link.setAction("dlog/message")'>
+	<table style="WIDTH:100%">
+		<input type="hidden" name="fromPage" value="$url" id="fromPage">
+		<tr >
+			<td style="WIDTH:20">标题
+			</td>
+			<td ><input type="text" name="title" id="title" size="50"/>
+			</td>
+		</tr>
+		
+		<tr >
+			<td colspan="2">			
+				<div class="form_module_textarea">
+					<textarea id="content" name="content" style="WIDTH:99%;HEIGHT:300px"></textarea>
+					<div class="tips">提示：插入日记图片，请点击编辑器上的 <img src="/images/html/icon/default/upload_img.gif" alt="上传图片！" border="0"/> 图标！</div>
+					<div class="clear"></div>
+				</div>
+			</td>
+		</tr>
+		<tr >
+			<td colspan="2">			
+				<input type="submit" name="eventSubmit_SendAffiche" value="提交"/>
+			</td>
+		</tr>
+	</table>
+</form>
+</div>
+
+
+
+<script type="text/javascript" src="/fckeditor/fckeditor.js"></script>
+
+<script >
+ window.onload = function()
+    {
+        var oFCKeditor = new FCKeditor( 'content' ) ;
+		oFCKeditor.BasePath = '/fckeditor/';
+        oFCKeditor.Height = 400;
+        oFCKeditor.ReplaceTextarea() ;
+    }
+</script>
+			#else
+				##没有任何权限
+				对不起,您没有权限.
+	#end

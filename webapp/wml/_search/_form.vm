@@ -1,0 +1,6 @@
+关键字:<input type="text" name="q" size="15" emptyok="true"/><br/>
+<anchor>搜索日记<go href="$dlog.root()/wml/search.vm?sid=$g_site_id&amp;scope=0"><postfield name="key" value="$(q)"/></go></anchor><br/>
+<anchor>搜索照片<go href="$dlog.root()/wml/search.vm?sid=$g_site_id&amp;scope=1"><postfield name="key" value="$(q)"/></go></anchor><br/>
+<anchor>搜索音乐<go href="$dlog.root()/wml/search.vm?sid=$g_site_id&amp;scope=2"><postfield name="key" value="$(q)"/></go></anchor><br/>
+<anchor>搜索网记<go href="$dlog.root()/wml/search.vm?sid=$g_site_id&amp;scope=4"><postfield name="key" value="$(q)"/></go></anchor><br/>
+<anchor>搜索用户<go href="$dlog.root()/wml/search.vm?sid=$g_site_id&amp;scope=5"><postfield name="key" value="$(q)"/></go></anchor>

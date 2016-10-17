@@ -1,0 +1,5 @@
+#set($index=$dlog.param("index",-1))
+	    <textarea id="sendContent" style="WIDTH: 100%; HEIGHT: 100px" ></textarea>
+		<input type="button" class="button" value="发送短消息" onclick="submitFrom($index)">
+		<input type="button" class="button" value="关闭窗口" onclick="return closeM($index);">
+

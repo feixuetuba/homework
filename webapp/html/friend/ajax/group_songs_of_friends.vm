@@ -1,0 +1,52 @@
+#parse("/WEB-INF/layout/_global.vm")
+#set($groupid = $dlog.param("group_id"))
+#set($userid = ${dlog.toInt($dlog.param("userid"))})
+#set($SONG_COUNT = 10)
+#set($songs = $FRIEND_tool.list_songs_of_friends($$userid,0,$SONG_COUNT,$groupid))
+<hr size="1" noshade color="#CCCCCC"/>
+<strong>好友最新添加歌曲:</strong>
+#if($songs && $songs.size()>0)
+<div class="music_header">
+	<a href="#" onclick="return play_selected('mid')">播放选中</a>&nbsp;&nbsp;
+	<a href="#" onclick="return select_all('mid',true)">全选</a>&nbsp;&nbsp;
+	<a href="#" onclick="return select_all('mid',false)">取消</a>&nbsp;&nbsp;
+</div>
+<div class="spacer_10"></div>
+<table width="100%" border="0" cellpadding="3" cellspacing="1" class="music_table">
+<tr class="music_table_head">
+    <td width="1%" align="center" nowrap><a href="#" onclick="select_all('mid',true);return false;">$html.img("music_check.gif",null,"check","absmiddle",0)</a></td>
+    <td width="30%" nowrap>歌曲名称</td>
+	<td width="15%" nowrap>网记</td>
+    <td width="15%" nowrap>歌手</td>
+    <td width="15%" nowrap>专辑</td>
+	<td width="1%" nowrap>播放</td>
+	<td width="1%" nowrap>下载</td>
+</tr>
+#foreach($song in $songs)
+<tr class="music_table_cell">
+	<td nowrap>
+        <input name="mid" type="checkbox" value="${song.id}">
+    </td>
+		<td nowrap>${song.title}</td>		
+		<td width="15%" nowrap><a href="$dlog.root()/${song.site.uniqueName}">$text.html(${song.site.friendlyName})</a></td>
+		<td width="15%" nowrap>$!{song.singer}</td>
+		<td width="15%" nowrap>$!{song.album}</td>
+		<td width="1%" align="center" nowrap>
+		#if($dlog.not_empty(${song.url}))
+			<a href="#" onclick="return play(${song.id});">$html.img("music/icon_play.gif","点击播放","play","absmiddle",0)</a>
+		#end
+		</td>
+		<td width="1%" align="center" nowrap>
+		#if($dlog.not_empty(${song.url}))
+			<a href="${song.url}">$html.img("music/icon_down.gif","点击下载","download","absmiddle",0)</a>
+		#end
+		</td>
+	</tr>
+#end
+</table>
+<div class="spacer_20"></div>
+<script type="text/javascript" src="/js/prototype.js"></script>
+#invoke("/html/music/_player.vm")
+#else
+	无内容显示
+	#end

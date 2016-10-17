@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.liusoft.dlog4j.beans">
+<class name="UserFriendGroupBean" table="dlog_user_f_group"
+		batch-size="50" dynamic-update="true">
+		<id name="groupid" column="group_id" >
+			<generator class="identity" />
+		</id>
+		
+			
+		<property name="userid" column="group_user_id" />
+		<property name="groupname" column="group_name" />
+		<property name="grouptype" column="group_type" />
+		<property name="groupcount" column="group_count" />
+		
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,112 @@
+#set($PAGE_SIZE = 10000)
+#set($p_page = $dlog.param("page",1))
+#set($page_count = $dlog.page_count(${log.replyCount}, $PAGE_SIZE))
+#set($pre_page = $p_page - 1)
+#set($next_page = $p_page + 1)
+#if(${log.replyCount} > 0)
+	<div class="replies_top"><h4><span class="replies_title">&#8220;&nbsp;${log.title}&nbsp;&#8221;</span>的评论：</h4></div>
+	<div class="replies_content">
+    	#set($reply_id = $dlog.param("reply_id",-1))
+		#set($quote_id = $dlog.param("quote_id",-1))
+        #set($replies = $DIARY_tool.replies($g_site,$g_user,$log,$p_page, $PAGE_SIZE, false))
+        #foreach($reply in ${replies})
+        	#if(${reply.id} == $reply_id) #set($reply_to_edit = $reply) #end
+			#if(${reply.id} == $quote_id) #set($reply_to_quote = $reply) #end
+        	<div class="comment_module"><a name="$reply.id"></a>
+				<div class="comment_module_top">
+					<span title="第${velocityCount}条评论！" class="velocityCount">&#35;${velocityCount}楼</span><a name="comment_${velocityCount}"></a>
+					#if(${reply.client.type} == 2)
+            			<span title="此评论使用手机编写发布！" class="Mobile"><b>[手机]</b></span>
+            		#else
+            			<span title="此评论使用电脑编写发布！" class="Computer"><b>[电脑]</b></span>
+					#end
+					<span title="发布评论时间！" class="replyTime"><b>评论时间：</b>$date.format("yyyy/MM/dd EEE HH:mm",${reply.replyTime})</span>
+				</div>
+				<div class="comment_module_content">
+					<div class="reply_owner">
+						#set($reply_owner = $USER_tool.user(${reply.user.id}))
+						<ul>
+							#if($dlog.not_empty(${reply_owner.portrait}))
+                				<li><img src="$dlog.root()/uploads/portrait/${reply_owner.portraitIcon}" alt="$!{reply_owner.nickname}" /></li>
+                			#else
+                				<li>$html.img("html/sharing/portrait/nophoto_s.gif","$!{reply_owner.nickname}",null,"absmiddle",0)</li>
+							#end
+							
+							#if($reply.user)
+								#set($reply_user = $USER_tool.user(${reply.user.id}))
+								<li class="user_setting" onmouseover="showMenu('dlog_userid_${reply.user.id}_${velocityCount}')" onmouseout="hideMenu('dlog_userid_${reply.user.id}_${velocityCount}')"><a href="#"><b>$text.html($reply.author)</b></a>
+    								<ul id="dlog_userid_${reply.user.id}_${velocityCount}" class="user_setting_ul">
+                        				#if($reply_user.ownSiteId>0)
+                                    		#set($user_site = $dlog.site($reply_user.ownSiteId))
+        									<li><a href="$dlog.root()/${user_site.uniqueName}" title="$text.html(${user_site.title})"><b>$text.html($reply.author)</b>的网记</a></li>
+										#end
+                        			</ul>
+								</li>
+                			#else
+                				<li><b>$text.html($reply.author)</b></li>
+                			#end
+						</ul>
+						<div class="clear"></div>
+            		</div>
+            		<div class="reply_content">
+            			#if(${reply.ownerOnly}==0 || $dlog.is_owner($g_site,$g_user) || ($g_user && ${g_user.id}==${reply.user.id})) 
+            				${reply.content}
+            			#else
+            				<i>[此评论只能由评论者或者是写日记的人可以查阅。]</i>
+						#end
+						#if($g_user && ($dlog.is_owner($g_site,$g_user) || (${reply.user} && ${reply.user.id}==$g_user_id)))
+							<ul>
+								<li><a href="showlog.vm?sid=$g_site_id&amp;log_id=${reply.diary.id}&quote_id=${reply.id}&no_id=${velocityCount}#reply">引用</a></li>
+                				#if($dlog.not_empty($reply.authorURL))
+                					<li><a href="$reply.authorURL"><b>网址</b></a></li>
+                				#end
+                				#if($dlog.not_empty($reply.authorEmail))
+                					<li><a href="$reply.authorEmail"><b>邮箱</b></a></li>
+                				#end
+                				<li><a href="#" onclick="if(confirm('您真的要删除该评论吗？')) deleteRForm_${reply.id}.submit(); return false;">删除</a></li>
+                				<li><a href="showlog.vm?sid=$g_site_id&amp;log_id=${reply.diary.id}&reply_id=${reply.id}#reply">编辑</a></li>
+                    			<form name="deleteRForm_${reply.id}" action="$link.setAction("html/reply")" method="post">
+                    				<input type="hidden" name="sid" value="${g_site_id}" />
+                    				<input type="hidden" name="log_id" value="${reply.diary.id}" />
+                    				<input type="hidden" name="fromPage" value="$dlog.get_request_url()" />
+                    				<input type="hidden" name="eventSubmit_DeleteDiaryReply" value="${reply.id}" />
+                    			</form>
+							</ul>
+						#else
+							<ul>
+								<li><a href="showlog.vm?sid=$g_site_id&amp;log_id=${reply.diary.id}&quote_id=${reply.id}&no_id=${velocityCount}#reply">引用</a></li>
+							</ul>
+						#end
+            		</div>
+					<div class="clear"></div>
+				</div>
+				<div class="comment_module_bottom"></div>
+        	</div>
+    	#end
+    	#if($page_count > 1)
+    		<div class="page">
+    			<form name="dform" action="#replies"><!-- 翻页控制条 -->
+    				第<b>${p_page}</b>页,共<b>${page_count}</b>页
+    				<input type="hidden" name="sid" value="$g_site_id" />
+    				<input type="hidden" name="cat_id" value="$log.catalog.id" />
+    				<input type="hidden" name="log_id" value="$log.id" />
+    				#set($base_url = "?sid=${g_site_id}&amp;cat_id=${log.catalog.id}&amp;log_id=${log.id}")
+    				#if($p_page > 1)<a href="$base_url#replies">首页</a>
+    				#end
+    				#if($p_page>1)<a href="${base_url}&amp;page=$pre_page#replies">上页</a>
+    				#end
+    				#if($p_page < $page_count)<a href="${base_url}&amp;page=$next_page#replies">下页</a>
+    				#end
+    				#if($p_page < $page_count)<a href="${base_url}&amp;page=$page_count#replies">尾页</a>
+    				#end
+    				到 <select name="page" onchange="dform.submit();">
+    					#foreach($p in [1..$page_count])
+    						<option value="$p"#if($p_page==$p) selected#end>$p</option>
+    					#end
+    				</select>页
+    			</form>
+    		</div>
+    	#end
+	</div>
+#end
+<div class="replies_bottom">#invoke("_reply_form.vm")</div>

@@ -1,0 +1,95 @@
+#invoke("/html/_sub/_global.vm")
+#select_layout("p_main.vm")
+#set($g_disable_seachable=1)
+#set($page_title="发送短消息")
+#set($uid = $dlog.param("uid",-1))##用户
+#set($msgid = $dlog.param("msgid",-1))##断消息id
+<link rel="stylesheet" type="text/css" media="all" href="$dlog.root()/css/calendar-blue.css" title="win2k-cold-1" />
+<script type="text/javascript" src="$dlog.root()/js/calendar.js"></script>
+<script type="text/javascript" src="$dlog.root()/js/calendar_lang/calendar-en.js"></script>
+<script type="text/javascript" src="$dlog.root()/js/calendar-setup.js"></script>
+
+#if(!$g_user || ${g_user.status}!=0)
+	#show_msg_box("要发送短消息必须先登录，现在就<a href='$dlog.root()/dlog/login.vm?sid=$g_site_id&amp;fromPage=$link.encodeURL($dlog.get_request_url())'>登录</a>。")
+#else
+    <form action="$link.setAction("dlog/message")" method="post" id="form">
+	<input type="hidden" name="fromPage" value="$dlog.root()/html/message/send_message.vm?sid=$g_site.id"/>
+	<input type="hidden" name="sid" value="$g_site_id"/>##站点id
+    <input type="hidden" name="receiverId" value="$g_site.owner.id"/>##发送者id
+	<input type="hidden" name="__ClientId" value="$dlog.gen_client_id()"/> 
+	 <input type="hidden"  name="content" id="content">
+	#set($friends = $USER_tool.friends(${g_user.id}, 1, -1))
+	#if($friends && $friends.size()>0)
+	<b>好友：</b><input type="checkbox" onclick="select_all('ccId',this.checked)"/>全选<br/>
+	<div class="line_solid"></div>
+	<div id="msg_my_friends">
+	<table border="0" cellspacing="2" cellpadding="0" width="100%">
+	#foreach($user in $friends)
+		#if($velocityCount %6 ==1)
+			<tr>
+		#end
+		<td>
+			<input type="checkbox" name="ccId" value="${user.friend.id}"/>
+			#if(${user.friend.onlineStatus}==1)
+				<font color=blue>
+			#end
+			$text.html(${user.friend.nickname})
+			#if(${user.friend.onlineStatus}==1)
+				</font>
+			#end
+			</td>
+		#if($velocityCount %6 == 0||$friends.size()==$velocityCount)
+			</tr>
+		#end
+	#end
+	</table>
+	</div>
+	<br/>
+	#end
+    <textarea name="fcontent" id="fcontent" style="WIDTH: 100%; HEIGHT: 150px">
+    </textarea><br/>    
+    <p align="center">
+    <input type="button" class="button" name="eventSubmit_SendMsgAJAX" value="发送短消息" onclick="submitFrom()">&nbsp;&nbsp;
+	<input type="button" class="button" name="btn_return" value="返回短消息箱" onclick="location.href='listmsg.vm?sid=$g_site_id'">
+    <input type="button" class="button" name="btn_return" value="返回上页" onclick="history.go(-1)">
+    </p>
+    </form>
+	<script type="text/javascript" src="$dlog.root()/fckedior/fckeditor.js"></script>
+  
+	<script src="$dlog.root()/js/prototype_160.js" type="text/javascript"></script>
+	<script type="text/javascript" type="text/javascript">
+        window.onload = function()
+        {
+			#richeditor('fcontent')
+            oFCKeditor.Height = 180;
+            oFCKeditor.ToolbarSet = "Basic";
+            oFCKeditor.ReplaceTextarea() ;
+        }
+		function sendMsg()
+		{
+			new Ajax.Request('$link.setAction("dlog/message")',{
+			method: 'post',parameters: $('form').serialize(),
+			onComplete: function ajax_personal_response(originalRequest){alert(originalRequest.responseText)}});
+		}
+		
+		function submitFrom()
+		{
+			if(is_empty(GetContents("fcontent")))
+			{
+    			alert('发送内容不能为空');
+    			return false ;
+			}	
+			$('content').value=GetContents("fcontent")
+			$('fcontent').disabled=true
+			sendMsg();
+		}
+		
+	function GetContents(countName)
+ 	{     
+     	var oEditor = FCKeditorAPI.GetInstance(countName) ;  
+   		return  oEditor.GetXHTML( true ) ;       
+  	}
+	
+    </script>
+	
+#end

@@ -1,0 +1,52 @@
+#invoke("/html/_sub/_global.vm")
+#select_layout("p_tag.vm")
+
+
+#if($dlog.is_owner($g_site, $g_user))
+	#set($tag=$USER_tool.tags($g_site))
+<div class="page_content">
+	<table  border="0" cellpadding="3" cellspacing="1" class="table_list">
+		<tr class="titles">
+		
+			<td>关键字</td>
+			<td>日记引用数</td>
+			<td>照片引用数</td>
+		</tr>
+		#foreach($list in $tag)
+				<tr class="contents">
+					##set($ssi = $STAT_tool.get_site_stat_info($list))
+					##set($dsi = $STAT_tool.get_dlog_stat_info($list))
+					#foreach($l in $list)
+						#if($velocityCount==1)
+							#set($tid=$l)
+						#elseif($velocityCount==2)
+							#set($tagNameURL=$link.encodeURL($l))
+							<td><a href="$dlog.root()/html/tag/show_tag.vm?sid=$g_site.id&type=0&tag=$tagNameURL" >$l</a></td>					
+						#elseif($velocityCount==3)
+							<td><a href="$dlog.root()/html/tag/show_tag.vm?sid=$g_site.id&type=1&tag=$tagNameURL" >$l</a></td>
+						#elseif($velocityCount==4)
+							<td><a href="$dlog.root()/html/tag/show_tag.vm?sid=$g_site.id&type=2&tag=$tagNameURL" >$l</a></td>
+						#end					
+					#end			
+		</tr>
+		#end
+	</table>
+</div>
+<hr />
+<div class="page_content">
+	<form action="$dlog.root()/html/tag/show_tag.vm">
+	关键字:
+	<input type="text" name="tag" value="" size="20" />	 
+	<input type="hidden" name="sid" value="$!{g_site.id}"  />	
+	<select name="type">
+		<option value="0" #if($tag_type==0)selected#end>全部</option>
+		<option value="1" #if($tag_type==1)selected#end>日记</option>
+		<option value="2" #if($tag_type==2)selected#end>照片</option>
+	</select>
+	<input type="submit" name="" value="搜索关键字" />
+</form>
+
+</div>
+#else
+	
+#end

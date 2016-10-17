@@ -1,0 +1,12 @@
+<div class="side_module">
+	<div class="side_module_top">热门日记站点</div>
+	<div class="side_module_content">
+		<ul class="site_li">
+			#set($sites = $dlog.random($DLOG4J_tool.list_hot_sites_via_diary(1,100),16))
+			#foreach($site in $sites)
+				<li><a href="$dlog.root()/${site.uniqueName}">$text.html(${site.friendlyName})</a></li>
+			#end
+		</ul>
+		<div class="clear"></div>
+	</div>
+</div>

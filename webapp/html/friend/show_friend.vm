@@ -1,0 +1,219 @@
+#invoke("/html/_sub/_global.vm")
+#select_layout("p_friend.vm")
+
+#set($page_title="好友分组")
+#set($sid = $dlog.param("sid",-1))##分组id
+#set($groupid = $dlog.param("group_id",0))##分组id
+#set($COUNT_PER_PAGE = 10)##每页显示
+#set($friends='')##空列表
+#set($_count = $FRIEND_tool.groupFriend_count($!{g_site.owner.id},$groupid))##好友总数
+#set($page_count = $dlog.page_count($_count, $COUNT_PER_PAGE))##总页数(计算)
+#set($selected=$dlog.param("selected",1))##选择
+#set($p_page = $dlog.param("p", 1))##当前页 默认1
+##检查当前页索引
+#if($p_page > $page_count)
+	#set($p_page = $page_count)
+		#elseif($p_page < 1)
+				#set($p_page = 1)
+#end
+#set($pre_page = $p_page - 1)##上一页
+#set($next_page = $p_page + 1)##下一页
+
+
+
+#if($dlog.is_owner($g_site, $g_user))
+	#set($friends = $FRIEND_tool.friends($!{g_site.owner.id},$groupid,$p_page,$COUNT_PER_PAGE))##列表
+#else##非站点拥有者
+	#set($baen=$FRIEND_tool.getUserFriendGroupBean($groupid))
+	#if($baen.grouptype!=1)
+		#set($friends = $FRIEND_tool.friends($!{g_site.owner.id},$groupid,$p_page,$COUNT_PER_PAGE))##列表		
+	#end
+#end
+
+
+##<div>uid=$!{g_site.owner.id},gid=$!{groupid},_count=$_count,friends=$friends.size(),sid=$sid,friends=$friends</div>
+<div class="page_top">
+			<strong>分组共有$_count个好友！</strong>&nbsp;&nbsp;&nbsp;&nbsp;
+			<div class="page_top">
+	<div class="p_left">总共有&nbsp;$page_count&nbsp;页&nbsp;&nbsp;当前第&nbsp;$p_page&nbsp;页&nbsp;</div>
+	<div class="p_right">
+		#if($p_page!="1")
+		<a href="$dlog.root()/html/friend/show_friend.vm?sid=$sid&p=1">首页</a>&nbsp;
+		#end
+		#if($p_page!="1")
+		<a href="$dlog.root()/html/friend/show_friend.vm?group_id=$groupid&sid=$sid&p=$pre_page">上一页</a>&nbsp;
+		#end
+		#if(1==1)
+			#set($p_temp=$p_page - 3)
+			#if($p_temp < 1)
+				#set($p_temp=1)
+				#end
+		<a href="$dlog.root()/html/friend/show_friend.vm?group_id=$groupid&sid=$sid&p=$p_temp">&nbsp;&lt;&lt;&nbsp</a>
+		#end
+		#foreach($index in $admin_tool.index_page($p_page, $page_count))
+		<a href="$dlog.root()/html/friend/show_friend.vm?group_id=$groupid&sid=$sid&p=$index">
+			#if($index==$p_page)&nbsp;<u>$index</u>&nbsp;
+				#else
+			&nbsp;$index&nbsp;
+			#end</a>			
+		#end
+		#if(1==1)
+			#set($p_temp=$p_page + 3)
+			#if($p_temp > $page_count)
+				#set($p_temp=$page_count)
+				#end
+		<a href="$dlog.root()/html/friend/show_friend.vm?group_id=$groupid&sid=$sid&p=$p_temp">&nbsp;&gt;&gt;&nbsp</a>
+		#end
+		#if(!($p_page>=$page_count))
+		<a href="$dlog.root()/html/friend/show_friend.vm?group_id=$groupid&sid=$sid&p=$next_page">下一页</a>&nbsp;
+		#else
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		#end
+		#if(!($p_page>=$page_count))
+		<a href="$dlog.root()/html/friend/show_friend.vm?group_id=$groupid&sid=$sid&p=$page_count">末页</a>&nbsp;
+		#else
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		#end
+	</div>
+</div>
+		</div>
+		<div id="data_of_friends"></div>
+        <hr size="1" noshade color="#CCCCCC"/>
+        <form action="$link.setAction("dlog/user")" method="post" onsubmit="return confirm('是否真的把选中的用户从好友列表中删除吗？');">
+        <input type="hidden" name="__ClientId" value="$dlog.gen_client_id()"/>
+        <input type="hidden" name="fromPage" value="$dlog.get_request_url()"/>
+        <input type="hidden" name="sid" value="$g_site_id"/>		
+		<div class="page_body">
+        <table cellspacing="1" cellpadding="3" border="0" class="table" width="100%">			
+		<tr class="table_head">
+			#if($dlog.is_owner($g_site, $g_user))
+				<td width="1"></td>
+			#end
+			<td nowrap>名称</td>
+			<td nowrap>电邮</td>
+			<td align="center" nowrap>在线状态</td>
+			<td nowrap>最近登录时间</td>
+    		#if($dlog.is_owner($g_site, $g_user))<td align="center" nowrap>操作</td>#end
+		</tr>
+        #foreach($user in $friends)
+            #set($show_user_url = "$dlog.root()/dlog/viewuser.vm?sid=$g_site_id&amp;uid=${user.friend.id}")
+            <tr class="table_cell" id="friend_${user.friend.id}">				
+				#if($dlog.is_owner($g_site, $g_user))
+					<td width="1">
+					<input type="checkbox" name="uid" value="${user.friend.id}">
+					</td>
+				#end
+               <td>
+				#if(${user.friend.ownSiteId}<1)
+					#set($user_link = "$dlog.root()/dlog/viewuser.vm?sid=$g_site_id&amp;uid=${user.friend.id}")
+			    #else
+					#set($user_link = "$dlog.root()/?sid=${user.friend.ownSiteId}")
+				#end
+                <a href="${user_link}">
+                  $text.html(${user.friend.nickname})
+                </a>
+               </td>
+			   
+                <td><a href="mailto:$!{user.friend.contactInfo.email}">$!{user.friend.contactInfo.email}</a></td>
+                <td align="center">
+					#if(${user.friend.onlineStatus}==1)
+            		$html.img("/html/icon/default/online.gif","当前在线",null,"absmiddle",0)
+            		#else
+            		$html.img("/html/icon/default/offline.gif","当前离线",null,"absmiddle",0)
+            		#end
+				</td>
+				
+                <td>$!date.format("yyyy-MM-dd HH:mm",${user.friend.lastTime})</td>
+               #if($dlog.is_owner($g_site, $g_user)) 
+				<td align="center">					 
+                    <a href="javascript:sendMessage('${user.friend.nickname}',${user.friend.id})">
+                        $html.img("/html/icon/default/msg.gif","给该用户发送短消息")</a>
+					&nbsp;&nbsp;
+					<a href="javascript:friendDivert('${user.friend.nickname}',$g_user.id,${user.friend.id},$groupid)">
+                        $html.img("/html/icon/default/settings.gif","转移分组")</a>
+                </td>
+			   #end
+            </tr>
+		#end
+		#if($dlog.is_owner($g_site, $g_user))<input type="checkbox" name="bt_all" value="" onclick="select_all('uid',this.checked)"/>全选		
+            <input type="submit" name="eventSubmit_DelFriend" value="删除选中"/></tr>
+		#end
+        </table>
+		</div>
+		
+        </form>
+		<div id="data_of_friends1"></div>	
+		<div id="data_of_friends2"></div>
+		<div id="data_of_friends3"></div>
+<div class="form_row">
+	<div class="form_row_submit">
+		<a href="javascript:;" onclick="history.go(-1)" >返回上页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    	<a href="javascript:;"	onclick="location.href='$dlog.root()/#if($g_site)?sid=${g_site_id}#end';">返回首页</a>	
+	</div>
+</div>
+<link rel="stylesheet" href="$dlog.root()/css/default_002.css" type="text/css" media="all"/>
+<link rel="stylesheet" href="$dlog.root()/css/alphacube.css" type="text/css" media="all"/>
+<script type="text/javascript" src="$dlog.root()/js/prototype_160.js"></script>
+<script type="text/javascript" src="$dlog.root()/js/window.js"></script>
+<script language="javascript">
+		function list_logs_of_friends(){
+		$('data_of_friends1').innerHTML = "正在读取数据,请稍候...";
+		new Ajax.Updater("data_of_friends1","$dlog.root()/html/friend/ajax/group_logs_of_friends.vm?group_id=$groupid&userid=$!{g_site.owner.id}&r="+Math.random());
+		}
+		function list_photos_of_friends(){
+		$('data_of_friends2').innerHTML = "正在读取数据,请稍候...";
+		new Ajax.Updater("data_of_friends2","$dlog.root()/html/friend/ajax/group_photos_of_friends.vm?group_id=$groupid&userid=$!{g_site.owner.id}&r="+Math.random());
+		}
+		function list_songs_of_friends(){
+		$('data_of_friends3').innerHTML = "正在读取数据,请稍候...";
+		new Ajax.Updater("data_of_friends3","$dlog.root()/html/friend/ajax/group_songs_of_friends.vm?group_id=$groupid&userid=$!{g_site.owner.id}&r="+Math.random());
+		}
+		#if($friends.size()>0)
+		list_logs_of_friends();
+		list_photos_of_friends();
+		list_songs_of_friends();
+		#end
+		//写短信
+		function sendMessage(name,uid)	
+		{
+			var title ='发送短信给[' +name+ ']';	
+			if(!$("__sendMessage"))
+			{
+				var url="$dlog.root()/html/friend/ajax/send_message.vm?sid=${g_site.id}&uid="+uid;
+				Window.hasEffectLib = false;
+				var win = new Window("__sendMessage", {className: "alphacube", title:title, url: url,width:600,height:400,maximizable:false,minimizable:false});
+				win.setDestroyOnClose();
+				win.showCenter();
+			}
+		}
+		function closeSendMessage()
+		{
+			Windows.close('__sendMessage');
+		}
+		
+		//转移分组
+		function friendDivert(name,uid,fid,groupid)	
+		{
+		#if($dlog.is_owner($g_site, $g_user))
+			var title ='转移好友[' +name+ ']';	
+			if(!$("__divert"))
+			{
+				var url="$dlog.root()/html/friend/ajax/friend_divert.vm?sid=${g_site.id}&uid="+uid+"&groupid="+groupid+"&fid="+fid;
+				Window.hasEffectLib = false;
+				var win = new Window("__divert", {className: "alphacube", title:title, url: url,width:300,height:200,maximizable:false,minimizable:false});
+				win.setDestroyOnClose();
+				win.showCenter();
+			}
+		#end
+		}
+		function closeFriendDivert()
+		{
+			Windows.close('__divert');			
+		}
+		function hide_div(id)
+		{
+			$("friend_"+id).style.display="none";
+		}		
+		</script>
+		
+

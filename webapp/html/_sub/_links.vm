@@ -1,0 +1,25 @@
+#set($linkid=$dlog.param("linkid",-1))
+<div class="side_module_top"><b>$text.ui("label.links")#if($dlog.is_owner($g_site, $g_user))<span class="top_more"><a href="$dlog.root()/html/sitemgr/links.vm?sid=$g_site_id">+Ôö¼Ó</a></span>#end</b></div>
+<div class="side_module_content">
+	<ul>
+    	##set($links = $link.links($g_site,1, -1))
+        #foreach($lnk in $g_site.links)
+        	#if(${lnk.status}!=1 || ${g_site.owner.id}==$g_user_id)
+				#if($linkid==$lnk.id)
+					#set($linkstyle = ("onlink"))
+				#else
+					#set($linkstyle = ("nolink"))
+				#end
+                #if(${lnk.type}>=2 && ${lnk.type}<=4)
+            		<li class="rsslink $linkstyle"><a href="$dlog.root()/html/rssview.vm?sid=${lnk.siteId}&amp;linkid=$lnk.id">$text.html(${lnk.title})</a></li>
+            	#elseif(${lnk.type}==5)
+            		<li class="dloglink"><a href="$dlog.root()/?sid=${lnk.url}">$text.html(${lnk.title})</a></li>
+            	#elseif(${lnk.type}!=6)
+            		<li class="sitelink"><a href="${lnk.url}" target="_blank">$text.html(${lnk.title})</a></li>
+            	#end
+        	#end
+        #end
+	</ul>
+	<div class="clear"></div>
+</div>
+<div class="side_module_bottom"></div>

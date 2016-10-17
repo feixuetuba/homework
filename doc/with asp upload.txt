@@ -1,0 +1,26 @@
+需要更新的类包括
+
+com/liusoft/dlog4j/action/PhotoAction.java
+com/liusoft/dlog4j/photo/PhotoSaver.java
+com/liusoft/dlog4j/photo/FileSystemSaver.java
+com/liusoft/dlog4j/util/ImageUtils.java
+
+
+使用的URL
+
+/html/photo.do?sid=xxx&album=xxx&path=xxxx&eventSubmit_Import=xxx&表单数据
+
+<anchor>确定
+	<go href="/html/photo.do" method="post">
+        <postfield name="sid" value=""/>
+        <postfield name="album" value="$(album)"/>
+        <postfield name="path" value=""/>
+        <postfield name="eventSubmit_Import" value="ASP"/>
+        <postfield name="name" value=""/>
+        <postfield name="desc" value=""/>
+        <postfield name="keyword" value=""/>
+        <postfield name="status" value="0"/>
+    </go>
+</anchor>
+
+其中path参数指定图片文件的完全路径，例如 C:\Images\1111.jpg

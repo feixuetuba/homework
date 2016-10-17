@@ -1,0 +1,175 @@
+#invoke("../_sub/_global.vm")
+#set($layout = "master.vm")
+#set($left_template = "/dlog_admin/_sub/_left_diary.vm")
+#set($nav_template = "/dlog_admin/_sub/_nav_diary.vm")
+#if($g_user&&($admin_tool.roleIsAdmin($manager)||$admin_tool.roleIsInspector($manager)||$admin_tool.popIsVisit($manager)))
+<script type="text/javascript" src="$dlog.root()/js/calendar.js"></script>
+<script type="text/javascript" src="$dlog.root()/js/calendar_lang/calendar-en.js"></script>
+<script type="text/javascript" src="$dlog.root()/js/calendar-setup.js"></script>
+<link rel="stylesheet" type="text/css" media="all" href="$dlog.root()/css/calendar-blue.css" title="win2k-cold-1" />
+[日记搜索] <br />
+
+
+	
+<form action="$link.setAction('/html/admin/query')" method="POST" target="top" onsubmit="return formSubmit()" id="form">
+	<input type="hidden" name="start_create_time" id="start_create_time" value="$!{msgform.expiredTime}"/>
+	<input type="hidden" name="end_create_time" id="end_create_time" value="$!{msgform.expiredTime}"/>
+	<input type="hidden" name="start_view_time" id="start_view_time" value="$!{msgform.expiredTime}"/>
+	<input type="hidden" name="end_view_time" id="end_view_time" value="$!{msgform.expiredTime}"/>
+	<input type="hidden" name="start_reply_time" id="start_reply_time" value="$!{msgform.expiredTime}"/>
+	<input type="hidden" name="end_reply_time" id="end_reply_time" value="$!{msgform.expiredTime}"/>
+	<input type="hidden" name="cache_key" id="cache_key" value=""/>
+
+	<table >
+		<tr >
+			<td >
+				<input type="checkbox" id="check" name="check" value="0" onclick="check_show_div(this)"/>创建起始时间
+			</td>
+			<td >
+				<div id="d0" style="display:none">
+					<a id="start_time0" href="#">时间设置</a>
+					<span id="show_start0">$!{msgform.expiredTime}</span>   
+					#calendar_setup("start_create_time" "show_start0" "start_time0")
+				</div>
+			</td>
+		</tr>
+		<tr >
+			<td >
+				<input type="checkbox" id="check" name="check" value="1" onclick="check_show_div(this)"/>创建结束时间	
+			</td>
+			<td >
+				<div id="d1" style="display:none">
+					<a id="end_time1" href="#">时间设置</a>
+					<span id="show_end1">$!{msgform.expiredTime}</span>
+					#calendar_setup("end_create_time" "show_end1" "end_time1")
+				</div>
+			</td>
+		</tr>
+		<tr >
+			<td >
+				<input type="checkbox" id="check" name="check" value="2" onclick="check_show_div(this)"/>回复起始时间<br />
+			</td>
+			<td >
+				<div id="d2" style="display:none">
+					<a id="start_time2" href="#">时间设置</a>
+					<span id="show_start2">$!{msgform.expiredTime}</span>   
+					#calendar_setup("start_reply_time" "show_start2" "start_time2")
+				</div>
+			</td>
+		</tr>
+		<tr >
+			<td >
+				<input type="checkbox" id="check" name="check" value="3" onclick="check_show_div(this)"/>回复结束时间<br />
+			</td>
+			<td >
+				<div id="d3" style="display:none">
+					<a id="end_time3" href="#">时间设置</a>
+					<span id="show_end3">$!{msgform.expiredTime}</span>
+					#calendar_setup("end_reply_time" "show_end3" "end_time3")
+				</div>
+			</td>
+		</tr>
+		<tr >
+			<td >
+				<input type="checkbox" id="check" name="check" value="4" onclick="check_show_div(this)"/>阅读起始时间<br />
+			</td>
+			<td >
+				<div id="d4" style="display:none">
+					<a id="start_time4" href="#">时间设置</a>
+					<span id="show_start4">$!{msgform.expiredTime}</span>   
+					#calendar_setup("start_view_time" "show_start4" "start_time4")
+				</div>
+			</td>
+		</tr>
+		<tr >
+			<td >
+				<input type="checkbox" id="check" name="check" value="5" onclick="check_show_div(this)"/>阅读结束时间<br />
+			</td>
+			<td >
+				<div id="d5" style="display:none">
+					<a id="end_time5" href="#">时间设置</a>
+					<span id="show_end5">$!{msgform.expiredTime}</span>
+					#calendar_setup("end_view_time" "show_end5" "end_time5")
+				</div>
+			</td>
+		</tr>
+		<tr >
+			<td >
+				<input type="checkbox" id="check" name="check" value="6" onclick="check_show_div(this)"/>关键字<br />
+			</td>
+			<td >
+				<div id="d6" style="display:none">
+					关键字
+					<input type="text"  id="tags" name="tags" >
+				</div>
+			</td>
+		</tr>
+		<tr >
+			<td >
+				<input type="checkbox" id="check" name="check" value="7" onclick="check_show_div(this)"/>作者<br />
+			</td>
+			<td >
+				<div id="d7" style="display:none">
+					作者
+					<input type="text"  id="author" name="author" >
+				</div>
+			</td>
+		</tr>
+		<tr >
+			<td >
+				<input type="submit" name="eventSubmit_DiaryQuery" value="开始"/>
+			</td>				
+		</tr>
+	</table>
+	</form>
+		
+<script type="text/javascript" >
+function check_show_div(obj)
+{
+	
+		var divObj=document.getElementById("d"+obj.value);
+		if(divObj)
+		{
+		divObj.style.display=obj.checked?"":"none";
+			divObj.disalbed=!obj.checked;
+		}	
+}
+var named=new Array('start_create_time','end_create_time','start_view_time','end_view_time','start_reply_time','end_reply_time','tags','author')
+function formSubmit()
+{
+	var checks=new Array();
+	var form=document.forms[0];
+	for (var i=0;i<form.elements.length;i++)
+	{		
+		if(form[i].checked)
+		checks[checks.length]=form[i];
+	}
+
+	if(checks.length==0)
+	{
+		alert("请选择查询项")
+		return false;
+	
+	}else 
+	{
+		for(var i=0;i<checks.length;i++)
+		{
+			var name=named[checks[i].value];
+			if(document.getElementById(name).value=="")
+			{
+			alert(name)
+				alert("请输入完整信息")
+				return false;
+			}
+			
+		}
+	}
+	return true;
+	
+}
+document.getElementById("cache_key").value=new Date().getTime()
+
+</script>
+#else
+	对不起,您没有权限.
+#end

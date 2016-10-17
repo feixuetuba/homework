@@ -1,0 +1,238 @@
+<ehcache>
+
+	<!-- Sets the path to the directory where cache .data files are created.
+		
+		If the path is a Java System Property it is replaced by
+		its value in the running VM.
+		
+		The following properties are translated:
+		user.home - User's home directory
+		user.dir - User's current working directory
+		java.io.tmpdir - Default temp file path -->
+	<diskStore path="java.io.tmpdir" />
+
+
+	<!--Default Cache configuration. These will applied to caches programmatically created through
+		the CacheManager.
+		
+		The following attributes are required for defaultCache:
+		
+		maxInMemory       - Sets the maximum number of objects that will be created in memory
+		eternal           - Sets whether elements are eternal. If eternal,  timeouts are ignored and the element
+		is never expired.
+		timeToIdleSeconds - Sets the time to idle for an element before it expires. Is only used
+		if the element is not eternal. Idle time is now - last accessed time
+		timeToLiveSeconds - Sets the time to live for an element before it expires. Is only used
+		if the element is not eternal. TTL is now - creation time
+		overflowToDisk    - Sets whether elements can overflow to disk when the in-memory cache
+		has reached the maxInMemory limit.
+		
+	-->
+	<defaultCache maxElementsInMemory="200" eternal="false"
+		timeToIdleSeconds="120" timeToLiveSeconds="120" overflowToDisk="true" />
+
+	<!--Predefined caches.  Add your cache configuration settings here.
+		If you do not have a configuration for your cache a WARNING will be issued when the
+		CacheManager starts
+		
+		The following attributes are required for defaultCache:
+		
+		name              - Sets the name of the cache. This is used to identify the cache. It must be unique.
+		maxInMemory       - Sets the maximum number of objects that will be created in memory
+		eternal           - Sets whether elements are eternal. If eternal,  timeouts are ignored and the element
+		is never expired.
+		timeToIdleSeconds - Sets the time to idle for an element before it expires. Is only used
+		if the element is not eternal. Idle time is now - last accessed time
+		timeToLiveSeconds - Sets the time to live for an element before it expires. Is only used
+		if the element is not eternal. TTL is now - creation time
+		overflowToDisk    - Sets whether elements can overflow to disk when the in-memory cache
+		has reached the maxInMemory limit.
+		
+	-->
+
+	<cache name="org.hibernate.cache.StandardQueryCache"
+		maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="120"
+		timeToLiveSeconds="120" overflowToDisk="true" />
+
+	<cache name="org.hibernate.cache.UpdateTimestampsCache"
+		maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="120"
+		timeToLiveSeconds="120" overflowToDisk="true" />
+
+	<!-- bean cache configuration -->
+
+	<cache name="com.liusoft.dlog4j.beans.TypeBean"
+		maxElementsInMemory="100" eternal="true" timeToIdleSeconds="0"
+		timeToLiveSeconds="0" overflowToDisk="false" />
+
+	<cache name="com.liusoft.dlog4j.beans.ConfigBean"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="true" />
+
+	<cache name="com.liusoft.dlog4j.beans.SiteBean"
+		maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="14400"
+		timeToLiveSeconds="28800" overflowToDisk="true" />
+	<cache name="com.liusoft.dlog4j.beans.SiteBean.links"
+		maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="14400"
+		timeToLiveSeconds="28800" overflowToDisk="true" />
+	<cache name="com.liusoft.dlog4j.beans.SiteBean.catalogs"
+		maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="14400"
+		timeToLiveSeconds="28800" overflowToDisk="true" />
+	<cache name="query.albums_of_site" maxElementsInMemory="1000"
+		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="3600"
+		overflowToDisk="true" />
+	<cache name="com.liusoft.dlog4j.beans.SiteBean.songs"
+		maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="14400"
+		timeToLiveSeconds="28800" overflowToDisk="true" />
+
+	<cache name="com.liusoft.dlog4j.beans.UserBean"
+		maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="true" />
+
+	<cache name="com.liusoft.dlog4j.beans.LinkBean"
+		maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="true" />
+
+	<cache name="com.liusoft.dlog4j.beans.CatalogBean"
+		maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="true" />
+
+	<cache name="com.liusoft.dlog4j.beans.DiaryBean"
+		maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="360"
+		timeToLiveSeconds="720" overflowToDisk="true" />
+
+	<cache name="com.liusoft.dlog4j.beans.DiaryOutlineBean"
+		maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="360"
+		timeToLiveSeconds="720" overflowToDisk="true" />
+
+	<cache name="com.liusoft.dlog4j.beans.ForumBean"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="true" />
+
+	<cache name="com.liusoft.dlog4j.beans.TopicBean"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="360"
+		timeToLiveSeconds="720" overflowToDisk="true" />
+
+	<cache name="com.liusoft.dlog4j.beans.TopicOutlineBean"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="360"
+		timeToLiveSeconds="720" overflowToDisk="true" />
+
+	<cache name="com.liusoft.dlog4j.beans.AlbumBean"
+		maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="true" />
+	<cache name="com.liusoft.dlog4j.beans.AlbumBean.childs"
+		maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="true" />
+
+	<cache name="com.liusoft.dlog4j.beans.PhotoBean"
+		maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="360"
+		timeToLiveSeconds="720" overflowToDisk="true" />
+
+	<cache name="com.liusoft.dlog4j.beans.PhotoOutlineBean"
+		maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="360"
+		timeToLiveSeconds="720" overflowToDisk="true" />
+
+	<cache name="com.liusoft.dlog4j.beans.MusicBoxBean"
+		maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="true" />
+	<cache name="com.liusoft.dlog4j.beans.MusicBoxBean.songs"
+		maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="7200" overflowToDisk="true" />
+	<cache name="com.liusoft.dlog4j.beans.MusicBean"
+		maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="14400"
+		timeToLiveSeconds="28800" overflowToDisk="true" />
+
+	<!-- application cache configuration -->
+
+	<cache name="DLOG4J_layouts" maxElementsInMemory="2" eternal="true"
+		timeToIdleSeconds="1800" timeToLiveSeconds="1800"
+		overflowToDisk="false" />
+
+	<!-- DLOG_HomeServlet (never expire) -->
+	<cache name="DLOG4J_sites" maxElementsInMemory="1000" eternal="true"
+		timeToIdleSeconds="0" timeToLiveSeconds="0" overflowToDisk="true" />
+
+	<!-- DLOG_VirtualHostFilter -->
+	<cache name="DLOG4J_vhosts" maxElementsInMemory="1000"
+		eternal="false" timeToIdleSeconds="7200" timeToLiveSeconds="86400"
+		overflowToDisk="true" />
+
+	<!-- channels cache (5 minutes to live) -->
+	<cache name="DLOG4J_channels" maxElementsInMemory="100"
+		eternal="false" timeToIdleSeconds="43200" timeToLiveSeconds="43200"
+		overflowToDisk="true" />
+
+	<!-- tags -->
+	<cache name="DLOG4J_tags" maxElementsInMemory="500" eternal="false"
+		timeToIdleSeconds="1800" timeToLiveSeconds="3600"
+		overflowToDisk="true" />
+
+	<cache name="DLOG4J_hot_tags" maxElementsInMemory="100"
+		eternal="false" timeToIdleSeconds="1800" timeToLiveSeconds="3600"
+		overflowToDisk="true" />
+
+	<!-- DLOG_Stat_VelocityTool -->
+	<cache name="vstat" maxElementsInMemory="1000" eternal="false"
+		timeToIdleSeconds="120" timeToLiveSeconds="120" overflowToDisk="true" />
+
+	<!-- DLOG_Home_VelocityTool -->
+	<cache name="dlog_home_info" maxElementsInMemory="100"
+		eternal="false" timeToIdleSeconds="600" timeToLiveSeconds="600"
+		overflowToDisk="true" />
+	<cache name="query.new_diarys" maxElementsInMemory="100"
+		eternal="false" timeToIdleSeconds="600" timeToLiveSeconds="600"
+		overflowToDisk="true" />
+	<cache name="query.new_photos" maxElementsInMemory="100"
+		eternal="false" timeToIdleSeconds="600" timeToLiveSeconds="600"
+		overflowToDisk="true" />
+	<cache name="query.new_music_of_site" maxElementsInMemory="1000"
+		eternal="false" timeToIdleSeconds="600" timeToLiveSeconds="600"
+		overflowToDisk="true" />
+	<cache name="query.new_users" maxElementsInMemory="1000"
+		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="3600"
+		overflowToDisk="true" />
+	<cache name="query.rec_diarys" maxElementsInMemory="10"
+		eternal="false" timeToIdleSeconds="600" timeToLiveSeconds="600"
+		overflowToDisk="true" />
+	<cache name="query.hot_diarys" maxElementsInMemory="1000"
+		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="7200"
+		overflowToDisk="true" />
+	<cache name="query.hot_photos" maxElementsInMemory="10"
+		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="7200"
+		overflowToDisk="true" />
+	<cache name="query.hot_topics" maxElementsInMemory="10"
+		eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="7200"
+		overflowToDisk="true" />
+	<cache name="query.newest.sites" maxElementsInMemory="100"
+		eternal="false" timeToIdleSeconds="600" timeToLiveSeconds="600"
+		overflowToDisk="true" />
+	<cache name="query.diary_calendar" maxElementsInMemory="1000"
+		eternal="false" timeToIdleSeconds="86400" timeToLiveSeconds="86400"
+		overflowToDisk="true" />
+	<cache name="query.photo_calendar" maxElementsInMemory="1000"
+		eternal="false" timeToIdleSeconds="86400" timeToLiveSeconds="86400"
+		overflowToDisk="true" />
+	<cache name="query.new_msg_count" maxElementsInMemory="1000"
+		eternal="false" timeToIdleSeconds="300" timeToLiveSeconds="300"
+		overflowToDisk="true" />
+	<cache name="query.data_of_friends" maxElementsInMemory="1000"
+		eternal="false" timeToIdleSeconds="1800" timeToLiveSeconds="7200"
+		overflowToDisk="true" />
+	<cache name="query.new_replies_of_site" maxElementsInMemory="200"
+		eternal="false" timeToIdleSeconds="600" timeToLiveSeconds="600"
+		overflowToDisk="true" />
+
+	<!-- ========DLOG 3.5============ -->
+
+	<cache name="dlog_admin_info" maxElementsInMemory="200"
+		eternal="false" timeToIdleSeconds="60" timeToLiveSeconds="60"
+		overflowToDisk="true" />
+
+	<cache name="query.diary_search" maxElementsInMemory="200"
+		eternal="false" timeToIdleSeconds="600" timeToLiveSeconds="600"
+		overflowToDisk="true" />
+
+	<cache name="dlog_visitor" maxElementsInMemory="1800"
+		eternal="false" timeToIdleSeconds="1800" timeToLiveSeconds="1800"
+		overflowToDisk="true" />
+
+</ehcache>

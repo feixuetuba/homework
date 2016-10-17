@@ -1,0 +1,168 @@
+#invoke("/dlog_admin/_sub/_global.vm")
+#set($id=$dlog.param("id",-1))
+
+##权限 删除 修改
+#set($manage1=($admin_tool.popIsAll($manager)||$admin_tool.popIsOperate($manager)||$admin_tool.popIsSuper($manager)))
+##角色
+#set($pop1=($admin_tool.popIsSuper($manager)||$admin_tool.roleIsStyle($manager)))
+##用户是否登录
+#if($g_user&&$pop1&&$manage1)
+	#set($bean=$admin_tool.getStyleById($id))
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head> 
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	#select_css()
+</head>
+<body >
+
+<form action=""  method="POST" name="form1" id="form1" onsubmit="return checkValue()">
+	<input type="hidden" name="eventSubmit_EditStyle" id="submit" value="submit">
+	<input type="hidden" name="fromPage" id="fromPage" value="$dlog.root()/dlog_admin/style/ajax/edit_style.vm?id=$id">
+	<input type="hidden" name="id" id="" value="$id">
+<table>
+#if($bean)
+	<tr >
+	<td >
+		风格名称:
+	</td>
+	<td >
+		<input type="text" value="$bean.childName" name="childName" id="childName" />
+	</td>
+</tr>
+	<tr >
+	<td >
+		路径:
+	</td>
+	<td >
+		<input type="text" value="$bean.Name" name="name" id="name" />
+	</td>
+</tr>
+<tr >
+	<td >
+		css:
+	</td>
+	<td >
+		<input type="text" value="$bean.css" name="css" id="css" onkeyup="cssChage(this)"  />
+	</td>
+</tr>
+<tr >
+	<td 
+		>显示状态
+	</td>
+	<td >
+		#if($bean.status ==  -1)
+			<input type="radio" name="status"  value="0" checked="checked" />异常状态		
+		#else
+		<input type="radio" name="status"  value="0" #if($bean.status ==  0) checked="checked" #end/>开启
+		<input type="radio" name="status"  value="1" #if($bean.status ==  1) checked="checked" #end/>关闭
+		#end
+		
+		
+	</td>
+</tr>
+
+<tr >
+	<td >
+		显示类型
+	</td>
+	<td >
+		<input type="radio" name="type"  value="0" #if($bean.type == 0 ) checked="checked" #end />所有用户
+		<input type="radio" name="type"  value="1" #if($bean.type == 1 ) checked="checked" #end  />VIP用户
+	</td>
+</tr>
+<tr >
+	<td >
+		预览图[默认]:
+	</td>
+	<td >
+		
+		<span id="l_image" >$bean.preview_l_image</span>
+		
+	</td>
+</tr>
+<tr >
+	<td >
+		略所图[默认]:
+	</td>
+	<td >
+		
+	<span id="s_image">$bean.preview_s_image</span>
+		
+		
+	</td>
+</tr>
+<tr >
+	<td >
+		注释
+	</td>
+	<td >
+		<textarea  name="explain" id="explain" >$bean.explain</textarea>
+	</td>
+</tr>
+<tr >
+	<td >
+		<input type="button"  name="" id="" value="提交" onclick="suForm()">
+	</td>
+	<td >
+	</td>
+</tr>
+</table>
+</form>
+	#end
+
+	
+<link rel="stylesheet" href="$dlog.root()/css/default_002.css" type="text/css" media="all"/>
+<link rel="stylesheet" href="$dlog.root()/css/alphacube.css" type="text/css" media="all"/>
+<script type="text/javascript" src="$dlog.root()/js/prototype_160.js"></script>
+<script type="text/javascript" src="$dlog.root()/js/window.js"></script>
+<script>
+function EventSubmit(id,event)
+{
+	document.getElementById('id').value=id;
+	document.getElementById('submit').name=event;
+	document.getElementById('form1').submit;
+}
+
+function checkValue()
+{
+	if(($('name').value=="")||($('css').value==""))
+	{
+		alert('请输入完整信息')
+		return false;
+	}
+}
+function cssChage(obj)
+{
+	var name=obj.value;
+	var l_image=$('l_image')
+	var s_image=$('s_image')
+	if(name.endsWith(".css"))	
+		name=name.substring(0, (name.length-4))
+	l_image.innerHTML=name+".gif"
+	s_image.innerHTML=name+"_s.gif"
+
+}
+
+function suForm()
+{
+	//alert($('form1').serialize())
+	new Ajax.Request('$link.setAction('/html/admin/query')',{
+	method: 'post',parameters: $('form1').serialize(),
+	onComplete: ajax_personal_response});
+
+}
+function ajax_personal_response(originalRequest) {
+		alert(originalRequest.responseText);
+		parent.closeEditStyle();
+}
+	
+
+
+</script>
+</body>
+
+</html>
+#else
+	您无权限
+#end

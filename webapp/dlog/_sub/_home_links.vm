@@ -1,0 +1,21 @@
+#set($logs = $DLOG4J_tool.list_recommend_articles(1, 18))
+<div class="bottom_module">
+	<div class="bottom_module_top">
+		”—«È¡¥Ω”:&nbsp;<span>-&nbsp;22758932(QQ)</span></span>
+	</div>
+	<div class="bottom_module_content">
+		<ul class="text_links">
+    		#set($links = $DLOG4J_tool.list_links_of_site(1))
+    		#foreach($lnk in $links)
+    			#if(${lnk.type}>=2 && ${lnk.type}<=4)
+                    <li><a href="$dlog.root()/html/rssview.vm?sid=${lnk.siteId}&amp;linkid=$lnk.id">$text.html(${lnk.title})</a></li>
+            	#elseif(${lnk.type}==5)
+            		<li><a href="$dlog.root()/?sid=${lnk.url}">$text.html(${lnk.title})</a></li>
+    			#elseif(${lnk.type}!=6)
+            		<li><a href="$lnk.url" target="_blank">$text.html(${lnk.title})</a></li>
+    			#end
+    		#end
+		</ul>
+		<div class="clear"></div>
+	</div>
+</div>

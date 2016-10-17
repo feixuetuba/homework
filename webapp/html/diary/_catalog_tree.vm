@@ -1,0 +1,38 @@
+#set($catalogs = $DIARY_tool.catalogs($g_site, $g_user, false))
+#set($catalog_id = $dlog.param("cat_id", -1))
+#set($user_can_blog = $DIARY_tool.user_can_blog($g_site, $g_user))
+<div class="side_module_top"><b>日记分类</b></div>
+<div class="side_module_content">
+	<ul>
+    	#if($user_can_blog)
+    		<li class="diary_new"><a href="$dlog.root()/html/diary/addlog.vm?sid=$g_site_id&amp;cat_id=$catalog_id">$text.ui("label.diary.new")</a></li>
+    	#end
+    	#if($dlog.is_owner($g_site,$g_user))
+            <li class="diary_setting"><a href="$dlog.root()/html/sitemgr/catalogs.vm?sid=$g_site_id">$text.ui("label.diary.setting")</a></li>		    	
+    	#end
+    	#if($g_user && (${g_user.ownSiteId} == $g_site_id))
+        #set($g_trash_count = $DIARY_tool.trash_count($g_site, $g_user))
+        #set($g_draft_count = $DIARY_tool.draft_count($g_site, $g_user))
+    	#if($g_draft_count >= 0 && ($g_draft_count > 0 || $user_can_blog))
+    		<li class="diary_draft"><a href="$dlog.root()/html/diary/drafts.vm?sid=$g_site_id">$text.ui("label.diary.draft")</a><sapn class="diary_count">($g_draft_count)</sapn></li>
+    	#end
+    	#if($g_trash_count >= 0)
+			<li class="diary_trash"><a href="$dlog.root()/html/diary/trash.vm?sid=$g_site_id">$text.ui("label.diary.trash")</a><sapn class="diary_count">($g_trash_count)</sapn></li>
+    	#end
+    	#end
+    	#foreach($tmp_cat in $catalogs)
+            #set($url = "$dlog.root()/html/diary/?sid=$g_site_id&amp;cat_id=${tmp_cat.id}")
+            #set($open = 0)
+            #if($tmp_cat.id == $catalog_id) 
+                #set($open = 1) 
+                ##下面的赋值语句为diary.vm所用        
+                #set($catalog_name = "<b>${tmp_cat.name}</b><sapn class=diary_count>(${tmp_cat.articleCount})</sapn>")
+            #else
+                #set($catalog_name = "${tmp_cat.name}<sapn class=diary_count>(${tmp_cat.articleCount})</sapn>")
+    		#end
+    		<li class="catalog_name"><a href="$url">${catalog_name}</a></li>
+    	#end
+	</ul>
+	<div class="clear"></div>
+</div>
+<div class="side_module_bottom"></div>

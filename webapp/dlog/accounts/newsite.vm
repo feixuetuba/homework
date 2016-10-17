@@ -1,0 +1,38 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  new site wizard
+##
+###############################################################################
+#invoke("_global.vm")
+#set($layout = "accounts.vm")
+#set($page_title = "开通个人博客")
+
+#set($g_disable_seachable=1)
+<div class="top"><p><b>注册步骤：</b>&nbsp;&nbsp;1.填写用户基本信息&nbsp;&nbsp;&gt;&nbsp;&nbsp;<span class="post_now">2.填写个人空间信息</span>&nbsp;&nbsp;&gt;&nbsp;&nbsp;3.注册成功</p></div>
+<div class="content">
+    #if($g_user)
+        #invoke("_reg_site.vm")
+    #else
+		#set($fromPage = "/dlog/accounts/newsite.vm?sid=$g_site_id")
+		<div class="form_title">注册个人网记只需要两步:</div>
+		<ul class="form_label">
+			<li>如果您已经是网记的注册用户，请使用已注册用户名称及密码<a href="login.vm?sid=$g_site_id&amp;fromPage=$link.encodeURL($fromPage)">&lt;&nbsp;登录&nbsp;&gt;</a>网记,然后填写开通个人网记的信息！</li>
+			<li>如果您不是网记的注册用户，请点击<a href="reguser.vm?sid=$g_site_id&amp;fromPage=$link.encodeURL($fromPage)">&lt;&nbsp;这里&nbsp;&gt;</a>，进行基本用户信息登记！</li>
+			#if(!$g_site)<li><a href="$dlog.root()/">返回网记首页</a></li>#end
+		</ul>
+    #end
+</div>
+<div class="bottom"></div>

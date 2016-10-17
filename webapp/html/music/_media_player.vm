@@ -1,0 +1,15 @@
+#set($url = $dlog.param("url",null))
+<embed id="mplayer" src="$!{url}" align="baseline" border="0" width="460" height="50"
+    type="application/x-mplayer2"
+    pluginspage="http://www.microsoft.com/isapi/redir.dll?prd=windows&amp;sbp=mediaplayer&amp;ar=media&amp;sba=plugin&amp;"
+    name="MediaPlayer" showcontrols="1" showpositioncontrols="1"
+    showaudiocontrols="1" showtracker="0" showdisplay="0"
+    showstatusbar="1" autosize="0" playCount="100"
+    showgotobar="0" showcaptioning="0" autostart="1" autorewind="0"
+    animationatstart="0" transparentatstart="0" allowscan="1"
+    enablecontextmenu="0" clicktoplay="0" invokeurls="1"
+    defaultframe="datawindow">
+</embed><br />
+如果您无法播放歌曲,请先确定是否已经安装<a href="http://download.microsoft.com/download/9/4/0/94072943-9188-4a60-b31f-3031f18404e4/mpsetup.exe" target="_blank"><b>Windows media player</b></a>软件<br/>
+或者歌曲类型是否被<b>Microsoft Media Player</b>所支持。<br/>
+<font color=red><b>或者歌曲链接是否依然有效。</b></font>

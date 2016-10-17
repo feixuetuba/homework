@@ -1,0 +1,221 @@
+/********************************************************
+ ** DLOG4J 3.0 Configurations
+ ** Author: Winter Lau (javayou@gmail.com)
+ ** Version: 0.1
+ ** LastModified: 2007-1-4
+ ********************************************************/
+ 
+【目录】
+			
+	1. 数据库配置 
+	2. 页面信息配置
+	3. 缓存配置
+	4. 搜索引擎配置
+	5. 用户上传文件路径的配置
+	6. 提醒信息模板文件
+
+【数据库配置】
+
+	DLOG4J采用dbcp连接池，数据库相关的配置文件路径为/WEB-INF/classes/hibernate.cfg.xml(src/hibernate.cfg.xml)
+	dbcp是通过hibernate.cfg.xml中下面的配置进行加载的
+	(hibernate.cfg.xml是由类com.liusoft.dlog4j.db.HibernateUtils进行加载的)
+	<property name="connection.provider_class">com.liusoft.dlog4j.db.DataSourceConnectionProvider</property>
+	<property name="dscp.datasource">org.apache.commons.dbcp.BasicDataSource</property>
+	
+	该连接池的配置都必须以dscp.开头，其中有四个配置项必须指定，如下：
+	<property name="dscp.driverClassName">com.mysql.jdbc.Driver</property>
+	<property name="dscp.url">jdbc:mysql://localhost:3306/dlog</property>				
+	<property name="dscp.username">root</property>
+	<property name="dscp.password"></property>
+	
+	其中
+	
+	dscp.driverClassName 为数据库的JDBC驱动类名
+	dscp.url 为连接数据库的URL，详情请参考JDBC规范以及数据库驱动文档
+	（DLOG4J提供的hibernate.cfg.xml已经为市面上常用的数据库填写好url的格式）
+	dscp.username 连接数据库的用户名
+	dscp.password 连接数据库的密码
+	
+	另外对于DLOG4J所使用的持久层组件——hibernate而言，还需要配置数据库方言也就是dialect，如下为使用mysql数据库。
+	<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+	
+	dbcp数据库连接池选项
+	
+	dscp.initialSize: 连接池的初始化连接数.
+	dscp.maxActive: 连接池中最大的连接数（如果值为0则无限制，不建议用0）.
+	dscp.maxIdle: The maximum number of active connections that can remain idle in the pool, without extra ones being released, or zero for no limit.
+	dscp.maxWait: The maximum number of milliseconds that the pool will wait (when there are no available connections) for a connection to be returned before throwing an exception, or -1 to wait indefinitely.
+	dscp.defaultAutoCommit: The default auto-commit state of connections created by this pool. (请不要修改该配置值)
+	dscp.poolPreparedStatements: 是否启用JDBC语句池.
+	dscp.maxOpenPreparedStatements: The maximum number of open statements that can be allocated from the statement pool at the same time, or zero for no limit.
+	dscp.defaultTransactionIsolation: The default TransactionIsolation state of connections created by this pool. (Refer to your database manual)
+	
+	更多的定制参数请参考dbcp的用户手册.
+	
+	【如何使用应用服务器所提供的数据源】
+	
+	删除所有dscp.*的配置，删除connection.provider_class配置，增加配置
+	<property name="connection.datasource">java:/comp/env/jdbc/dlog</property>
+	其中java:/comp/env/jdbc/dlog为数据源在应用服务器中的JNDI名，详见应用服务器的手册。
+
+【页面信息配置】
+
+	打开文件 /WEB-INF/layout/_global.vm
+	其中：
+	$page_title	默认标题
+	$service_email 联系我们所指定的电子邮件地址
+	$site_name 每个博客中返回首页的链接
+	$wap_home_url WAP入口地址，例如 http://wap.dlog.cn
+	$web_home_url WEB入口地址，例如 http://www.dlog.cn
+
+【缓存配置】
+	
+	DLOG4J的对象采用ehcache缓存，所有缓存相关的配置文件为/WEB-INF/classes/ehcache.xml(src/ehcache.xml)
+	对象缓存管理类为com.liusoft.dlog4j.DLOG4J_CacheManager
+	
+	另外DLOG4J中的博客文章内容也是缓存的，博客文章的内容加载一次后就会保存在系统临时目录下，文章内容的缓存是由类com.liusoft.dlog4j.TextCacheManager类进行统一管理
+	
+
+【搜索引擎配置】
+	
+	DLOG4J采用lucene 2.0做为全文搜索引擎，该引擎的配置在 /WEB-INF/struts-config.xml 中。
+	引擎是通过Struts的插件进行加载的，对应的类是：com.liusoft.dlog4j.plugin.SearchEnginePlugIn
+	目前支持全文搜索的内容包括：日记、日记评论、照片、照片评论、讨论贴、讨论贴的评论、音乐等。
+	
+	索引存放的路径是通过
+	<set-property property="basePath" value="/WEB-INF/lucene_idx"/> 进行配置的
+	如果basePath路径值是以斜杠(/)开头的，则该路径是相对于web路径下的一个目录，如果需要将索引保存在web外的系统目录
+	则需要在路径前加file://，例如
+	<set-property property="basePath" value="file:///WEB-INF/lucene_idx"/>
+	或者
+	<set-property property="basePath" value="file://D:/WEB-INF/lucene_idx"/>
+	
+	以下参数决定是否启用搜索引擎（在多DLOG4J实例下只启用一个搜索引擎，其他的实例关闭引擎）
+	<set-property property="enabled" value="true|false"/>
+	
+	搜索引擎工作间隔配置：
+	<set-property property="activeInterval" value="120"/> <!-- 每隔多长时间检查是否需要建立索引，单位：分钟 -->
+	<set-property property="timeSlice" value="1"/> <!-- 内部检查间隔，建议不要修改 -->
+
+【用户上传文件路径的配置】
+	
+	写日记上传的图片存放路径的配置：
+	
+	/WEB-INF/web.xml: 
+	
+	<servlet>
+	    <servlet-name>FCKEditor_UploadServlet</servlet-name>
+	    <servlet-class>com.liusoft.dlog4j.upload.SecurityFCKUploadServlet</servlet-class>
+		<!-- max upload file size in kilobytes -->
+		<init-param>
+			<param-name>max_upload_size</param-name>
+			<param-value>2048</param-value>
+		</init-param>
+		<!-- use disk file upload handler -->
+		<init-param>
+			<param-name>file_saved_class</param-name>
+			<param-value>com.liusoft.dlog4j.upload.DiskUploadFileHandler</param-value>
+		</init-param>
+		<!-- 文件存放的路径，如果是web外的系统目录则必须在路径前加 file:// -->
+		<init-param>
+			<param-name>file_saved_path</param-name>
+			<param-value>/uploads/diary</param-value>
+		</init-param>
+		<!-- 图片存放路径对应的uri -->
+		<init-param>
+			<param-name>file_base_uri</param-name>
+			<param-value>/uploads/diary</param-value>
+		</init-param>
+	    <load-on-startup>5</load-on-startup>
+	</servlet>
+	
+	
+	写日记上传附件的存放路径的配置
+	<servlet>
+		<servlet-name>Annex_UploadManagerServlet</servlet-name>
+		<servlet-class>
+			com.liusoft.dlog4j.upload.Annex_UploadManager
+		</servlet-class>
+		<init-param>
+			<param-name>max_annex_size</param-name>
+			<param-value>5120</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>file_save_class</param-name>
+			<param-value>
+				com.liusoft.dlog4j.upload.DiskUploadFileHandler
+			</param-value>
+		</init-param>
+		<!-- 文件存放的路径，如果是web外的系统目录则必须在路径前加 file:// -->
+		<init-param>
+			<param-name>file_saved_path</param-name>
+			<param-value>/uploads/annex</param-value>
+		</init-param>
+		<!-- 附件存放路径对应的uri -->
+		<init-param>
+			<param-name>file_base_url</param-name>
+			<param-value>/uploads/annex</param-value>
+		</init-param>
+		<!-- 上传附件时过滤的文件格式 -->
+		<init-param>
+			<param-name>validate_file_extend_name</param-name>
+			<param-value>7z,aiff,asf,avi,bmp,csv,doc,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xml,zip</param-value>
+		</init-param>
+		<load-on-startup>5</load-on-startup>
+	</servlet>
+	
+	用户上传的相册照片已经个人头像照片的存放路径配置：
+	
+	<servlet>
+	    <servlet-name>DLOG_ActionServlet</servlet-name>
+	    <servlet-class>com.liusoft.dlog4j.servlet.DLOG_ActionServlet</servlet-class>
+	    ......
+		<init-param>
+			<param-name>photo_saver_class</param-name>
+			<param-value>com.liusoft.dlog4j.photo.FileSystemSaver</param-value>
+		</init-param>
+		<!-- 相册照片文件存放的路径，如果是web外的系统目录则必须在路径前加 file:// -->
+	    <init-param>
+	    	<param-name>photo_base_path</param-name>
+	    	<param-value>/uploads/photo</param-value>
+	    </init-param>
+	    <!-- 相册照片存放路径对应的uri -->
+	    <init-param>
+	    	<param-name>photo_base_uri</param-name>
+	    	<param-value>/uploads/photo</param-value>
+	    </init-param>
+	    <!-- 用户头像文件存放的路径，如果是web外的系统目录则必须在路径前加 file:// -->
+	    <init-param>
+	    	<param-name>portrait_base_path</param-name>
+	    	<param-value>/uploads/portrait</param-value>
+	    </init-param>
+	    <!-- 用户头像存放路径对应的uri -->
+	    <init-param>
+	    	<param-name>portrait_base_uri</param-name>
+	    	<param-value>/uploads/portrait</param-value>
+	    </init-param>
+	    ....
+	</servlet>
+	
+	访问着记录数
+	<servlet>
+		<servlet-name>DLOG_ActionServlet</servlet-name>
+		<servlet-class>
+			com.liusoft.dlog4j.servlet.DLOG_ActionServlet
+		</servlet-class>
+		<!--站点访问这的最大记录数 -->
+		<init-param>
+			<param-name>max_visitor_size</param-name>
+			<param-value>15</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	
+【提醒信息模板文件】
+
+	/WEB-INF/conf/password_tip.html : 忘记密码的提示邮件模板
+	/WEB-INF/conf/reply_notify.html : 新评论邮件提醒模板
+	/WEB-INF/conf/photo_share.html  : 照片推荐邮件模板
+	/WEB-INF/conf/send_affiche.vm	: 公告模板
+	/WEB-INF/conf/system_friend.vm	: 好友添加消息提示模板

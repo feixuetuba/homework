@@ -1,0 +1,13 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+#if(!$g_disable_seachable)
+<meta name="Robots" content="index,follow"/>
+#else
+<meta name="Robots" content="noindex,nofollow"/>
+#end
+<title>$!{g_site.siteTitle}#if($dlog.not_empty($page_title)) | ${page_title}#end</title>
+<script type="text/javascript" src="$dlog.root()/js/common.js"></script>
+<script type="text/javascript" src="$dlog.root()/js/prototype.js"></script>
+<script type="text/javascript" src="$dlog.root()/fckeditor/fckeditor.js"></script>
+<link rel="SHORTCUT ICON" href="$dlog.root()/favicon.ico"/>
+<link rel="alternate" type="application/rss+xml" title="RSS" href="$link.getContextURL()/rss.vm?sid=$g_site_id" />
+#select_css()

@@ -1,0 +1,9 @@
+#invoke("_sub/_global.vm")
+#select_layout("p_main.vm")
+
+
+#set($page_title="·Ö×éºÃÓÑ")
+
+#set($group_name = $dlog.param("group_name"))
+
+$group_name

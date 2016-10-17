@@ -1,0 +1,110 @@
+#set($uid=$dlog.param("uid",-1))
+#set($status=$dlog.param("status",-1))
+#set($p_page = $dlog.param("p", 1))##当前页
+#set($pre_page = $p_page - 1)##上一页
+#set($next_page = $p_page + 1)##下一页
+#set($msg_count = $USER_tool.msg_system_count($uid))##消息总数
+#set($MSG_COUNT_PER_PAGE = 10)##每页显示
+#set($page_count = $dlog.page_count($msg_count, $MSG_COUNT_PER_PAGE))##总页数(计算)
+#set($mlist=$USER_tool.read_system($uid,$p_page, $MSG_COUNT_PER_PAGE))
+#if($mlist.size()>0)		
+	<div>
+			第<b>${p_page}</b>页,共<b>${page_count}</b>页,每页<b>${MSG_COUNT_PER_PAGE}</b>条
+			#if($page_count > 1)|
+        	#if($p_page>1)
+        		<a href="javascript: go_page(1,$status,$uid);">首页</a>
+				<a href="javascript: go_page($pre_page,$status,$uid);">上页</a>
+        	#end
+        	#if($p_page < $page_count)
+        		<a href="javascript: go_page($next_page,$status,$uid);">下页</a>
+				<a href="javascript: go_page($page_count,$status,$uid);">尾页</a>
+        	#end
+			#end
+			</div>
+<form  id="deleteAll">
+    <input type="hidden" name="__ClientId" value="$dlog.gen_client_id()"/>
+	<input type="hidden" name="id" value="$uid"/>
+	<input type="hidden" name="eventSubmit_DeleteAllSystemMsg" value="HTML"/>
+	
+	<table cellspacing="1" cellpadding="3" border="0" width="100%">
+		<tr class="table_head">
+			<td style="border-bottom:#cccccc 1px dashed ;width:1" >
+				&nbsp;&nbsp;
+					</td> 
+					<td style="border-bottom:#cccccc 1px dashed " >	
+						标题
+    				</td>
+					<td style="border-bottom:#cccccc 1px dashed " >						
+						时间
+					</td>
+    				<td style="border-bottom:#cccccc 1px dashed " >
+						&nbsp;&nbsp;
+    				</td>
+    			</tr>
+				 #foreach($msg in $mlist)
+    			<tr>	
+					<td style="border-bottom:#cccccc 1px dashed ;width:1" >
+						<input type="checkbox" name="mid" value="${msg.msgid},${msg.msgid}"/>
+						<input type="hidden" id="look${velocityCount}" value=""/>
+					</td>
+    				<td style="border-bottom:#cccccc 1px dashed " >						
+						${velocityCount}.&nbsp;&nbsp;<a href="javascript:showMessageCount($velocityCount,$status,$msg.msgid,$msg.msgid)">
+							$msg.title&nbsp#if($msg.status==0)[未读]#elseif($msg.status==1)[已读]#end</a>
+    				</td>
+					<td style="border-bottom:#cccccc 1px dashed " >
+						$date.format("yyyy/MM/dd EEEEE HH:mm",${msg.sendtime}, ${request.locale})
+					</td>
+    				<td style="border-bottom:#cccccc 1px dashed " >
+						<a href="javascript:showMessageCount($velocityCount,$status,$msg.msgid,$msg.msgid)">查看内容</a>
+    				</td>
+    			</tr>
+    			<tr>
+    				<td style="border-bottom:#cccccc 1px dashed;display:none "   colspan="5" id="messageContent$velocityCount">	
+			
+    				</td>
+    			</tr>
+				<tr>			    		
+    				<td colspan="5" style="display:none" id="operate$velocityCount">										
+							<a href="javascript:deleteMsg($msg.msgid,$uid,$msg.msgid,'DELETE_SYSTEM')"
+								onclick="return confirm('真的要删除该短消息嘛？');">
+								$html.img("/html/icon/default/icon_delete.gif")删除</a>   
+									<hr size="1" noshade color="#CCCCCC">
+					</td>
+    			</tr>
+				#end
+
+
+		<tr >
+			<td style="border-bottom:#cccccc 1px dashed">
+        <input type="checkbox" name="bt_all" value="" onclick="select_all('mid',this.checked)"/>
+			</td>
+			<td colspan="4" style="border-bottom:#cccccc 1px dashed">
+		全选		
+        <input type="button" onclick="deleteAll($status,$uid)" value="删除选中"/>
+			</td>
+		</tr>
+		</table>
+		</form>
+		</div>
+#end
+
+#if($mlist.size()<=0)
+<div class="msgbox">
+没有短消息。  
+</div>
+#end
+#if($mlist.size()>0)	
+			<div>
+			第<b>${p_page}</b>页,共<b>${page_count}</b>页,每页<b>${MSG_COUNT_PER_PAGE}</b>条
+			#if($page_count > 1)|
+        	#if($p_page>1)
+        		<a href="javascript: go_page(1,$status,$uid);">首页</a>
+				<a href="javascript: go_page($pre_page,$status,$uid);">上页</a>
+        	#end
+        	#if($p_page < $page_count)
+        		<a href="javascript: go_page($next_page,$status,$uid);">下页</a>
+				<a href="javascript: go_page($page_count,$status,$uid);">尾页</a>
+        	#end
+			#end
+			</div>
+	#end

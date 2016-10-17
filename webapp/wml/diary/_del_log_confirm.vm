@@ -1,0 +1,5 @@
+<p>
+	您确定要删除这篇日记吗？<br/>
+	<a href="#top">返回</a>
+	<a href="$link.setAction("wml/diary")?sid=$g_site_id&amp;id=$log_id&amp;eventSubmit_Delete=$log_id">确定删除</a>
+</p>

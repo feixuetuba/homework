@@ -1,0 +1,75 @@
+
+#select_layout("p_main.vm")
+#set($g_disable_seachable=1)
+#set($page_title="发送短消息")
+#set($skip_new_msg = 0)
+#set($uid = $dlog.param("uid",-1))
+#set($msgid = $dlog.param("msgid",-1))
+#set($user = $USER_tool.user($uid))
+#set($msgbean = $dlog.get_msg($msgid))
+#set($msgform = $form.getBean())
+<link rel="stylesheet" type="text/css" media="all" href="$dlog.root()/css/calendar-blue.css" title="win2k-cold-1" />
+<script type="text/javascript" src="$dlog.root()/js/calendar.js"></script>
+<script type="text/javascript" src="$dlog.root()/js/calendar_lang/calendar-en.js"></script>
+<script type="text/javascript" src="$dlog.root()/js/calendar-setup.js"></script>
+
+#if(1)
+
+#else
+    <form action="$link.setAction("dlog/message")" method="post">
+	<input type="hidden" name="sid" value="$g_site_id"/>
+    <input type="hidden" name="receiverId" value="$uid"/>
+    <input type="hidden" name="uid" value="$uid"/>
+    <input type="hidden" name="msgID" value="$msgid"/>
+	<input type="hidden" name="__ClientId" value="$dlog.gen_client_id()"/>
+    <input type="hidden" name="eventSubmit_SendMsg" value="HTML">
+    <h3>请输入要发送给<a href="$dlog.root()/dlog/viewuser.vm?sid=$g_site_id&amp;uid=${user.id}">$text.html(${user.nickname})</a>的短消息内容：</h3><br/>                                        
+    #show_error_msg()
+	#set($friends = $USER_tool.friends(${g_user.id}, 1, -1))
+	#if($friends && $friends.size()>0)
+	<b>抄送给好友：</b><input type="checkbox" onclick="select_all('ccId',this.checked)"/>全选<br/>
+	<div class="line_solid"></div>
+	<div id="msg_my_friends">
+	<table border="0" cellspacing="2" cellpadding="0" width="100%">
+	#foreach($user in $friends)
+		#if($velocityCount %6 ==1)<tr>#end
+		<td><input type="checkbox" name="ccId" value="${user.friend.id}"/>#if(${user.friend.onlineStatus}==1)<font color=blue>#end$text.html(${user.friend.nickname})#if(${user.friend.onlineStatus}==1)</font>#end</td>
+		#if($velocityCount %6 == 0)</tr>#end
+	#end
+	#if(($friends.size()%6)!=0)</tr>#end
+	</table>
+	</div>
+	<br/>
+	#end
+    <textarea name="content" style="WIDTH: 100%; HEIGHT: 150px">
+        #if($msgform)
+        $!{msgform.content}
+        #elseif($msgbean)
+            <br/><br/>-----短消息原件-----<br/>
+            发送时间: $date.format("yyyy年MM月dd日 HH:mm",$msgbean.sendTime)<br/>
+            内容: ${msgbean.content}
+        #end
+    </textarea><br/>                                        
+	有效时间设置：<span id="show_birth">$!{msgform.expiredTime}</span>
+    <input type="hidden" name="expiredTime" id="f_expired_time" value="$!{msgform.expiredTime}"/>
+    <img id="f_trigger_time" src="$html.image_src("date_sel.gif")" border="0" align="absMiddle"/>&nbsp;&lt;--点击这里设置有效时间
+    #calendar_setup("f_expired_time" "show_birth" "f_trigger_time")
+    <p align="center">
+    <input type="submit" class="button" name="eventSubmit_SendMsg" value="发送短消息">&nbsp;&nbsp;
+	#if($msgbean)
+    <input type="submit" class="button" name="eventSubmit_ReplyMsgAndDeleteOld" value="回复并删除此条短消息">&nbsp;&nbsp;#end
+    <input type="button" class="button" name="btn_return" value="返回短消息箱" onclick="location.href='listmsg.vm?sid=$g_site_id'">
+    <input type="button" class="button" name="btn_return" value="返回上页" onclick="history.go(-1)">
+    </p>
+    </form>
+	<script type="text/javascript" src="$dlog.root()/fckedior/fckeditor.js"></script>
+	<script type="text/javascript" type="text/javascript">
+        window.onload = function()
+        {
+			#richeditor('content')
+            oFCKeditor.Height = 180;
+            oFCKeditor.ToolbarSet = "Basic";
+            oFCKeditor.ReplaceTextarea() ;
+        }
+    </script>
+#end

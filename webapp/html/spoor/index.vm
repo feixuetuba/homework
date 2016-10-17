@@ -1,0 +1,108 @@
+#parse("/html/_sub/_global.vm")
+#select_layout("p_main.vm")
+#set($list=$dlog.userVisitorList($g_site,$g_user))
+
+#set($group = $FRIEND_tool.getGroupDefault($!{g_user.id}))
+#set($groupid = $group.groupid)
+<table border="0" cellspacing="5" cellpadding="5" width="100%">
+	<tr >
+		<td width="33%"></td>	
+		<td width="33%"></td>			
+		<td width="33%"></td>		
+	</tr>
+			#foreach($l in $list)				
+				#if((($velocityCount+3) %3) ==1)
+        		<tr>	
+				#end
+				
+				<td  class="photo_box" valign="bottom">						
+        			<div class="photo_cen">
+						#if($l.portrait)
+						<img src="$dlog.root()/uploads/portrait/$l.portrait" />
+						#else
+							<img src="$dlog.root()/images/html/sharing/portrait/nophoto.gif"  border="0" width="100"/>
+							#end
+					</div>
+        			<div class="photo_name">
+						
+						<a href='$dlog.root()/$l.site.UniqueName' title="点击查看[$l.nickname]的站点">$l.nickname</a>
+						#if(${l.onlineStatus}==1)
+							$html.img("html/icon/default/online.gif","当前在线",null,"absmiddle",0)
+						#else
+							$html.img("html/icon/default/offline.gif","当前在线",null,"absmiddle",0)
+						#end
+						#if$($g_site.owner.id== $g_user.id)
+						<a href="javascript:sendMessage('$Name',$l.id)" >$html.img("html/icon/default/msg.gif","给[$Name]发送短信",null,"absmiddle",0)</a>
+						<a href="javascript://" onclick="add_vsistor_friend($l.ownSiteId,$g_user.id)">$html.img("html/icon/default/addfriend.gif","加[$Name]为好友",null,"absmiddle",0)</a>
+						#end
+					</div>	
+					##<div class="photo_name">							
+						
+						##<a href="javascript://" onclick="add_vsistor_link($l.ownSiteId,$g_user.id)">添加该站到我的友情链接</a>
+						##<li ><a href="javascript://" onclick="add_vsistor_to_bookmark()">添加该站到我的书签</a></li>							
+						##</div>
+							#* 
+							<a href="javascript://">操作</a>
+							#if($g_user.id==$l.id)
+							<a href="javascript://">擦掉脚印</a>
+							#end
+							*#
+					##</div>	
+                </td>
+				#if((($velocityCount+3) %3) ==0||$l.size()==$velocityCount)
+					</tr>
+				#end
+				#end        
+	</table>
+<link rel="stylesheet" href="$dlog.root()/css/default_002.css" type="text/css" media="all"/>
+<link rel="stylesheet" href="$dlog.root()/css/alphacube.css" type="text/css" media="all"/>
+<script type="text/javascript" src="$dlog.root()/js/prototype_160.js"></script>
+<script type="text/javascript" src="$dlog.root()/js/window.js"></script>
+		<script >
+	//加访问者为好友
+	function add_vsistor_friend(sid,uid){
+		var random = Math.random()+'';
+		var url = '$link.setAction("dlog/user")?sid='+sid+'&uid='+uid+'}&eventSubmit_AddFriend='+random+'&__ClientId=$dlog.gen_client_id()&groupid=${groupid}';
+    	var myAjax = new Ajax.Request(url,
+    	    {method: 'get', onComplete: ajax_personal_response}
+    	);
+	}
+	//加访问者为连接
+	function add_vsistor_link(sid,uid){
+		if(sid==uid)
+		{
+			alert("不能加自己站到友情链接");
+			return;
+		}
+		var random = Math.random()+'';
+		var url = '$link.setAction("html/sitemgr/link")?sid='+sid+'&eventSubmit_AddSiteToLink='+sid+'&__ClientId=$dlog.gen_client_id()';
+    	var myAjax = new Ajax.Request(url,
+    	    {method: 'get', onComplete: ajax_personal_response}
+    	);
+	}
+	//家访问者为书签
+	function add_vsistor_to_bookmark(sid,sname){
+		var random = Math.random()+'';
+		var url = '$link.setAction("html/bookmark")?sid=$g_site_id&parentId='+sid+'&parentType=5&eventSubmit_Add='+random+'&title='+sname;		
+    	var myAjax = new Ajax.Request(url,
+    	    {method: 'get', onComplete: ajax_personal_response}
+    	);
+	}
+	
+	//写短信
+	function sendMessage(name,uid)	
+	{
+	var title ='发送短信给[' +name+ ']';
+	if(!$("__sendMessage"))
+	{
+		var url="$dlog.root()/html/spoor/ajax/send_message.vm?sid=${g_site.id}&uid="+uid;
+		Window.hasEffectLib = false;
+		var win = new Window("__sendMessage", {className: "alphacube", title:title, url: url,width:600,height:400,maximizable:false,minimizable:false});
+		win.setDestroyOnClose();
+		win.showCenter();
+		}
+	}
+	function closeSendMessage(){
+		Windows.close('__sendMessage');
+	}
+		</script>

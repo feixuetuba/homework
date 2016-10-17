@@ -1,0 +1,82 @@
+#if(!$TOP_DIARY_COUNT)
+	#set($TOP_DIARY_COUNT = 40)
+#end
+<div class="diary_main">
+    <div class="diary_module new_diary">
+    	<div class="diary_module_top"><b>最新日记</b></div>
+    	<div class="diary_module_content">
+			#set($logs = $DIARY_tool.top_diary($g_site, $g_user, 1, $TOP_DIARY_COUNT, false))
+            #if($logs && $logs.size()>0)
+				<div class="top_diary">
+            		#set($top_log = $DIARY_tool.diary(${logs.get(0).id}))
+        			<h4 class="log_title">
+        				#if(${top_log.client.type}==2)
+                    		<span title="此文章使用手机编写发布！" class="Mobile"><b>[手机]</b></span>
+                    	#else
+                    		<span title="此文章使用电脑编写发布！" class="Computer"><b>[电脑]</b></span>
+                    	#end
+        				<b><a href="$dlog.root()/html/diary/showlog.vm?sid=${top_log.site.id}&amp;log_id=${top_log.id}">$text.html(${top_log.title})</a></b>
+        			</h4>
+        			<div class="log_content">$dlog.abbreviate($dlog.plain_text(${top_log.content}), 100)<span class="writeTime"><b>$date.format("yyyy/MM/dd", ${top_log.writeTime})</b></span></div>
+				</div>
+			#else
+				<div class="log_content">您还没有发表过日记！点击 <a href="$dlog.root()/html/diary/?sid=$g_site_id">这里</a> 开始您的网记之旅吧！</div>
+			#end
+        	#if($logs && $logs.size()>1)
+    			<ul>
+        			#foreach($log in $logs)
+        				#if($velocityCount>1)
+        					<li>
+    							#if(${hotlog.client.type}==2)
+                            		<span title="此文章使用手机编写发布！" class="Mobile"><b>[手机]</b></span>
+                            	#else
+    								<span title="此文章使用电脑编写发布！" class="Computer"><b>[电脑]</b></span>
+                            	#end
+    							<a href="$dlog.root()/html/diary/showlog.vm?sid=${log.site.id}&amp;log_id=${log.id}">$text.html(${log.title})</a>
+    							<span class="li_writeTime"><b>$date.format("yyyy/MM/dd", ${top_log.writeTime})</b></span>
+    						</li>
+        				#end
+        			#end
+    			</ul>
+        	#end
+    	</div>
+    	<div class="diary_module_bottom"></div>
+    </div>
+    <div class="diary_module hot_diary">
+    	<div class="diary_module_top"><b>热门日记</b></div>
+    	<div class="diary_module_content">
+			#set($logs = $DIARY_tool.list_hot_articles($g_site, 30, $TOP_DIARY_COUNT))
+            #if($logs && $logs.size()>0)
+				<div class="top_diary">
+                	#set($top_log = $DIARY_tool.diary(${logs.get(0).id}))
+            		<h4 class="log_title">
+            			#if(${top_log.client.type}==2)
+                    		<span title="此文章使用手机编写发布！" class="Mobile"><b>[手机]</b></span>
+                    	#else
+                    		<span title="此文章使用电脑编写发布！" class="Computer"><b>[电脑]</b></span>
+                    	#end
+            			<b><a href="$dlog.root()/html/diary/showlog.vm?sid=${top_log.site.id}&amp;log_id=${top_log.id}">$text.html(${top_log.title})</a></b>
+            		</h4>
+            		<div class="log_content">$dlog.abbreviate($dlog.plain_text(${top_log.content}), 100)<span class="writeTime"><b>$date.format("yyyy/MM/dd", ${top_log.writeTime})</b></span></div>
+				</div>
+			#end
+        	#if($logs && $logs.size()>1)
+    			<ul>
+        			#foreach($log in $logs)
+        				#if($velocityCount>2)
+        					<li>
+    							#if(${log.client.type}==2)
+                            		<span title="此文章使用手机编写发布！" class="Mobile"><b>[手机]</b></span>
+                            	#else
+    								<span title="此文章使用电脑编写发布！" class="Computer"><b>[电脑]</b></span>
+                            	#end
+    							<a href="$dlog.root()/html/diary/showlog.vm?sid=${log.site.id}&amp;log_id=${log.id}">$text.html(${log.title})</a>
+    							<span class="li_writeTime"><b>$date.format("yyyy/MM/dd", ${top_log.writeTime})</b></span>
+    						</li>
+        				#end
+        			#end
+    			</ul>
+    		#end
+    	</div>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  list sites
+##
+###############################################################################
+#invoke("_sub/_global.vm")
+#set($layout = "home.vm")
+#set($page_title = "广州市信息工程职业学校 —— 师生博客平台 http://blog.gzievs.com.cn")
+<div class="side">
+	<div class="module_login module_first">
+		#invoke("_sub/_module_side_login.vm")
+	</div>
+	
+	<div class="hot_diary_sites module_secondly">
+		#invoke("_sub/_module_side_hot_diary_sites.vm")
+	</div>
+	
+	<div class="ad"><a href="$dlog.root()/dlog/simulator.vm" target="_blank">$html.img("home/ad/ad_wap.gif","手机体验网记博客更精彩！")</a></div>
+	
+	<div class="new_sites">
+		#invoke("_sub/_module_side_new_sites.vm")
+	</div>
+	
+</div>
+<div class="content">
+    
+	<div class="content_module">
+    	<div class="content_module_top">老师的博客</div>
+    	<div class="content_module_content">
+			#set($s_count=100)
+            #set($hotsites = $DLOG4J_tool.list_sites_unrecommend(1, 0))
+            <ul class="site_hot">
+            	#foreach($hotsite in $hotsites)
+            		<li class="sh_li">
+            			<div class="portrait">
+            				<a href="$dlog.root()/${hotsite.uniqueName}">
+                    			#if($dlog.not_empty(${hotsite.owner.portrait}))
+                                	<img src="$dlog.root()/uploads/portrait/${hotsite.owner.portrait}"/>
+                                #else
+                            		$html.img("html/sharing/portrait/nophoto.gif","$!{owner.nickname}")
+                    			#end
+                			</a>
+            			</div>
+            			<div class="info">
+                            <a href="$dlog.root()/${hotsite.uniqueName}">$dlog.abbreviate($dlog.plain_text(${hotsite.friendlyName}), 6)</a>
+            			</div>
+            			<div class="clear"></div>
+            		</li>
+            	#end
+            </ul>
+		</div>
+    </div>
+</div>
+<div class="bottom">
+	#invoke("_sub/_module_buttom_tags.vm")
+</div>

@@ -1,0 +1,113 @@
+#invoke("/html/_sub/_global.vm")
+#select_layout("p_friend.vm")
+#set($page_title="我的黑名单")
+
+#if($g_user)
+    #set($friend_count = $USER_tool.black_user_count(${g_user.id}))
+    #if($friend_count>0)
+        <div class="page_top" align="right">您的黑名单共有${friend_count}个人员！</div>
+        <hr size="1" noshade color="#CCCCCC"/>
+        <form action="$link.setAction("dlog/user")" method="post" onsubmit="return confirm('是否真的把选中的用户从黑名单中删除吗？');">
+        <input type="hidden" name="__ClientId" value="$dlog.gen_client_id()"/>
+        <input type="hidden" name="fromPage" value="$dlog.get_request_url()"/>
+        <input type="hidden" name="sid" value="$g_site_id"/>		
+		<div class="page_body">
+        <table cellspacing="1" cellpadding="3" border="0" class="table" width="100%">
+		<tr class="table_head">
+			<td nowrap></td>
+			<td nowrap>名称</td>
+			<td nowrap>电邮</td>
+			<td align="center" nowrap>在线状态</td>
+			<td nowrap>最近登录时间</td>
+    		<td align="center" nowrap>短消息</td>
+		</tr>
+        #set($friends = $USER_tool.black_users(${g_user.id}, 1, -1))
+        #foreach($user in $friends)
+            #set($show_user_url = "$dlog.root()/dlog/viewuser.vm?sid=$g_site_id&amp;uid=${user.other.id}")
+            <tr class="table_cell" id="friend_${user.other.id}" >
+               <td><input type="checkbox" name="uid" value="${user.other.id}"/></td>
+               <td>
+               <a href="viewuser.vm?sid=$g_site_id&amp;uid=${user.other.id}">
+                  $text.html(${user.other.nickname})
+               </a>
+               </td>
+                <td><a href="mailto:$!{user.other.contactInfo.email}">$!{user.other.contactInfo.email}</a></td>
+                <td align="center">
+					#if(${user.other.onlineStatus}==1)
+						$html.img("/html/icon/default/online.gif","当前在线",null,"absmiddle",0)
+            		#else
+						$html.img("/html/icon/default/offline.gif","当前离线",null,"absmiddle",0)
+            		#end
+				</td>
+                <td>$!date.format("yyyy-MM-dd HH:mm",${user.other.lastTime})</td>
+                <td align="center">
+                    <a href="javascript:sendMessage('${user.other.nickname}',${user.other.id})">
+                        $html.img("/html/icon/default/msg.gif","给该用户发送短消息")</a>
+					&nbsp;&nbsp;
+					<a href="javascript:friendDivert('${user.other.nickname}',$g_user.id,${user.other.id},-1)">
+                        $html.img("/html/icon/default/settings.gif","转移分组")</a>
+                </td>
+                </td>
+            </tr>
+        #end
+        </table>
+		</div>
+		<div class="page_footer">
+            <input type="checkbox" name="bt_all" value="" onclick="select_all('uid',this.checked)"/>全选		
+            <input type="submit" name="eventSubmit_UnblockUser" value="删除选中"/>
+		</div>
+        </form>
+<link rel="stylesheet" href="$dlog.root()/css/default_002.css" type="text/css" media="all"/>
+<link rel="stylesheet" href="$dlog.root()/css/alphacube.css" type="text/css" media="all"/>
+<script type="text/javascript" src="$dlog.root()/js/prototype_160.js"></script>
+<script type="text/javascript" src="$dlog.root()/js/window.js"></script>
+<script language="javascript">
+		
+		//写短信
+		function sendMessage(name,uid)	
+		{
+			var title ='发送短信给[' +name+ ']';	
+			if(!$("__sendMessage"))
+			{
+				var url="$dlog.root()/html/friend/ajax/send_message.vm?sid=${g_site.id}&uid="+uid;
+				Window.hasEffectLib = false;
+				var win = new Window("__sendMessage", {className: "alphacube", title:title, url: url,width:600,height:400,maximizable:false,minimizable:false});
+				win.setDestroyOnClose();
+				win.showCenter();
+			}
+		}
+		function closeSendMessage()
+		{
+			Windows.close('__sendMessage');
+		}
+		
+		//转移分组
+		function friendDivert(name,uid,fid,groupid)	
+		{
+		#if($dlog.is_owner($g_site, $g_user))
+			var title ='转移好友[' +name+ ']';	
+			if(!$("__divert"))
+			{
+				var url="$dlog.root()/html/friend/ajax/friend_divert.vm?sid=${g_site.id}&uid="+uid+"&groupid="+groupid+"&fid="+fid;
+				Window.hasEffectLib = false;
+				var win = new Window("__divert", {className: "alphacube", title:title, url: url,width:300,height:200,maximizable:false,minimizable:false});
+				win.setDestroyOnClose();
+				win.showCenter();
+			}
+		#end
+		}
+		function closeFriendDivert()
+		{
+			Windows.close('__divert');			
+		}
+		function hide_div(id)
+		{
+			$("friend_"+id).style.display="none";
+		}		
+		</script>
+    #else
+    	#show_msg_box("您还有添加任何用户到黑名单，你可以在查看某个用户资料时点击按钮‘阻止’即可。")             
+    #end         
+#else
+	#show_msg_box($text.ui("login.tip","$dlog.root()/dlog/login.vm?sid=$g_site_id&fromPage=$link.encodeURL($dlog.get_request_url())"))
+#end

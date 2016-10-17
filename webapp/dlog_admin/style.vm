@@ -1,0 +1,6 @@
+#invoke("_sub/_global.vm")
+#set($layout = "master.vm")
+#set($left_template = "/dlog_admin/_sub/_left_style.vm")
+#set($nav_template = "/dlog_admin/_sub/_nav_style.vm")
+
+

@@ -1,0 +1,95 @@
+#parse("/html/_sub/_global.vm")
+#set($g_disable_seachable=1)
+#set($page_title="发送短消息")
+#set($skip_new_msg = 0)
+#set($uid = $dlog.param("uid",-1))
+#set($msgid = $dlog.param("msgid",-1))
+#set($user = $USER_tool.user($uid))
+#set($msgbean = $dlog.get_msg($msgid))
+#set($msgform = $form.getBean())
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/prototype.js"></script>
+<script type="text/javascript" src="/fckeditor/fckeditor.js"></script>
+<script type="text/javascript" src="$dlog.root()/js/prototype_160.js"></script>
+	#select_css()
+</head>
+<body> 
+    <form action="$link.setAction("dlog/message")" method="post" id="sendMsg">
+		<table WIDTH=" 550px">		
+	<input type="hidden" name="sid" value="$g_site_id"/>##站点id
+    <input type="hidden" name="receiverId" value="$uid"/>##接受者id
+    <input type="hidden" name="uid" value="$uid"/>##当前用户id
+    <input type="hidden" name="msgID" value="$msgid"/>##当前回复短信的id
+	<input type="hidden" name="__ClientId" value="$dlog.gen_client_id()"/>
+	<input type="hidden" name="fromPage" value="$dlog.root()/html/spoor/ajax/send_message.vm?sid=${g_site.id}&uid=$uid"/>##返回页面
+	<input type="hidden" name="content" id="content" value=""/>
+    <h3>请输入要发送给的短消息内容：</h3><br/> 
+	<b>抄送给好友：</b><input type="checkbox" onclick="select_all('ccId',this.checked)"/>全选<br/>
+	#set($friends = $USER_tool.friends(${g_user.id}, 1, -1))
+	#foreach($user in $friends)		
+		##用户在线
+		#if(${user.friend.onlineStatus}==1)
+			<font color=blue>
+		#end
+		#if(${user.friend.id}!=$uid)
+			<input type="checkbox" name="ccId" value="${user.friend.id}"/>
+			$text.html(${user.friend.nickname})
+		#end
+		
+		#if(${user.friend.onlineStatus}==1)
+			</font>
+		#end
+		
+	#end
+	##短信内容
+	<textarea name="fcontent" id="fcontent" style="WIDTH: 550px; HEIGHT: 150px" >
+            </textarea><br/>
+    <input type="button" class="button" name="eventSubmit_SendMsgAJAX" value="发送短消息" onclick="return submitFrom()">&nbsp;&nbsp;
+		</table>
+    </form>
+	<script type="text/javascript" src="/fckedior/fckeditor.js"></script>
+	<script type="text/javascript">
+    	window.onload = function()
+        {
+			var oFCKeditor = new FCKeditor( 'fcontent' ) ;
+			oFCKeditor.BasePath = '/fckeditor/';
+            oFCKeditor.Height = 180;
+			oFCKeditor.Width=585;
+            oFCKeditor.ToolbarSet = "Basic";
+            oFCKeditor.ReplaceTextarea() ;
+        }
+	function submitFrom()
+	{
+		if(is_empty(GetContents("fcontent")))
+		{
+    		alert('发送内容不能为空');
+    		return false ;
+		}	
+		$('content').value=GetContents("fcontent")
+		$('fcontent').disabled=true
+		sendMsg();
+	}
+	function GetContents(countName)
+ 	{     
+     	var oEditor = FCKeditorAPI.GetInstance(countName) ;  
+   		return  oEditor.GetXHTML( true ) ;       
+  	}
+	
+	function sendMsg()
+	{
+		new Ajax.Request('$link.setAction("dlog/message")',{
+		method: 'post',parameters: $('sendMsg').serialize(),
+		onComplete: _response});
+	}
+	function _response(originalRequest)
+	{
+		alert(originalRequest.responseText);
+	}
+    </script>
+</body>
+</html>

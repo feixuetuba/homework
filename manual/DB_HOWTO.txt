@@ -1,0 +1,21 @@
+
+** First, Sorry for my poor english :) **
+
+** This document show you how DLOG4J can use other Database system **
+
+Follow 3 steps below
+
+1. change Database JDBC configuration.
+
+Open {DLOG4J}/WEB-INF/classes/hibernate.cfg.xml via any text editor software, 
+There are almost all popular database system's configurations which were commentted.
+Find one of the database system's configuration then uncomment it
+Comment the old database system's configuration 
+Change the value of database server's host/port and database name
+Save this file.
+
+2. jdbc driver jar
+
+Copy the database driver jar files to {DLOG4J}/WEB-INF/lib
+
+3. (Re)start the Application Server and test it.

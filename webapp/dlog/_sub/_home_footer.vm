@@ -1,0 +1,18 @@
+<div class="fleft">
+	<p>
+    	<a href="#">关于DLOG4J</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    	<a href="#">服务条款</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    	<a href="#">隐私权政策</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    	<a href="mailto:darcyzhu@gmail.com">联系我们</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    	<a href="http://www.dlog4j.com">Powered by DLOG4J E3.5</a>
+	</p>
+	<p>
+		Copyright &nbsp;&copy; 2008 dlog.cn &nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.miibeian.gov.cn" target="_blank">粤ICP备06059504号</a>
+	</p>
+	<div class="clear"></div>
+</div>
+<div class="fright">
+	<a href="http://www.dlog4j.com"><img src="$dlog.root()/images/home/styles/dlog4j_logo_links.gif" border="0" /></a>
+	<a href="http://www.gzjd.gov.cn/newgzjd/baojing/110.jsp?catid=318"><img src="$dlog.root()/images/home/styles/gangting-index.gif" border="0" /></a>
+	<div class="clear"></div>
+</div>

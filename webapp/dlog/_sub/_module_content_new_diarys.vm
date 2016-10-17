@@ -1,0 +1,38 @@
+#set($logs = $DLOG4J_tool.list_new_articles(1, 17))
+<div class="content_module">
+	<div class="content_module_top">
+		最新发布日记  <span>(<a href="$dlog.root()/rss.vm?tid=1">RSS订阅</a>)</span>
+	</div>
+	<div class="content_module_content">
+		#if($logs.size()>0)
+        	#set($top_log = ${logs.get(0)})
+        	$DIARY_tool.fill_diary_content($top_log)
+			<table>
+            	<tr><td class="logs_title">
+    					<a href="$dlog.root()/html/diary/showlog.vm?sid=${top_log.site.id}&amp;log_id=${top_log.id}">$text.html(${top_log.title})</a>
+                		#set($__nothing = ${top_log.site.friendlyName})
+        				<span>$date.format("yyyy/MM/dd EEE HH:mm", ${top_log.writeTime})</span>
+    			</td></tr>
+            	<tr><td class="logs_body">
+                		$html.img("home/styles/i_quote_l.jpg","“")&nbsp;&nbsp;&nbsp;&nbsp;$dlog.abbreviate($dlog.plain_text(${top_log.content}), 160)&nbsp;&nbsp;&nbsp;&nbsp;$html.img("home/styles/i_quote_r.jpg","”")
+						<span>&nbsp;&nbsp;&nbsp;&nbsp;----&nbsp;&nbsp;<a href="$dlog.root()/${top_log.site.uniqueName}">$text.html(${top_log.site.friendlyName})</a> 网记</span>
+            	</td></tr>
+			</table>
+        #end
+	</div>
+	<div class="content_module_bottom">
+		<ul class="logs_li">
+    		#foreach($log in $logs)
+            	#if($velocityCount>1)
+        			<li>
+						<a href="$dlog.root()/html/diary/showlog.vm?sid=${log.site.id}&amp;log_id=${log.id}">$dlog.abbreviate($dlog.plain_text(${log.title}), 12)</a>
+						<span>
+							[ $html.img("home/styles/dhome.gif","$text.html(${log.site.friendlyName}) 网记") <a href="$dlog.root()/${log.site.uniqueName}">$dlog.abbreviate($dlog.plain_text(${log.site.friendlyName}), 6)</a>]
+						</span>
+        			</li>
+            	#end
+    		#end
+		</ul>
+		<div class="clear"></div>
+	</div>
+</div>

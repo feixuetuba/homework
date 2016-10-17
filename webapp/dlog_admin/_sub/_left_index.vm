@@ -1,0 +1,26 @@
+	#if($g_user)
+		
+	<div class="embed_module_top"></div>
+<div class="embed_module">
+    <div class="module_content">
+		管理员信息中心
+    </div>
+</div>
+<div class="embed_module">
+	<div class="module_title"><b>站点运行信息</b></div>
+    <div class="module_content">
+		<ul>
+			<li>今日发帖数:${admin_tool.today_diary_content()}</li>
+			<li>今日回复数:${admin_tool.today_reply()}</li>
+			<li>今日新注册用户:${admin_tool.today_create_user()}</li>
+		</ul>
+    </div>
+    <div class="module_foot"></div>
+</div>
+<div class="embed_module_bottom"></div>	
+#else
+	#invoke("../login.vm")
+	#end
+
+
+

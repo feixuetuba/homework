@@ -1,0 +1,104 @@
+#if(!$TOP_PHOTO_COUNT)
+	#set($TOP_PHOTO_COUNT = 10)
+#end
+#set($P_ROW_COUNT = 5)
+
+<div class="module_title"><b>最新照片</b></div>
+<div class="module_content">
+	#set($photos = $PHOTO_tool.list_photos($g_site, $g_user, -1, 0, 1, $TOP_PHOTO_COUNT))
+    #if($photos.size()>0)
+		#set($endIdx = $photos.size() - 1)
+    	<style type="text/css">
+            <!--
+			#imageDiv{padding:5px;margin:5px;background-color:#f2f2f2;border:1px solid #bbd0f9;}
+            .btn{float:left;display:block;width:13px;height:13px;background-color:#BEBEBE;margin:1px;cursor:hand}
+            #btnDiv{width:40px;}
+			#btnDiv a{cursor:hand}
+			#ctlDiv a{cursor:hand}
+            -->
+    	</style>
+		##imageObjs[${velocityCountss}].src="$dlog.root()${p.imageURL}"大图预览
+    	<SCRIPT language=javascript type=text/javascript>
+            var showImageIndex = -1;
+            var timer;
+            var imageObjs = new Array();
+            #foreach($idx in [0..$endIdx])
+        		#set($p = $photos.get($idx))
+        		#set($photo_name = $dlog.abbreviate($dlog.plain_text(${p.name}), 6))
+        		#set($velocityCountss =${velocityCount} - 1)
+        		imageObjs[${velocityCountss}] = new Image();
+            	imageObjs[${velocityCountss}].alt="$photo_name";
+            	imageObjs[${velocityCountss}].url="$dlog.root()/html/photo/show.vm?sid=$g_site_id&amp;pid=${p.id}";
+        		imageObjs[${velocityCountss}].src="$dlog.root()${p.previewURL}"
+        		
+        	#end
+            function showImage(imageIndex)
+            {
+            	var imageDiv = document.getElementById("imageDiv");
+            	if(!imageObjs[imageIndex] || imageIndex==showImageIndex)
+            		return false;
+            	imageDiv.filters && imageDiv.filters[0].Apply();
+            	imageDiv.innerHTML = "";
+            	imageDiv.appendChild(imageObjs[imageIndex]);
+            	imageDiv.filters && imageDiv.filters[0].Play();
+            	document.getElementById("btn_"+imageIndex).style.backgroundColor = "#EFEFEF";
+            	if(showImageIndex>=0)
+            		document.getElementById("btn_"+showImageIndex).style.backgroundColor = "#BEBEBE";
+            	showImageIndex = imageIndex;
+            	return true;
+            }
+            
+            function play()
+            {
+            	if(timer) return;
+            	if(showImageIndex>=imageObjs.length-1){
+            		document.getElementById("btn_"+showImageIndex).style.backgroundColor = "#BEBEBE";
+            		showImageIndex = -1;
+            	}
+            	showImage(showImageIndex+1);
+            	timer = setInterval(function(){
+            					var stat = showImage(showImageIndex+1);
+            					if(!stat){
+            						stop();
+            					}	
+            				},5000);
+            }
+            
+            function stop(){
+            	clearInterval(timer);
+            	timer = null;
+            }
+            
+            function next(){
+            	stop();
+            	showImage(showImageIndex+1);
+            }
+            
+            function prev(){
+            	stop();
+            	showImage(showImageIndex-1);
+            }
+        </SCRIPT>
+		<div class="clear"></div>
+    	<div id="imageDiv" class="fleft" style="FILTER: progid:DXImageTransform.Microsoft.Fade(Overlap=1.00)"></div>
+    	<div id="btnDiv" class="fright">
+    		#foreach($idx in [0..$endIdx])
+    			#set($p = $photos.get($idx))
+    			#set($velocityCounts =${velocityCount} - 1)
+    			#set($photo_name = $dlog.abbreviate($dlog.plain_text(${p.name}), 6))
+    			<a class="btn" id="btn_${velocityCounts}" onclick="showImage(${velocityCounts});"></a>
+			#end
+			<div class="spacer_10"></div>
+    		<a class="btn" onclick="play()"><img src="$dlog.root()/styles/Terseness_4/images/play.gif" alt="播放" border="0"></a>
+    		<a class="btn" onclick="stop()"><img src="$dlog.root()/styles/Terseness_4/images/stop.gif" alt="停止" border="0"></a>
+    		<a class="btn" onclick="prev()"><img src="$dlog.root()/styles/Terseness_4/images/prev.gif" alt="上一张" border="0"></a>
+    		<a class="btn" onclick="next()"><img src="$dlog.root()/styles/Terseness_4/images/next.gif" alt="下一张" border="0"></a>
+    	</div>
+		<div class="clear"></div>
+    	<SCRIPT>play();</SCRIPT>
+	#else
+		<p>没有照片!</p>
+	#end
+	<div class="clear"></div>
+</div>
+<div class="module_foot"></div>

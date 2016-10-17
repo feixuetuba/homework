@@ -1,0 +1,32 @@
+#invoke("../_sub/_global.vm")
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head> 
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	#select_css()
+</head>
+
+<body >
+
+#set($level=$dlog.param("level",0))## 模板名称
+#set($name=$dlog.param("name",""))## 模板名称
+	#set($fileList=$admin_tool.getNameToFileList($name))
+	<table >	
+	
+	#foreach($l1 in $fileList)
+		
+			#foreach($row in [0..$level])				
+			&nbsp;&nbsp;&nbsp;|
+				#end
+			#if($l1.type==0)
+				-- <a href="#" >$l1.name</a><br/>								
+				#elseif($l1.type==1)##文件夹					
+					+ <a  href="javascript:clickItem('item_${level}_$velocityCount','$name/$l1.name',$level)">$l1.name</a><br/>
+				<div id="item_${level}_$velocityCount" style="display:none">						
+				</div>	
+				#end
+	#end
+</table>
+</body>
+</html>

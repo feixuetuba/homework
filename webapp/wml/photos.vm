@@ -1,0 +1,47 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  show all photos of all sites
+##
+###############################################################################
+#parse("/wml/_sub/_global.vm")
+#set($PAGE_SIZE = 5)
+#set($p_page = $dlog.param("p", 1))
+#set($page_title="最新5000张照片")
+<p>
+    #set($photo_count = 5000)##看最新的100张照片
+    #set($page_count = $dlog.page_count($photo_count, $PAGE_SIZE))
+    最新${photo_count}张照片.<br/>
+	<input type="text" name="key" size="10" emptyok="true"/>
+    <anchor>$text.wml("search")
+        <go href="$dlog.root()/wml/search.vm" method="get">
+            <postfield name="sid" value="$g_site_id"/>
+            <postfield name="scope" value="1"/>
+            <postfield name="key" value="$(key)"/>
+        </go>
+    </anchor>
+</p>
+<p>
+	第${p_page}页,共${page_count}页,每页${PAGE_SIZE}条.<br/>
+	#wml_pager("$dlog.root()/wml/photos.vm?" $p_page $page_count)<br/>
+	#set($photos = $PHOTO_tool.list_photos($g_site, $g_user, -1,-1,$p_page,$PAGE_SIZE))
+	#set($base_idx = ($p_page - 1)*$PAGE_SIZE)
+    #foreach($photo in $photos)
+		#set($idx = $base_idx + $velocityCount)
+    	${idx}.<img src="$dlog.root()${photo.previewURL}" alt=""/><a href="photo/show.vm?sid=${photo.site.id}&amp;pid=${photo.id}">$text.html(${photo.name})</a>(<a href="photo/photo_rpls.vm?sid=${photo.site.id}&amp;pid=${photo.id}">${photo.replyCount}</a>评/${photo.viewCount}阅/$date.format("MM-dd HH:mm",${photo.createTime}))<br/>
+    #end
+    #wml_pager("$dlog.root()/wml/photos.vm?" $p_page $page_count)<br/>
+	#wml_gopage("$dlog.root()/wml/photos.vm?" $p_page $page_count)
+</p>

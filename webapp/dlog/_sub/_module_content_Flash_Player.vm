@@ -1,0 +1,34 @@
+<div class="Flash_Player_module">
+	
+	<div class="fleft">
+    <script language="javascript">
+        xmlData="<root><photo pUrl='http://www.hao65.com/Upload/Other/2008/7/27/2008072718405410395.jpg' gUrl='http://www.hao65.com/Show/?MovieId=4375&MovieNumber=7037' fName='《通缉犯》Wanted(2008)' sName='一片最大的看点无疑是其中大量高难度的动作场面，安吉莉娜·朱莉  摩根·弗里曼及詹姆士·麦卡沃伊的出色演技！'/><photo pUrl='http://www.hao65.com/Upload/Other/2008/7/27/2008072717542464132.jpg' gUrl='http://www.hao65.com/Show/?MovieId=4377&MovieNumber=12583' fName='《风云决》Storm Rider(2008)' sName='金麟岂是池中物，一遇风云便化龙！为将旷世神剑开封，傲决苦苦寻觅身负麒麟血的风、云，平静的江湖将再次陷入一场血雨腥风。'/><photo pUrl='http://www.hao65.com/Upload/Other/2008/7/22/2008072220381670800.jpg' gUrl='http://www.hao65.com/Show/?MovieId=1016&MovieNumber=3154' fName='《地狱男爵2》北美电影票房榜冠军' sName='一股在地狱深处的邪魔冲出地底，妄图用地狱的火焚烧人间...'/><photo pUrl='http://www.hao65.com/Upload/Other/2008/7/16/2008071614121899678.jpg' gUrl='http://www.hao65.com/Show/?MovieId=3936&MovieNumber=5748' fName='《全民超人汉考克》：请勿围观' sName='这是部“反超级英雄”的黑色幽默电影，电影的前半段也确实是这么拍的，当女超级英雄突然冒出来的时候....'/><photo pUrl='http://www.hao65.com/Upload/Other/2008/7/11/2008071100094085538.jpg' gUrl='http://www.hao65.com/Show/?MovieId=3716&MovieNumber=5720' fName='《机器人总动员》WALL·E(2008)' sName='如果看腻了美女帅哥的爱情，赶紧来看看机器人的爱情故事吧'/><photo pUrl='http://www.hao65.com/Upload/Other/2008/7/6/2008070623173678855.jpg' gUrl='http://www.hao65.com/Show/?MovieId=3311&MovieNumber=5621' fName='《处女地》修女也疯狂' sName='根据“十日谈”改编的古装青春性喜剧，修女也疯狂。'/><photo pUrl='http://www.hao65.com/Upload/Other/2008/7/6/2008070622533951041.jpg' gUrl='http://www.hao65.com/Show/?MovieId=3429&MovieNumber=5639' fName='《猛男诞生记》衰男到猛男的蜕变' sName='吸收5倍阳气和女人调教，从衰男到猛男的激情蜕变。'/><photo pUrl='http://www.hao65.com/Upload/Other/2008/7/3/2008070317510014130.jpg' gUrl='http://www.hao65.com/Show/?MovieId=2882&MovieNumber=4780' fName='《神奇绿巨人》08年别错过的电影' sName='《神奇绿巨人》：爱德华·诺顿自编自演、另起炉灶的《神奇绿巨人》'/><photo pUrl='http://www.hao65.com/Upload/Other/2008/7/3/2008070317382226359.jpg' gUrl='http://www.hao65.com/Show/?MovieId=929&MovieNumber=3064' fName='《功夫熊猫》：欢乐全家桶' sName='《功夫熊猫》会让人找回童心和复活梦想，那是一段彻底愉快的旅程。'/></root>";
+		var InternetExplorer = navigator.appName.indexOf("Microsoft") != -1;
+        function myFlash_DoFSCommand(command, args){
+        	var myFlshObj = InternetExplorer ? myFlash : document.myFlash;
+        	if(myFlshObj){
+        		myFlshObj.SetVariable("xmlString", xmlData);
+        	}
+        }
+        if (navigator.appName && navigator.appName.indexOf("Microsoft") != -1 && 
+          navigator.userAgent.indexOf("Windows") != -1 && navigator.userAgent.indexOf("Windows 3.1") == -1) {
+          document.write('<SCRIPT LANGUAGE=VBScript\> \n');
+          document.write('on error resume next \n');
+          document.write('Sub myFlash_FSCommand(ByVal command, ByVal args)\n');
+          document.write(' call myFlash_DoFSCommand(command, args)\n');
+          document.write('end sub\n');
+          document.write('</SCRIPT\> \n');
+        }
+    </script>
+    
+    <OBJECT classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0' WIDTH='434' HEIGHT='250'  id='myFlash'>
+        <PARAM NAME=movie VALUE='$dlog.root()/images/home/swf/IndexPhotoPlayer.swf'>
+        <param NAME=quality VALUE=high>
+        <param name='wmode' value='opaque'/>
+        <EMBED wmode='transparent' src='$dlog.root()/images/home/swf/IndexPhotoPlayer.swf' quality=high  WIDTH='434'  HEIGHT='250' NAME='myFlash' swLiveConnect='true' TYPE='application/x-shockwave-flash' PLUGINSPAGE='http://www.macromedia.com/go/getflashplayer'></EMBED>
+    </OBJECT>
+    </div>
+    <div class="fright">$html.img("home/ad/pop_index_top.jpg","DLOG4J手机博客")</div>
+    <div class="clear"></div>
+</div>
+	

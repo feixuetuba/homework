@@ -1,0 +1,9 @@
+<div class="side_module_top"></div>
+<div class="side_module_content">
+	<ul>
+		<li class="atom"><a href="$dlog.root()/rss.vm?sid=$g_site_id&amp;tid=1">╤╘тдху╪г</a></li>
+		<li class="atom"><a href="$dlog.root()/rss.vm?sid=$g_site_id&amp;tid=2">╤╘тдоЮ╡А</a></li>
+	</ul>
+	<div class="clear"></div>
+</div>
+<div class="side_module_bottom"></div>

@@ -1,0 +1,11 @@
+#set($__this_url = $link.encodeURL($dlog.get_request_url()))	
+#if($g_user)
+	#set($new_msg_count = $dlog.get_new_msg_count($g_user))
+	<a href="$dlog.root()/wml/myprofile.vm?sid=$g_site_id">${text.html($g_user.nickname)}</a>,欢迎光临#if($g_site)<a href="$dlog.root()/wml/site.vm?sid=${g_site.id}">$text.html(${g_site.friendlyName})</a>#else网记#end<br/>
+	#if(${g_user.ownSiteId}>0 && ${g_user.ownSiteId}!=$g_site_id)<a href="$dlog.root()/?sid=${g_user.ownSiteId}">我的网记.</a>#end
+	#if(${g_user.ownSiteId}<=0)<b><a href="$dlog.root()/wml/newsite.vm">开通网记.</a></b>#end
+    <a href="$dlog.root()/wml/listmsg.vm?sid=$g_site_id">$text.wml("message")#if($new_msg_count>0)($new_msg_count)#end.</a><a href="$dlog.root()/wml/bookmark.vm?sid=$g_site_id">$text.wml("bookmark").</a><a href="$dlog.root()/wml/friends.vm?sid=$g_site_id">好友.</a><a href="$dlog.root()/wml/user.do?sid=$g_site_id&amp;eventSubmit_Logout">$text.wml("logout")</a>
+#else
+	欢迎光临#if($g_site)<a href="$dlog.root()/wml/site.vm?sid=${g_site.id}">$text.html(${g_site.friendlyName})</a>#else网记#end<br/>
+	<b><a href="$dlog.root()/wml/newsite.vm">开通网记.</a></b><a href="$dlog.root()/wml/login.vm?sid=$g_site_id&amp;fromPage=${__this_url}">$text.wml("login").</a><a href="$dlog.root()/wml/reguser.vm?sid=$g_site_id">$text.wml("register").</a>
+#end

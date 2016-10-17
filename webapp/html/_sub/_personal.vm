@@ -1,0 +1,58 @@
+<div class="side_module_top"></div>
+<div class="side_module_content">
+	<div class="portrait">
+    	#set($owner = $USER_tool.user(${g_site.owner.id}))
+        #if($dlog.not_empty(${owner.portrait}))
+        	<img src="$dlog.root()/uploads/portrait/${owner.portrait}" alt="$!{owner.nickname}" />
+        #else
+    		$html.img("html/sharing/portrait/nophoto.gif","$!{owner.nickname}",null,"absmiddle",0)
+    	#end
+	</div>
+	<div class="site_owner_info">
+		<ul>
+			<li class="site_name"><h2>$!{g_site.friendlyName}</h2></li>
+			<li class="owner_name">
+				<b>站长：</b>
+				<a href="$dlog.root()/dlog/accounts/viewuser.vm?sid=${g_site.id}&amp;uid=${owner.id}">$!{owner.nickname}</a>
+				#if(${owner.onlineStatus}==1)
+        			$html.img("html/icon/default/online.gif","当前在线",null,"absmiddle",0)
+        		#else
+        			$html.img("html/icon/default/offline.gif","当前离线",null,"absmiddle",0)
+        		#end
+			</li>
+			<li class="owner_sex">
+				<b>性别：</b>
+				#if($owner.sex==1) 
+    				$html.img("html/icon/default/male.gif",$text.ui("sex.desc.1"),$text.ui("sex.desc.1"),"absmiddle",0)		
+        		#elseif($owner.sex==2)
+    				$html.img("html/icon/default/female.gif",$text.ui("sex.desc.2"),$text.ui("sex.desc.2"),"absmiddle",0)
+        		#else
+    				保密
+        		#end
+			</li>
+			<li class="owner_age">
+				<b>年龄：</b>
+				#if(${owner.age}>0)
+					${owner.age}&nbsp;岁
+				#else
+					未知
+				#end
+			</li>
+			#if($dlog.not_empty(${owner.province}) || $dlog.not_empty(${owner.city}))
+    			<li class="owner_province">
+    				<b>地区：</b>
+    				${owner.province} ${owner.city}
+    			</li>
+			#end
+			<li class="owner_resume">
+				<b>宣言：</b>
+				#if($dlog.not_empty(${owner.resume}))
+					${owner.resume}
+				#else
+					无
+				#end
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="side_module_bottom"></div>

@@ -1,0 +1,36 @@
+<div class="logo">
+	<a href="${web_home_url}/"><h2>${site_name}首页</h2></a>
+</div>
+<div class="user_info">        	
+    #if($g_user)
+        $text.ui("label.welcome.msg",[${g_user.nickname}])&nbsp;|&nbsp;
+		#if(${g_user.ownSiteId}>0 && $g_site_id != ${g_user.ownSiteId})
+		<a href="${web_home_url}/?sid=${g_user.ownSiteId}">我的网记</a>&nbsp;|&nbsp;
+		#end
+		
+		#if(${g_user.ownSiteId}<=0)
+			<a href="${web_home_url}/dlog/accounts/newsite.vm?sid=${g_site_id}"><b>开通个人网记</b></a>&nbsp;|&nbsp;
+		#end
+        <a href="$dlog.root()/html/message/listmsg.vm?sid=$g_site_id">$text.ui("label.message")</a>
+		#if(!$skip_new_msg && $dlog.has_new_msg($g_site, $g_user))
+		<span id="newMessage">
+        <a href="$dlog.root()/html/message/listmsg.vm?sid=${g_site_id}&amp;msg=0" onclick="javascript:newMessage.style.visibility='hidden';">                
+		$html.img("html/icon/default/newmsg.gif",null,null,"absmiddle",0)</a>
+	
+		</span>
+    	<bgsound src='$dlog.root()/msg.mid' border='0'>
+        #end
+		|&nbsp;<a href="$dlog.root()/dlog/accounts/bookmark.vm?sid=$g_site_id">$text.ui("label.bookmark")</a>
+		|&nbsp;<a href="$dlog.root()/dlog/accounts/friends.vm?sid=$g_site_id">好友</a>
+		|&nbsp;<a href="$dlog.root()/dlog/accounts/blacklist.vm?sid=$g_site_id">黑名单</a>
+		|&nbsp;<a href="$dlog.root()/dlog/accounts/myprofile.vm?sid=$g_site_id">$text.ui("label.profile")</a>
+		|&nbsp;<a href="$dlog.root()/dlog/user.do?sid=$g_site_id&amp;eventSubmit_Logout=$link.encodeURL($dlog.get_request_url())">$text.ui("label.logout")</a>
+		|&nbsp;<a href="$dlog.root()/html/search.vm?sid=$g_site_id">$text.ui("label.search")</a>
+    #else
+		你好！&nbsp;请&nbsp;
+		<a href="$dlog.root()/dlog/accounts/login.vm?sid=$g_site_id&amp;fromPage=$link.encodeURL($dlog.get_request_url())">$text.ui("label.login")</a>
+		&nbsp;或&nbsp;
+        <a href="${web_home_url}/dlog/accounts/reguser.vm?sid=$g_site_id">注册新用户</a>
+    #end
+    
+</div>

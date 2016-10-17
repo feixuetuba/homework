@@ -1,0 +1,64 @@
+#parse("/html/_sub/_global.vm")
+#select_layout("p_photo.vm")
+
+#set($COUNT_PER_PAGE = 30)##每页显示
+#set($p_page = $dlog.param("page",1))##当前业
+
+#set($_count = $PHOTO_tool.diaryRelatingCount($g_site))##总数
+#set($page_count = $dlog.page_count($_count, $COUNT_PER_PAGE))##总页数(计算)
+
+##检查当前页索引
+#if($p_page > $page_count)
+	#set($p_page = $page_count)
+		#elseif($p_page < 1)
+				#set($p_page = 1)
+#end
+#set($pre_page = $p_page - 1)##上一页
+#set($next_page = $p_page + 1)##下一页
+#set($url="$dlog.root()/html/photo/diaey_ptoto.vm")
+#set($list=$PHOTO_tool.diaryRelating($g_site,$p_page,$COUNT_PER_PAGE))
+
+<a href="$dlog.root()/html/photo/?sid=$g_site.id">我的相簿</a>&gt;&gt;贴图相册
+        <table border="0" cellspacing="5" cellpadding="5" width="100%">
+		<tr class="table_head">
+			<td align="right" colspan="5">
+				第<b>${p_page}</b>页,共<b>${page_count}</b>页,每页<b>${COUNT_PER_PAGE}</b>张
+			#if($page_count > 1)|
+				#if($p_page>1)
+					<a href="#" onclick="return go_page(1);">首页</a>
+					<a href="#" onclick="return go_page($pre_page);">上页</a>
+				#end
+				#if($p_page < $page_count)
+						<a href="#" onclick="return go_page($next_page);">下页</a>
+						<a href="#" onclick="return go_page($page_count);">尾页</a>
+				#end
+			#end
+		</td>
+	</tr>
+		<tr>
+			<td width="20%">
+			</td>
+			<td width="20%">
+			</td>
+			<td width="20%">
+			</td>
+			<td width="20%">
+			</td>
+			<td width="20%">
+			</td>
+		</tr>
+	
+        #foreach($l in $list) 
+			#if((($velocityCount+5) %5) ==1)
+        		<tr>	
+				#end	
+			<td width="20%" class="photo_box" valign="bottom">
+			<div class="photo_cen"><a href="#"><img src="$l.uri"  border="0" width="100"/></a></div>            			
+			<div class="photo_name">日记标题:<a href="#">$l.savePath</a></div>
+			</td>
+			#if((($velocityCount+5) %5) ==0||$l.size()==$velocityCount)
+				</tr>
+			#end
+		#end
+	
+		</table>		

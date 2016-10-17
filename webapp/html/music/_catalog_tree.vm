@@ -1,0 +1,16 @@
+<div class="side_module_top"><b>ÒôÀÖºĞ</b></div>
+<div class="side_module_content">
+	<ul>
+		<li class="music_newbox"><a href="$dlog.root()/html/music/mbox_add.vm?sid=$g_site_id">$text.ui("label.music.create_box")</a></li>
+		<li class="music_newsong"><a href="$dlog.root()/html/music/music_add.vm?sid=$g_site_id">Ìí¼Ó¸èÇú</a></li>
+    	##if($dlog.is_owner($g_site, $g_user))
+    	##	<span class="music_link"><a href="$dlog.root()/html/music/?sid=$g_site_id&amp;box=0">ÍøÓÑÍÆ¼öµÄ¸èÇú</a></span>
+    	##end
+    	#foreach($box in $g_site.musicBoxes)
+    		 #set($url = "$dlog.root()/html/music/?sid=$g_site_id&amp;box=${box.id}")
+    		 <li class="music_link"><a href="$url">$text.html(${box.name})</a></li>
+    	#end
+	</ul>
+	<div class="clear"></div>
+</div>
+<div class="side_module_bottom"></div>

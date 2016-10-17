@@ -1,0 +1,21 @@
+#set($site_url = $g_site.siteURL("${link.getContextURL()}/"))
+<div class="site_name">
+	<a href="$dlog.root()/${g_site.uniqueName}" class="nostyle"><b>$escape.html(${g_site.friendlyName})</b></a>
+	<span class="site_url">
+		<a href="$site_url" onclick="copy_to_clipboard('$site_url');return false;">$site_url</a>
+		<span class="url_setting">(<a href="#" onclick="copy_to_clipboard('$site_url');return false;">µã»÷¸´ÖÆ</a>,<a href="#" onclick="bookmark_site('${g_site.id}','$link.encodeURL(${g_site.friendlyName})') ;return false;">ÊÕ²Ø</a>)</span>
+	</span>
+	<div class="site_detail">$!{g_site.detail}</div>
+</div>
+<script type="text/javascript">
+	function bookmark_site(site_id,site_title){
+		var random = Math.random()+'';
+		var url = '$link.setAction("html/bookmark")?sid=$g_site_id&parentId='+site_id+'&parentType=5&eventSubmit_Add='+random+'&title='+site_title;		
+    	var myAjax = new Ajax.Request(url,
+    	    {method: 'get', onComplete: bookmark_site_response}
+    	);
+	}
+	function bookmark_site_response(originalRequest) {
+		alert(originalRequest.responseText);
+    }
+</script>

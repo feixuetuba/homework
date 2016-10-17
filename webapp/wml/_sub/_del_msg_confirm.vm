@@ -1,0 +1,5 @@
+<p>
+	您确定要删除这条短消息吗？<br/>
+	<a href="#top">返回</a>	
+	<anchor>删除<go href="$link.setAction("wml/message")?sid=$g_site_id&amp;p=$p_page"><postfield name="eventSubmit_Delete" value="$(mid)"/></go></anchor>
+</p>

@@ -1,0 +1,39 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  layout of wap
+##
+###############################################################################
+<?xml version="1.0"?><!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" "http://www.wapforum.org/DTD/wml_1.1.xml">
+<wml><head><meta http-equiv="Content-Type" content="text/vnd.wap.wml;charset=UTF-8"/>#if($close_search_robots)<meta name="robots" content="noindex,nofollow"/>#end</head>
+##main card
+<card id="top" title="$text.html($page_title)">
+$screen_content.replaceAll("\t|\r|\n|	","")
+##navigator links
+<p>----------<br/>
+<a href="http://3g.dlog.cn/"><b>&gt;&gt;彩色手机空间送网络硬盘</b></a><br/>
+<a href='http://3g.stocklog.cn'>&gt;&gt;准备好应对金融危机了吗</a><br/>
+<a href='http://3g.dlog.cn/newidea/wap/redirect?obj=games'>&gt;&gt;海量完美破解手机游戏</a><br/>
+<a href='http://3g.dlog.cn/newidea/wap/redirect?obj=hellokk'>&gt;&gt;少妇激裸被偷拍</a>
+</p>
+<p>----------<br/>#if(!$g_close_bottom_navigator)<a href="#top">&lt;$text.wml("back_to_top")</a>#if($dlog.is_get())<anchor>上一页<prev/></anchor>#end<br/>
+#if($g_site)<a href="$dlog.root()/${g_site.uniqueName}#top">&lt;$text.wml("back_to",$escape.html(${g_site.friendlyName}))</a><a href="$dlog.root()/wml/site.vm?sid=$g_site_id">详情</a><br/>#end
+#if($g_user && ${g_user.ownSiteId}>0 && ${g_user.ownSiteId}!=$g_site_id)<a href="$dlog.root()/wml/?sid=${g_user.ownSiteId}">&lt;我的网记</a><br/>#end
+#if($g_user && $dlog.not_empty(${g_user.uniqueCode}))<a href="$dlog.root()/wml/auto_login_tip.vm?uuid=${g_user.uniqueCode}">&lt;自动登录链接</a><br/>#end
+<a href="$wap_home_url">&lt;$text.wml("to_home",${site_name})</a>#end<br/>$date.format("yyyy/MM/dd EEE HH:mm",$date.getDate(),${request.locale})</p>
+</card>
+##extend card
+#if($page_title_bottom && $screen_extend_template)<card id="bottom" title="$text.html($page_title_bottom)">#if($dlog.not_empty($screen_extend_template))#parse($screen_extend_template)#end</card>#end
+</wml>

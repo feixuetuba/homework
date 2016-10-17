@@ -1,0 +1,27 @@
+#set($album_id = $dlog.param("aid", -1))
+#set($diaryPhotoUrl="$dlog.root()/html/photo/diary_photo.vm?sid=${g_site.id}&id=${g_user.id}")
+<div class="side_module_top"><b>我的相簿</b></div>
+<div class="side_module_content">
+	<ul>
+		#if($dlog.is_owner($g_site,$g_user))
+            <li class="photo_new"><a href="$dlog.root()/html/photo/upload.vm?sid=$g_site_id&amp;aid=$!{request.getParameter("aid")}"><b>发布照片</b></a></li>
+            <li class="album_new"><a href="$dlog.root()/html/photo/album_add.vm?sid=$g_site_id&amp;aid=$!{request.getParameter("aid")}"><b>创建相簿</b></a></li>
+		#end
+		#if($g_site.owner.id==$g_user.id)
+        	<li class="photo_link"><a href="$diaryPhotoUrl">日记贴图相册</a></li>
+        #end
+    	#set($albums = $PHOTO_tool.list_albums($g_site,null))
+    	#foreach($album in $albums)
+            #set($url = "$dlog.root()/html/photo/photo_list.vm?sid=${album.site.id}&amp;aid=${album.id}")
+    		<li class="photo_link"><a href="$url">${album.name}(${album.photoCount})</a></li>
+    		#set($s_albums = $PHOTO_tool.list_albums($g_site,$album))
+            #foreach($s_album in $s_albums)
+                #set($url = "$dlog.root()/html/photo/photo_list.vm?sid=${s_album.site.id}&amp;aid=${s_album.id}")
+    			<li class="photo_sublink"><a href="$url">${s_album.name}(${s_album.photoCount})</a></li>
+            #end
+		#end
+		
+	</ul>
+	<div class="clear"></div>
+</div>
+<div class="side_module_bottom"></div>

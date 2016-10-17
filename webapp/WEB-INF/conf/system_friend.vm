@@ -1,0 +1,14 @@
+<strong>{0}</strong>，您好：<br />
+
+<p>用户[{1}]已经将您加为好友</p>
+<a href="/dlog/accounts/viewuser.vm?sid={2}&uid={3}" >查看用户信息</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+<a href='javascript://' onclick="javascript: addFriend({4})"> 添加用户[{5}]为好友 </a><br />
+	
+<br />
+<strong><font size="3">网记个人空间，展现你的精彩！</font></strong><br />
+<hr width="100%" size="2" />
+<font color="#808080">客服信息：<br />
+<br />
+</font><font size="1" color="#808080">QQ: 22758932<br />
+MSN: dlog.cn@hotmail.com<br />
+电话: 020-33033030</font>

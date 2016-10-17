@@ -1,0 +1,70 @@
+#if($log)
+	<ul class="diary_info">
+		<li class="catalog_name">分类：<a href="$dlog.root()/html/diary/?sid=$g_site_id&amp;cat_id=$log.catalog.id">${log.catalog.name}</a></li>
+    	#if(${log.replyCount}>5)
+			<li class="diary_comments"><a href="$dlog.root()/html/diary/showlog.vm?sid=$g_site_id&amp;cat_id=$catalog_id&amp;log_id=${log.id}#replies">评论(${log.replyCount})</a></li>
+		#else
+			<li class="diary_comment"><a href="$dlog.root()/html/diary/showlog.vm?sid=$g_site_id&amp;cat_id=$catalog_id&amp;log_id=${log.id}#replies">评论(${log.replyCount})</a></li>
+		#end
+		#if(${log.viewCount}>1000)
+			<li class="diary_views">阅读(${log.viewCount})</li>
+		#else
+			<li class="diary_view">阅读(${log.viewCount})</li>
+		#end
+		
+		<li class="diary_trackback">$text.ui("label.diary.trackback")(#if(${log.trackBackCount}>0)<a href="$dlog.root()/html/trackbacks.vm?sid=$g_site_id&amp;log_id=${log.id}">#end${log.trackBackCount}#if(${log.trackBackCount}>0)</a>#end)</li>
+		<li class="diary_setting" onmouseover="showMenu('dlog_${log.id}')" onmouseout="hideMenu('dlog_${log.id}')"><b>操作</b>
+			<ul id="dlog_${log.id}" class="diary_setting_ul">
+				#if(!$no_bookmark_link)
+					<li class="action_bookmark"><a href="#" onclick="bookmark('${log.id}','$link.encodeURL(${log.title})') ;return false;" title="保存此文为书签">保存此文为书签</a></li>
+				#end
+				#if($DIARY_tool.can_user_edit_diary($g_user, $log))
+					<li class="action_trash"><a href="$link.setAction("html/diary")?sid=${g_site_id}&amp;id=${log.id}&amp;eventSubmit_Delete=${log.id}&amp;fromPage=$link.encodeURL($dlog.get_request_url())" onclick="return confirm('您确实要将该日记移到垃圾箱吗？');" title="移到垃圾箱">移到垃圾箱</a></li>
+					<li class="action_edit"><a href="$dlog.root()/html/diary/editlog.vm?sid=$g_site_id&log_id=$log.id" onclick"" class="img_setting" title="编辑此文">编辑此文</a></li>
+					#if($dlog.is_superior($g_user))
+						#if(${log.type}==0)
+							<li class="action_markon"><a href="#" onclick="mark_as_elite('${log.id}',1) ;return false;" title="设为精华">设为精华</a></li>
+                    	#else
+                            <li class="action_markoff"><a href="#" onclick="mark_as_elite('${log.id}',0) ;return false;" title="取消精华">取消精华</a></li>
+						#end
+					#end
+				#end
+			</ul>
+		</li>
+	</ul>
+	<div class="clear"></div>
+    #if(!$prototype_enabled)
+        <script type="text/javascript">
+        	function bookmark(log_id,log_title){
+        		var random = Math.random()+'';
+        		var url = '$link.setAction("html/bookmark")?sid=$g_site_id&parentId='+log_id+'&parentType=1&eventSubmit_Add='+random+'&title='+log_title;		
+            	var myAjax = new Ajax.Request(url,
+            	    {method: 'get', onComplete: ajax_diary_response}
+            	);
+        	}
+        	#if($dlog.is_superior($g_user))
+        	function mark_as_elite(log_id, elite){
+        		var random = Math.random()+'';
+        		var url = '$link.setAction("html/diary")?sid=${g_site_id}&eventSubmit_MarkDiaryAsElite='+log_id+'&r='+random+'&elite='+elite;		
+            	var myAjax = new Ajax.Request(url,
+            	    {method: 'get', onComplete: ajax_diary_response}
+            	);
+        	}
+        	#end
+        	function ajax_diary_response(originalRequest) {
+        		alert(originalRequest.responseText);
+            }
+        	function icon_edit()
+        	{
+        	if(document.getElementById('valiDate'))
+        	{
+        	location.href="$dlog.root()/html/diary/editlog.vm?sid=$g_site_id&log_id=$log.id&valiDate="+document.getElementById('valiDate').value;
+        	return;
+        	}
+        	
+        	location.href="$dlog.root()/html/diary/editlog.vm?sid=$g_site_id&log_id=$log.id";
+        	}
+        </script>
+		#set($prototype_enabled = true)
+    #end
+#end

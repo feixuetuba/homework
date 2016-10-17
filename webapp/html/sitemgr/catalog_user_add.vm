@@ -1,0 +1,155 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  add catalog user view
+##
+###############################################################################
+#parse("/html/_sub/_global.vm")
+#select_layout("p_setting.vm")
+#set($page_title="增加特权用户")
+#set($catalog_id = $dlog.param("cat_id", -1))
+#set($catalog = $DIARY_tool.catalog($g_site, $g_user, $catalog_id))
+<div class="page_top">
+	<div class="pagecontent">
+		<div class="pagecontent_left fleft">
+			<b>增加特权用户</b>&nbsp;|&nbsp;${catalog.name}
+		</div>
+		<div class="pagecontent_right fright">
+			今天是: $date.get("MMMMM d, yyyy  EEEEE")
+		</div>
+	</div>
+	<div class="spacer_1"></div>
+</div>
+<div class="page_content">
+	#set($friend_count = $USER_tool.friend_count($g_user.id))
+    #if($friend_count>0)
+        <div class="page_top">
+			<strong>您共有${friend_count}个好友！</strong>
+		</div>
+        <hr size="1" noshade color="#CCCCCC"/>
+        <table cellspacing="1" cellpadding="3" border="0" class="table" width="100%">
+		<tr class="table_head">
+			<td nowrap>用户编号</td>
+			<td nowrap>名称</td>
+			<td align="center" nowrap>在线状态</td>
+    		<td align="center" nowrap>短消息</td>
+		</tr>
+        #set($friends = $USER_tool.friends(${g_user.id}, 1, -1))
+        #foreach($user in $friends)
+            #set($show_user_url = "$dlog.root()/dlog/viewuser.vm?sid=$g_site_id&amp;uid=${user.friend.id}")
+            <tr class="table_cell">
+               <td>${user.friend.id}</td>
+               <td>
+				#if(${user.friend.ownSiteId}<1)
+					#set($user_link = "$dlog.root()/dlog/viewuser.vm?sid=$g_site_id&amp;uid=${user.friend.id}")
+			    #else
+					#set($user_link = "$dlog.root()/?sid=${user.friend.ownSiteId}")
+				#end
+                <a href="${user_link}">
+                  $text.html(${user.friend.nickname})
+                </a>
+               </td>
+			   <td align="center">
+					#if(${user.friend.onlineStatus}==1)
+            		$html.img("online.gif","当前在线",null,"absmiddle",0)
+            		#else
+            		$html.img("offline.gif","当前离线",null,"absmiddle",0)
+            		#end
+				</td>
+                <td align="center">
+                    <a href="$dlog.root()/dlog/sendmsg.vm?sid=$g_site_id&amp;uid=${user.friend.id}" title="给该用户发送短消息">
+                        $html.img("msg.gif")
+                    </a>
+                </td>
+            </tr>
+        #end
+        </table>
+    #else
+    	#show_msg_box("您还有添加任何好友，你可以在查看某个用户资料时点击按钮‘加为好友’即可。")             
+	#end
+	<form action="$link.setAction("html/sitemgr/catalog")" method="post">
+    <input type="hidden" name="sid" value="$g_site_id"/>
+    <input type="hidden" name="id" value="$catalog_id"/>
+    <input type="hidden" name="cat_id" value="$catalog_id"/>
+	<input type="hidden" name="__ClientId" value="$dlog.gen_client_id()"/>
+    <input type="hidden" name="fromPage" value="$dlog.get_request_url()"/>
+	<div class="form">
+		<div class="form_row">
+    		<div class="form_row_title fleft">
+				用户编号
+    		</div>
+    		<div class="form_row_content">
+				<input type="text" size="10" name="userid" value="$dlog.param("userid","")">&nbsp&nbsp;{用户的ID号码！}
+				#struts_message("userid")
+			</div>
+    	</div>
+		
+		
+		#set($frindegrouplist = $FRIEND_tool.showFriendV($!{g_user.id}))
+		#set($friends = $FRIEND_tool.friends($!{g_user.id}, 1, -1,1))
+		<div class="form_row">
+    		<div class="form_row_title fleft">
+			选择用户
+    		</div>
+    	
+				<div class="form_row_content">
+					<div>
+				<select name="" style="width:100px" >
+					<option value="-1">所有好友</option>
+					#foreach($flist in $frindegrouplist)
+						<option value="$!{flist.groupid}"> $flist.groupname </option>
+						#end 
+                </select>
+				</div>
+				<div>
+				<select name="" size="10" style="width:100px">
+					  #set($friends = $USER_tool.friends(${g_user.id}, 1, -1))
+					#foreach($flist in $friends)
+					<option value="$flist.friend.id">$flist.friend.nickname</option>
+					#end 
+                </select>
+				<select name="" size="10" style="width:100px">					
+                </select>
+				</div>
+			</div>
+    	</div>
+		<div class="spacer_1"></div>
+		<div class="form_row">
+    		<div class="form_row_title fleft">
+				访问权限
+    		</div>
+    		<div class="form_row_content">
+				<select name="role">
+                    #if($catalog.type==0)<option value="1">读权限</option>#end
+                    <option value="4">读写权限</option>
+                </select>
+			</div>
+    	</div>
+		<div class="spacer_1"></div>
+		<div class="form_row">
+			<div class="form_row_submit">
+				<input type="submit" name="eventSubmit_CreateCatalogUser" value="添加权限" />
+				<input type="reset" value="重新填写" />
+				<input type="button" value="返回" onclick="history.go(-1)" />
+			</div>
+    	</div>
+	</div>
+	</form>
+	<div class="spacer_10"></div>
+</div>
+<div class="page_bottom"></div>
+	
+
+

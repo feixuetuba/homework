@@ -1,0 +1,14 @@
+<div class="side_module_top"><b>Support Icon</b></div>
+<div class="side_module_content">
+	#if(!$rss_type)#set($rss_type=1)#end
+	<ul>
+		<li class="sm_support"><a href="$dlog.root()/rss.vm?sid=$g_site_id&amp;tid=$rss_type">$html.img("html/icon/default/rss.gif","rss",null,"absmiddle",0)</a></li>
+		<li class="sm_support"><a href="http://validator.w3.org/check?uri=referer" target="_blank">$html.img("html/icon/default/xhtml.png","xhtml",null,"absmiddle",0)</a></li>
+		<li class="sm_support"><a href="http://jigsaw.w3.org/css-validator/" target="_blank">$html.img("html/icon/default/css.png","css",null,"absmiddle",0)</a></li>
+		<li class="sm_support"><a href="http://www.mozilla.org/products/firefox/" target="_blank">$html.img("html/icon/default/firefox.gif","firefox",null,"absmiddle",0)</a></li>
+		<li class="sm_support"><a href="http://www.opera.com/" target="_blank">$html.img("html/icon/default/opera.gif","opera",null,"absmiddle",0)</a></li>
+		<li class="sm_support"><a href="http://www.dlog.cn/" target="_blank">$html.img("html/icon/default/dlog4j.gif","dlog4j",null,"absmiddle",0)</a></li>
+	</ul>
+	<div class="clear"></div>
+</div>
+<div class="side_module_bottom"></div>

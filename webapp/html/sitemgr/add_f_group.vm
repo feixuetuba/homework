@@ -1,0 +1,63 @@
+
+#invoke("/html/_sub/_global.vm")
+#select_layout("p_manager_friend.vm")
+#set($page_title="添加分组")
+
+<form action="$link.setAction("/html/friend")" method="post" name="friendForm" onsubmit="return validate();">
+#if(!$dlog.is_owner($g_site, $g_user))
+#invoke("/html/friend/_illegal_access.vm")
+#else		
+	<div class="form_row">
+    		<div class="form_note">				
+				<li>分组名称长度不得超过20个字符</li>					
+			</div>	
+		<input type="hidden" name="sid" value="$g_site_id"/>
+		<input type="hidden" name="id" value="$!{g_user.id}"/>
+		<input type="hidden" name="__ClientId" value="$dlog.gen_client_id()"/>
+		<div class="form_row_content">
+			<input type="hidden" name="name" value="$!{g_user.name}" disabled/>
+		</div>
+</div>		
+<div class="form_row">	
+		<div class="form_row_title fleft">
+			分组名称
+		</div>
+		<div class="form_row_content">
+			<input type="text" id="groupname" name="groupname" value=""/>&nbsp;&nbsp;{必须填写}
+			#struts_message("group_name")
+		</div>
+	</div>
+	
+	<div class="spacer_1"></div>
+			<div class="form_row">
+				<div class="form_row_content">
+					<div class="spacer_5"></div>
+    				<input type="radio" name="grouptype" value="0" checked> 完全公开 <br/>
+                    <input type="radio" name="grouptype" value="1"> 私人分组 <br/>
+            		<div class="spacer_5"></div>
+    			</div>
+    		</div>
+	
+		<div class="form_row">
+		<div class="form_row_submit">
+		<input type="submit" name="eventSubmit_FriendGroup" value="提交分组"/>
+		<input type="button" value="返回上页" onclick="history.go(-1)"/>
+    	<input type="button" value="返回首页" onclick="location.href='$dlog.root()/#if($g_site)?sid=${g_site_id}#end';"/>
+		
+		</div>
+			</div>				
+</form>
+#end
+
+<script language="javascript">
+	function validate()
+	{	
+		var str=$('groupname').value;
+		if(is_empty(str))
+		{
+			alert('名称不能为空');
+			return false;
+		}	
+}
+</script>
+					

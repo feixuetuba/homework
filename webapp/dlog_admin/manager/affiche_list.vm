@@ -1,0 +1,120 @@
+#invoke("../_sub/_global.vm")
+#set($layout = "master.vm")
+#set($left_template = "/dlog_admin/_sub/_left_adminuser.vm")
+#set($nav_template = "/dlog_admin/_sub/_nav_adminuser.vm")
+
+
+##用户是否登录&&(角色是否为超级管理员)
+#if($g_user&&$admin_tool.roleIsAdmin($manager))
+#set($url="$dlog.root()/dlog_admin/manager/affiche_list.vm?status=1" )
+[公告列表]
+#set($status=$dlog.param("status",1))##状态
+#set($p_page = $dlog.param("p", 1))##当前页 默认1
+#set($COUNT_PER_PAGE = 10)##每页显示
+#set($_count = $USER_tool.msg_affiche_count($manager.id))##总数
+#set($page_count = $dlog.page_count($_count, $COUNT_PER_PAGE))##总页数(计算)
+
+##检查当前页索引
+#if($p_page > $page_count)
+	#set($p_page = $page_count)
+		#elseif($p_page < 1)
+				#set($p_page = 1)
+#end
+#set($pre_page = $p_page - 1)##上一页
+#set($next_page = $p_page + 1)##下一页
+#set($mlist=$USER_tool.read_affiche($p_page, $COUNT_PER_PAGE))
+
+<form method="POST" action='$link.setAction("dlog/message")'>
+	<table >
+		<input type="hidden" name="msgID" id="msgID" value="">
+		<input type="hidden" name="submit" id="sid" value="">
+		<input type="submit"  name="button" id="button" style="display:none">
+		<input type="hidden" name="fromPage" id="sid" value="$url?p=$p_page">	
+
+	</table>
+</form>
+#if($_count>0)
+<div class="page_top">
+	##索引
+	#invoke("/dlog_admin/page_index.vm")
+</div>
+
+<div class="clear"></div>
+    		<table cellspacing="1" cellpadding="3" border="0" width="100%">
+				<tr class="table_head">
+    				<td style="border-bottom:#cccccc 1px dashed " >						
+				标题
+    				</td>
+					<td style="border-bottom:#cccccc 1px dashed " >
+				时间
+					</td>
+    				<td style="border-bottom:#cccccc 1px dashed " >
+					&nbsp;&nbsp;
+    				</td>
+    			</tr>
+				#foreach($msg in $mlist)   
+    			<tr>
+					<input type="hidden" id="look${velocityCount}" value=""/>
+    				<td style="border-bottom:#cccccc 1px dashed " >						
+						${velocityCount}.&nbsp;&nbsp;<a href="javascript:showMessageCount($velocityCount)">$msg.title</a>
+    				</td>
+					<td style="border-bottom:#cccccc 1px dashed " >
+						$date.format("yyyy/MM/dd EEEEE HH:mm",${msg.sendtime}, ${request.locale})
+					</td>
+    				<td style="border-bottom:#cccccc 1px dashed " >
+						<a href="javascript:showMessageCount($velocityCount)">查看内容</a>&nbsp;&nbsp;&nbsp;
+						<a href="javascript:setSID($msg.msgid,'eventSubmit_DeleteAffiche')">删除</a>
+    				</td>
+    			</tr>
+    			<tr>
+    				<td style="border-bottom:#cccccc 1px dashed;display:none" colspan="5"  id="messageContent$velocityCount">	
+						$msg.content
+    				</td>
+    			</tr>				
+				#end
+    		</table>
+			<div class="clear"></div>
+			<div class="page_top">
+	##
+	#invoke("/dlog_admin/page_index.vm")
+</div>
+</div>
+
+#end
+
+#if($_count<=0)
+<div class="msgbox">
+没有系统短消息。  
+</div>
+#end
+<script >
+
+function setSID(sid,event)
+{
+	document.getElementById('msgID').value=sid;
+	document.getElementById('submit').name=event;
+	document.getElementById('button').click();
+}
+function showMessageCount(index)
+{	
+		name='messageContent'+index;
+		obj=$(name)
+		
+		if(obj.style.display=='')
+		{
+			obj.style.display='none'
+		}
+		else
+		{
+			obj.style.display=''
+		}
+}
+function $(name)
+{
+	return document.getElementById(name);
+}
+</script>
+#else
+				##没有任何权限
+				对不起,您没有权限.
+#end

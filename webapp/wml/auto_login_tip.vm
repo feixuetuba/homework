@@ -1,0 +1,30 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  user register
+##
+###############################################################################
+#invoke("_sub/_global.vm")
+#set($page_title="自动登录设置")
+#set($close_search_robots = true)
+#if($g_user)
+<p>
+	请点击下面链接并将页面保存为书签,这样下次你直接从书签中访问网记就无需重新登录.<br/>
+	<a href="$dlog.root()/wml/?uuid=${g_user.uniqueCode}">进入自动登录页面</a><br/>
+	请不要将此链接泄露给别人!!!
+</p>
+#else
+	#invoke("login.vm")
+#end

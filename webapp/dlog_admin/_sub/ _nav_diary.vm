@@ -1,0 +1,25 @@
+<div id="nav">
+    #set($menus_name = ["管理首页","站点管理","日记列表","图片管理","风格管理","管理员设置"])
+    #set($menus_link = ["$dlog.root()/dlog_admin/index.vm","$dlog.root()/dlog_admin/site.vm","$dlog.root()/dlog_admin/diary.vm","$dlog.root()/dlog_admin/photo.vm","$dlog.root()/dlog_admin/style.vm","$dlog.root()/dlog_admin/admin_user.vm"])
+    
+    <div class="channel_bar_left fleft"></div><div class="channel_bar_right fright"></div>
+    <div class="channel_bar_bg">
+    	<div class="fleft sitenav">
+    		#foreach($menu in $menus_name)
+    			#if($dlog.not_empty($menu))
+        			#set($idx = $velocityCount - 1)
+        			#set($m_link = $menus_link.get($idx))
+        			#if($velocityCount == $current_menu_item)
+        				<a class="nav_on"></a><a href="${m_link}" class="selected">${menu}</a>
+						<a class="split"></a>
+        			#else
+        			#set($show_line = $velocityCount < $menus_name.size())
+        				#set($last_item = $current_menu_item - 1)
+        				<a href="${m_link}">${menu}</a>
+						<a class="split"></a>
+        			#end
+    			#end
+    		#end
+    	</div>
+    </div>
+</div>

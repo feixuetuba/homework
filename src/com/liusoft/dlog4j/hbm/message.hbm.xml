@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.liusoft.dlog4j.beans">
+	<class name="MessageBean" table="dlog_message" batch-size="20">
+
+		<id name="id" column="msgid">
+			<generator class="identity" />
+		</id>
+
+		<many-to-one name="toUser" column="userid" cascade="none"
+			update="false" />
+		<many-to-one name="fromUser" column="from_user_id"
+			cascade="none" update="false" />
+		<property name="fromUserName" column="from_user_name"
+			update="false" />
+
+		<property name="content" update="false" />
+
+		<property name="sendTime" type="timestamp" column="send_time"
+			update="false" />
+		<property name="expiredTime" type="timestamp"
+			column="expire_time" update="false" />
+		<property name="readTime" type="timestamp" column="read_time"
+			insert="false" />
+		<property name="status" />
+	</class>
+	
+
+	<class name="SendMessageBean" table="dlog_message_send">
+	<id name="sendid" column="send_id">
+			<generator class="identity" />
+		</id>
+		<property name="msgid" column="send_msg_id" />
+		<property name="userid" column="send_user_id" />
+		<property name="receiverid" column="send_r_user_id" />
+		<property name="receivername" column="send_r_user_name" />
+		<property name="sendtime" type="timestamp"  column="send_time" />
+		<property name="status" column="send_status" />
+
+	</class>
+
+
+<class name="ReceiverMessageBean" table="dlog_message_receiver">
+		<id name="receiverid" column="receiver_id">
+			<generator class="identity" />
+		</id>
+		<property name="msgid" column="receiver_msg_id" />
+		<property name="userid" column="receiver_user_id" />
+		<property name="sendid" column="receiver_s_user_id" />
+		<property name="sendname" column="receiver_s_user_name" />
+		<property name="readtime" column="receiver_write_time" />
+		<property name="status" column="receiver_status" />
+	</class>
+
+<class name="AfficheBean" table="dlog_message_affiche">
+		<id name="msgid" column="affiche_id">
+			<generator class="identity" />
+		</id>
+		<property name="userid" column="affiche_user_id" />
+		<property name="content" column="affiche_content" />
+		<property name="title" column="affiche_title" />
+		<property name="sendtime" type="timestamp" column="affiche_send_time" />
+		<property name="status" column="affiche_status" />
+
+
+	</class>
+
+
+
+
+</hibernate-mapping>

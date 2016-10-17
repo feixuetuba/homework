@@ -1,0 +1,115 @@
+#invoke("../_sub/_global.vm")
+#set($layout = "master.vm")
+#set($left_template = "/dlog_admin/_sub/_left_style.vm")
+#set($nav_template = "/dlog_admin/_sub/_nav_style.vm")
+#if($g_user&&($admin_tool.popIsSuper($manager)||$admin_tool.roleIsStyle($manager)||$admin_tool.roleIsAdmin($manager)))
+[风格排行榜]
+
+#set($p_page = $dlog.param("p", 1))##当前页 默认1
+#set($COUNT_PER_PAGE = 10)##每页显示
+#set($_count = $admin_tool.site_style_count())##总数
+#set($page_count = $dlog.page_count($_count, $COUNT_PER_PAGE))##总页数(计算)
+#set($pre_page = $page - 1)##上一页
+#set($next_page = $page + 1)##下一页
+#set($list=$admin_tool.styleRank())
+#set($url="$dlog.root()/dlog_admin/style/style_rank.vm")
+
+##检查当前页索引
+#if($p_page >= $page_count)
+	#set($p_page = $page_count)
+		#elseif($p_page <= 1)
+				#set($p_page = 1)
+#end
+#set($pre_page = $p_page - 1)##上一页
+#set($next_page = $p_page + 1)##下一页
+<div class="page_content">
+	
+	<div class="styles">
+	<table border="0" width="100%">
+		<tr >
+			<td width="50%">
+			</td>
+			<td width="50%">
+			</td>
+		</tr>
+	#foreach($l in $list)
+		#if((($velocityCount+2)%2)==1)
+			<tr>
+		#end
+		
+		<td width="50%" align="center">
+				使用者 $l.count 位<br />
+			名称:${l.childName}<br />
+			类型:#if($l.type == 0 ) [所有用户] #elseif($l.type == 1 ) [VIP用户] #end<br />
+			状态:#if($l.status == 0 ) [开启] #elseif($l.status == 1 ) [关闭] #end<br />	
+			<a href="javascript:editStyle($l.id)" >		
+			<img src="$dlog.root()/styles/${l.name}/preview.gif" border="0" />		
+			</a>	<br />
+			说明:$l.explain
+            </td>
+		#if((($velocityCount+2)%2)==0)
+			</tr>
+		#end
+	#end
+	</table>
+	</div>
+	<div class="spacer_20"></div>
+	<div class="line_solid"></div>
+	<div class="spacer_5"></div>
+	<div class="page">
+		<td>总共有${_count}种风格</td>
+			#if($page > 1)
+			<a href="?sid=$g_site_id&amp;p=1">首页</a>&nbsp;
+			<a href="?sid=$g_site_id&amp;p=$pre_page">上一页</a>&nbsp;#end
+			#if($page < $page_count)
+			<a href="?sid=$g_site_id&amp;p=$next_page">下一页</a>&nbsp;
+			<a href="?sid=$g_site_id&amp;p=$page_count">尾页</a>#end
+	</div>
+</div>
+</form>
+
+<link rel="stylesheet" href="$dlog.root()/css/default_002.css" type="text/css" media="all"/>
+<link rel="stylesheet" href="$dlog.root()/css/alphacube.css" type="text/css" media="all"/>
+<script type="text/javascript" src="$dlog.root()/js/prototype_160.js"></script>
+<script type="text/javascript" src="$dlog.root()/js/window.js"></script>
+<script>
+var global;
+function clickItem(obj,divID)
+{	
+	var item=$(divID);
+	if(global)
+		global.style.display=(global.style.display =='none')?'':'none';	
+	if(global==item)
+		return
+	item.style.display=(item.style.display =='none')?'':'none';	
+	global=item;
+}
+
+function EventSubmit(id,event)
+{
+	$('id').value=id;
+	$('submit').name=event;
+	$('submit').click();
+}
+
+function editStyle(arg0)
+{
+	if(!$("__editStyle"))
+	{
+		Window.hasEffectLib = false;
+		var win = new Window("__editStyle", {className: "alphacube", title:"修改", url: "$dlog.root()/dlog_admin/style/ajax/edit_style.vm?id="+arg0,width:400,height:280,maximizable:false,minimizable:false});
+		win.setDestroyOnClose();
+		win.showCenter();
+	}
+}
+
+
+function closeEditStyle(){
+	location.href="$url?p=$p_page";
+}
+</script>
+<div class="page_bottom"></div>
+	#else
+	##没有超级管理员权限
+	对不起,您没有权限.
+	#end

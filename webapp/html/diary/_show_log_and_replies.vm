@@ -1,0 +1,109 @@
+#set($catalog_id = $dlog.param("cat_id", -1))
+#set($prev_diary = $DIARY_tool.prev_diary($g_site, $g_user, $catalog_id, $log_id))
+#set($next_diary = $DIARY_tool.next_diary($g_site, $g_user, $catalog_id, $log_id))
+<div class="page_top diary">
+	#if($prev_diary || $next_diary)
+    	#if($next_diary)
+    		<div class="next_diary">
+        		<a href="?sid=$g_site_id&amp;cat_id=$catalog_id&amp;log_id=${next_diary.id}" class="cprevious"><span><b>上篇：</b></span>${next_diary.title}</a>
+        	</div>
+		#end
+		#if($prev_diary)
+        	<div class="prev_diary">
+        		<a href="?sid=$g_site_id&amp;cat_id=$catalog_id&amp;log_id=${prev_diary.id}" class="cnext"><span><b>下篇：</b></span>${prev_diary.title}</a>
+        	</div>
+		#end
+	#end
+	<div class="clear"></div>
+</div>
+<div class="page_content diary">
+	<div class="diary_list_module">
+    	<div class="diary_list_module_top">#invoke("_log_title_bar.vm")</div>
+    	<div class="diary_list_module_content">
+			#if(${log.client.type}==2)
+				<div class="Mobile_preview">
+					<div class="Mobile_preview_top"></div>
+    				<div class="Mobile_preview_content">$!{log.content}</div>
+					<div class="Mobile_preview_bottom"></div>
+    			</div>
+        	#else
+				$!{log.content}
+			#end
+			
+			<div class="spacer_5"></div>
+			<div class="spacer_5"></div>
+			
+			#if($log && ${log.bgSound})
+    			<div id="mplayer_div" class="log_bgSound" align="center">
+                    <embed id="mplayer" src="${log.bgSound.url}" align="baseline" border="0" width="460" height="50"
+                        type="application/x-mplayer2"
+                        pluginspage="http://www.microsoft.com/isapi/redir.dll?prd=windows&amp;sbp=mediaplayer&amp;ar=media&amp;sba=plugin&amp;"
+                        name="MediaPlayer" showcontrols="1" showpositioncontrols="1"
+                        showaudiocontrols="1" showtracker="0" showdisplay="0"
+                        showstatusbar="1" autosize="0" playCount="100"
+                        showgotobar="0" showcaptioning="0" autostart="1" autorewind="0"
+                        animationatstart="0" transparentatstart="0" allowscan="1"
+                        enablecontextmenu="0" clicktoplay="0" invokeurls="1"
+                        defaultframe="datawindow">
+                    </embed><br />
+        			如果您无法播放歌曲,请先确定是否已经安装<a href="http://download.microsoft.com/download/9/4/0/94072943-9188-4a60-b31f-3031f18404e4/mpsetup.exe" target="_blank"><b>Windows media player</b></a>软件<br/>
+        			或者歌曲类型是否被<b>Microsoft Media Player</b>所支持。<br/>
+        			另外请使用IE浏览器。
+                </div>
+			#end
+			#if($log.annex>0)
+				<div>$DIARY_tool.annex_table($log.id)</div>			
+			#end
+
+			#if($dlog.not_empty($log.keyword))
+    			<div class="diary_tags">
+    				<ul>
+						<li class="diary_tags_title"><h2>关键字: </h2></li>
+    					#foreach($tag in ${log.keywords})
+    						<li><h3><a href="$dlog.root()/html/showtag.vm?sid=$g_site_id&amp;type=1&amp;tag=$link.encodeURL($tag)">${tag}</a></h3></li>
+        				#end
+    				</ul>
+					<div class="clear"></div>
+    			</div>
+			#end
+			
+			<div class="trackback">
+				<b>引用地址:</b>$link.getContextURL()/html/trackback.do?id=${log.id}&amp;type=1 (<a href="#" onclick="return copy_to_clipboard('$link.getContextURL()/html/trackback.do?log_id=${log.id}&amp;type=1')">复制地址</a>)
+			</div>
+    	</div>
+		<script type="text/javascript">
+            var sto=null;
+            function showMenu(menuid){
+            	var menu = document.getElementById(menuid);
+            	menu.style.display='block';
+            	clearHideMenuTimer();
+            }
+            function hideMenu(menuid){
+            	sto=window.setTimeout("document.getElementById('"+menuid+"').style.display='none';", 100);
+            }
+            function clearHideMenuTimer(){
+            	window.clearTimeout(sto);
+            	sto=null;
+            }
+        </script>
+    	<div class="diary_list_module_bottom">#invoke("_log_bottom_bar.vm")</div>
+	</div>
+</div>
+
+<div class="page_bottom diary">
+	#set($s_logs = $SEARCH_tool.search_rel_diarys($log, true, true, 10))
+    #if($s_logs && $s_logs.size()>0)
+    	<div class="search_rel_diarys">
+    		<h4>相关日记</h4>
+			<ul>
+        		#foreach($s_log in $s_logs)		
+    				<li><a href="$dlog.root()/html/diary/showlog.vm?sid=$g_site_id&amp;log_id=${s_log.id}">$text.html(${s_log.title})</a><span class="log_writeTime">$date.format("yyyy-MM-dd EEE HH:mm",${s_log.writeTime},${request.locale})</span></li>
+				#end
+			</ul>
+    	</div>
+	#end
+	<a name="replies"></a>
+	#if(${log.status} != 5)
+		<div class="replies">#invoke("_comment_list.vm")</div>
+	#end
+</div>

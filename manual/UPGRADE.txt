@@ -1,0 +1,14 @@
+
+本文档主要讲述如何从DLOG4J 2 升级到 3.0版本.
+
+1. 修改WEB-INF/classes/com/liusoft/dlog4j/upgrade/old_hibernate.cfg.xml将数据库配置到旧版本的数据库上
+
+2. 将旧数据库的驱动jar包拷入WEB-INF/lib目录
+
+3. 修改WEB-INF/classes/com/liusoft/dlog4j/upgrade/new_hibernate.cfg.xml将数据库配置到新版本的数据库上
+
+4. 将新数据库的驱动jar包拷入WEB-INF/lib目录
+
+5. 执行 upgrade <site_id>
+
+	其中<site_id>为要导入数据的网站编号，如果尚未建站必须先建站再执行导入

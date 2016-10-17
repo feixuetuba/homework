@@ -1,0 +1,5 @@
+<p>
+	您确定要删除这张照片吗？<br/>
+	<a href="#top">返回</a>
+	<a href="$link.setAction("wml/photo")?sid=$g_site_id&amp;id=$photo_id&amp;eventSubmit_Delete=$photo_id">确定删除</a>
+</p>

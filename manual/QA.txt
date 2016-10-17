@@ -1,0 +1,12 @@
+
+问：如何在数据源定义部分使用加密口令
+
+答：
+修改hibernate.cfg.xml的配置connection.provider_class，
+对应的值修改为：com.liusoft.dlog4j.db.SecureDataSourceConnectionProvider
+执行upgrade_pwd.bat <password>命令，其中<password>对应数据库的访问密码
+将运行结果复制到数据库的访问密码配置dscp.password对应的值
+
+?useUnicode=true&amp;characterEncoding=GBK
+
+只支持mysql 4.1.x或者以上版本

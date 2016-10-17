@@ -1,0 +1,50 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  enter a reply (photo)
+##
+###############################################################################
+#parse("/wml/_sub/_global.vm")
+#set($page_title="我要评论")
+#set($close_search_robots = true)
+#set($photo_id = $dlog.param("pid", -1))
+#set($photo = $PHOTO_tool.photo($g_site, $g_user, $photo_id))
+<p>
+	#invoke("_photo_nav_bar.vm")
+#if($photo && ${photo.status}==0)
+    #wml_error_msg()
+	#set($random=$math.random(1,10000))
+	照片:<a href="$dlog.root()/wml/photo/show.vm?sid=$g_site_id&amp;pid=${photo_id}">$text.html(${photo.name})</a><br/>
+	内容:<input type="text" name="pr_$random" value=""/><br/>
+	评论者:<input type="text" name="author" value="$text.html($!{g_user.nickname})" size="8"/><br/>
+	#if(!$g_user)校验码:&nbsp;<input type="text" size="5" maxlength="4" name="vc_$random" format="*N"/>&nbsp;<img src="$dlog.root()/servlet/verify.img" alt=""/>	#end
+	<anchor>提交评论
+        <go href="$link.setAction("wml/reply")" method="post">
+            <postfield name="sid" value="$g_site_id"/>
+            <postfield name="pid" value="$photo_id"/>
+            <postfield name="parentId" value="$photo_id"/>
+            <postfield name="clientType" value="2"/>
+            <postfield name="author" value="$(author)"/>
+            <postfield name="content" value="$(pr_$random)"/>
+            <postfield name="verifyCode" value="$(vc_$random)"/>
+            <postfield name="__ClientId" value="$dlog.gen_client_id()"/>
+			#if($g_user)<postfield name="uuid" value="${g_user.uniqueCode}"/>#end
+            <postfield name="eventSubmit_AddPhotoReply" value="WML"/>
+        </go>
+    </anchor>
+#else
+	照片不存在！
+#end
+</p>

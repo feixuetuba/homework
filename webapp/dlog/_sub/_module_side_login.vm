@@ -1,0 +1,69 @@
+<div class="side_module">
+	<div class="side_module_top">网记会员登录</div>
+    <div class="side_module_content">
+    	#if($g_user)
+        	<div class="user">
+            	<span class="red">$text.html(${g_user.nickname})</span>
+            	您好,&nbsp;
+        		
+            	#if(${g_user.ownSiteId}>0)
+        			
+        			<a href="$dlog.root()/?sid=${g_user.ownSiteId}" title="点击访问我的个人网记">我的个人空间</a>
+        			#set($owner = $USER_tool.user(${g_user.id}))
+                    #if($dlog.not_empty(${owner.portrait}))
+                    	<img src="$dlog.root()/uploads/portrait/${owner.portrait}" alt="$!{owner.nickname}" />
+                    #else
+                		$html.img("html/sharing/portrait/nophoto.gif")
+        			#end
+        			
+            	#else
+            		<a href="$dlog.root()/dlog/accounts/newsite.vm">开通个人空间</a>
+            	#end
+            	|&nbsp;<a href="$dlog.root()/dlog/listmsg.vm?sid=${g_user.ownSiteId}">$text.ui("label.message")</a>
+            	#if(!$skip_new_msg && $dlog.has_new_msg($g_site, $g_user))
+        			<a href="$dlog.root()/dlog/listmsg.vm?sid=${g_user.ownSiteId}&amp;msg=0" onclick="javascript:newMessage.style.visibility='hidden';">$html.img("home/icon/newmsg.gif",null,null,"absmiddle",0)</a>
+                #end
+            	|&nbsp;<a href="$dlog.root()/dlog/bookmark.vm?sid=${g_user.ownSiteId}">$text.ui("label.bookmark")</a>
+            	|&nbsp;<a href="$dlog.root()/dlog/friends.vm?sid=${g_user.ownSiteId}">好友</a>
+            	|&nbsp;<a href="$dlog.root()/dlog/user.do?sid=${g_user.ownSiteId}&amp;eventSubmit_Logout=$link.encodeURL($dlog.get_request_url())">$text.ui("label.logout")</a>
+        	</div>
+        #else
+        	<div class="login">
+        		#set($next_uri=$dlog.param("fromPage",""))
+            	#show_error_msg()
+            	<form action="$link.setAction("dlog/user")" method="post">
+                <input type="hidden" name="__ClientId" value="$dlog.gen_client_id()"/>
+                <input type="hidden" name="fromPage" value="$dlog.root()/dlog/index.vm"/>
+        		<p>
+        			帐&nbsp;户:&nbsp;&nbsp;<input type="text" name="name" value="$!{fbean.name}"/>
+        		</p>
+            	<p>
+        			密&nbsp;码:&nbsp;&nbsp;<input type="password" name="password" value=""/>
+        		</p>
+        		<p>
+        			登录信息:
+        			<select name="keepDays">
+                        <option value="-1">不保存</option>
+                        <option value="1">保存一天</option>
+                        <option value="7">保存一周</option>
+                        <option value="30">保存一月</option>
+                        <option value="365" selected>保存一年</option>
+                    </select>
+        		</p>
+            	<p>
+        			<a href="#" onclick="fetchpwd();return false;">我忘了登录密码</a>
+            	</p>
+        		
+            	<script language="javascript" type="text/javascript">
+                function fetchpwd(){
+                	var url = "$dlog.root()/dlog/accounts/fetchpwd.vm?sid=$g_site_id";
+                	window.open(url,'share',"height=200,width=400,status=yes,toolbar=no,menubar=no,location=no");
+                }
+                </script>
+        		<input type="submit" name="eventSubmit_Login" value="登录"/>&nbsp;&nbsp;<input type="button" name="btn_reg" value="注册新用户" onclick="location.href='$dlog.root()/dlog/accounts/reguser.vm';"/>			
+            	
+            	</form>
+        	</div>
+        #end
+    </div>
+</div>

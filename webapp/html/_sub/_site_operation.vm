@@ -1,0 +1,50 @@
+##set($frindegrouplist = $FRIEND_tool.showFriendV($!{g_user.id}))
+#set($group = $FRIEND_tool.getGroupDefault($!{g_user.id}))
+#set($groupid = $group.groupid)
+
+<div class="side_module_top"></div>
+<div class="side_module_content">
+	<ul>
+		##############################
+		<li class="guestbook"><a href="$dlog.root()/html/spoor/?sid=$g_site_id&amp;uid=${owner.id}">到过这里的访客</a></li>
+		##############################
+		#if(${g_site.functionStatus.guestbook}==0)
+			##<li class="guestbook"><a href="$dlog.root()/html/guestbook.vm?sid=${g_site_id}#rplform">留下您的足迹</a></li>
+    	#end
+		<li class="sendmsg"><a href="$dlog.root()/dlog/accounts/sendmsg.vm?sid=$g_site_id&amp;uid=${owner.id}">给站长发张小纸条</a></li>
+		<li class="add_friend"><a href="#" onclick="add_friend();return false;">加站长为好友</a></li>
+		<li class="add_link"><a href="#" onclick="add_link();return false;">添加该站到我的友情链接</a></li>
+		<li class="add_bookmark"><a href="#" onclick="add_to_bookmark(${g_site_id},'$link.encodeURL(${g_site.friendlyName})');return false;">添加该站到我的书签</a></li>
+	</ul>
+</div>
+<div class="side_module_bottom"></div>
+<script type="text/javascript">
+	function add_friend(){
+		var random = Math.random()+'';
+		var url = '$link.setAction("dlog/user")?sid=${g_site_id}&uid=${owner.id}&eventSubmit_AddFriend='+random+'&__ClientId=$dlog.gen_client_id()&groupid=${groupid}';
+    	var myAjax = new Ajax.Request(url,
+    	    {method: 'get', onComplete: ajax_personal_response}
+    	);
+	}
+	function add_link(){
+		#if($owner.id==$g_user_id)
+			alert("不能加自己站到友情链接");
+		#else
+		var random = Math.random()+'';
+		var url = '$link.setAction("html/sitemgr/link")?sid=${g_site_id}&eventSubmit_AddSiteToLink=${g_site_id}&__ClientId=$dlog.gen_client_id()';
+    	var myAjax = new Ajax.Request(url,
+    	    {method: 'get', onComplete: ajax_personal_response}
+    	);
+		#end
+	}
+	function add_to_bookmark(sid,sname){
+		var random = Math.random()+'';
+		var url = '$link.setAction("html/bookmark")?sid=$g_site_id&parentId='+sid+'&parentType=5&eventSubmit_Add='+random+'&title='+sname;		
+    	var myAjax = new Ajax.Request(url,
+    	    {method: 'get', onComplete: ajax_personal_response}
+    	);
+	}
+	function ajax_personal_response(originalRequest) {
+		alert(originalRequest.responseText);
+    }
+</script>

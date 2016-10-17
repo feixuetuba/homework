@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.liusoft.dlog4j.beans">
+	
+
+	<class name="StyleBean" table="dlog_style"
+		batch-size="50" dynamic-update="true">
+		<id name="id" column="style_id">
+			<generator class="identity" />
+		</id>
+
+		<property name="name"					column="style_path_name" />
+		<property name="childName"				column="style_name " />
+		<property name="status"					column="style_status" />
+		<property name="css"  					column="style_css" />
+		<property name="preview_l_image" 		column="style_preview_l_image" />
+		<property name="preview_s_image" 		column="style_preview_s_image" />
+		<property name="explain" 				column="style_explain" />
+		<property name="type" 					column="style_type" />
+		<property name="count"					column="style_count" />
+		<property name="level"					column="style_level" />
+		<property name="createTime"				column="style_create_time" />
+		<property name="extend1" 				column="style_extend1" />
+		<property name="extend2" 				column="style_extend2" />
+		<property name="extend3"				column="style_extend3" />
+		<property name="extend4"				column="style_extend4" />
+	</class>
+</hibernate-mapping>

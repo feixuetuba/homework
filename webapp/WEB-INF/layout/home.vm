@@ -1,0 +1,53 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  home page of DLOG4J v3
+##
+###############################################################################
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<title>${page_title}</title>
+    <meta name="Keywords" content="DLOG4J,日记,博客,相册,音乐,论坛,${g_site.friendlyName}"/>
+	<meta name="Description" content="DLOG4J"/>
+	<meta name="Robots" content="index,follow"/>
+	<link rel="alternate" type="application/rss+xml" title="RSS" href="$link.getContextURL()/rss.vm" />
+	<link rel="stylesheet" href="$dlog.root()/styles/home.css" type="text/css" media="all"/>
+	<link rel="stylesheet" href="$dlog.root()/styles/global.css" type="text/css" media="all"/>
+	<link rel="shortcut icon" href="$dlog.root()/favicon.ico" />
+    <script type="text/javascript" src="$dlog.root()/js/common.js"></script>
+    <script type="text/javascript" src="$dlog.root()/js/prototype.js"></script>
+</head>
+<body>
+<div id="space_top">
+	#parse("/dlog/_sub/_home_bar.vm")
+	<div class="clear"></div>
+</div>
+<div class="clear"></div>
+<div id="space_body">
+    #parse("/dlog/_sub/_home_top.vm")
+	<div class="clear"></div>
+    ${screen_content}
+	<div class="clear"></div>
+</div>
+<div class="clear"></div>
+<div id="space_footer">
+	#parse("/dlog/_sub/_home_footer.vm")
+	<div class="clear"></div>
+</div>
+#invoke("_other.vm")
+</body>
+</html>

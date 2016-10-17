@@ -1,0 +1,12 @@
+<div class="side_module">
+    <div class="side_module_top">最新注册站点<span>(<a href="$dlog.root()/dlog/sites.vm">更多...</a>)</span></div>
+    <div class="side_module_content">
+    	<ul class="site_li">
+    		#set($sites = $DLOG4J_tool.list_newest_sites(1,30))
+    		#foreach($site in $sites)
+    			<li><a href="$dlog.root()/${site.uniqueName}">$text.html(${site.friendlyName})</a></li>
+    		#end
+    	</ul>
+		<div class="clear"></div>
+    </div>
+</div>

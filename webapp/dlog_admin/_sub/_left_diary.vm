@@ -1,0 +1,26 @@
+
+	#if($g_user)
+		
+	
+<div class="embed_module_top"></div>
+<div class="embed_module">
+	<div class="module_title"><b>日记管理分类</b></div>
+    <div class="module_content">
+        <span class="link_top"><b>日记管理</b></span>
+    	<span class="link"><a href="$dlog.root()/dlog_admin/diary/diary_list.vm?status=1">最新日记列表</a></span>
+    	<span class="link"><a href="$dlog.root()/dlog_admin/diary/diary_list.vm?status=2">热门日记列表</a></span>
+    	<span class="link"><a href="$dlog.root()/dlog_admin/diary/diary_list.vm?status=3">最新评论的日记</a></span>		
+		<span class="link"><a href="$dlog.root()/dlog_admin/diary/diary_rank.vm?status=1">日记访问排行榜</a></span>
+		<span class="link"><a href="$dlog.root()/dlog_admin/diary/diary_rank.vm?status=2">日记评论排行榜</a></span>
+		<span class="link"><a href="$dlog.root()/dlog_admin/diary/diary_recommend.vm">推荐日记管理</a></span>
+		<span class="link_top"><a href="$dlog.root()/dlog_admin/diary/diary_search.vm"><b>日记搜索</b></a></span>
+	
+		<span class="link_top"><a href="$dlog.root()/dlog_admin/diary/tags_list.vm"><b>日记关键字列表</b></a></span>
+    </div>
+    <div class="module_foot"></div>
+</div>
+<div class="embed_module_bottom"></div>	
+#else
+	#invoke("../login.vm")
+	#end
+

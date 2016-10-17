@@ -1,0 +1,1 @@
+<a href="$dlog.root()/${g_site.uniqueName}">$text.friendly_text(${g_site.friendlyName})</a>&gt;<a href="$dlog.root()/wml/mgr/?sid=$g_site_id">№ЬАн</a>

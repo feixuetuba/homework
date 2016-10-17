@@ -1,0 +1,92 @@
+#invoke("../_sub/_global.vm")
+#set($id=$dlog.param("id",0))## 模板id
+#set($name=$dlog.param("name",""))## 模板名称
+#if($g_user&&($admin_tool.roleIsAdmin($manager)))##用户是否登录&&(用户角色是否为管理员)
+
+
+<!DOCTYPE html PUBliC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Keywords" content="网记,DLOG,DLOG4J,Blog"/>
+    <title>网记 个人信息门户 DLOG.CN 后台管理</title>
+	<link rel="stylesheet" href="/styles/master.css" type="text/css" media="all"/>
+	<link rel="stylesheet" href="/styles/global.css" type="text/css" media="all"/>
+</head>
+<body>
+<div id="master">	
+	<div id="header">
+		<div class="logo">
+			<img src="/images/home/logo/dlog.gif" alt="网记个人信息门户 Logo" align="absmiddle" border="0"/>
+		</div>
+	</div>
+	<div>
+		<span class="link_top"></span><br />
+	<form action="$link.setAction('/html/admin/query')"  method="POST" name="form1" id="form1" >
+		<input type="hidden" name="id" id="id" value="" />
+		<input type="hidden" name="fromPage" value="$dlog.root()/dlog_admin/style/style_particular.vm?id=$id" />
+		<input type="hidden" name="submit" id="submit" value="" />
+	
+#if($name)	
+	#set($fileList=$admin_tool.getNameToFileList($name))
+		#foreach($l1 in $fileList)
+			#if($l1.type==0)
+				<div >|--<a href="#" >$l1.name</a></div>
+				#elseif($l1.type==1)##文件夹
+					<div >|+<a  href="javascript:clickItem('item_2_$velocityCount')">$l1.name</a></div>
+					<div id="item_2_$velocityCount" style="display:none">
+						#set($list2=$l1.flis)				
+						#foreach($l2 in $list2)
+							#if($l2.type==0)
+								<div>|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-<a href="#" >$l2.name</a></div>
+								#elseif($l2.type==1)
+									<div>|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|+<a href="javascript:clickItem('item_3_$velocityCount')" >$l2.name</a></div>
+									<div id="item_3_$velocityCount" style="display:none">
+										#set($list3=$l2.flis)				
+										#foreach($l3 in $list3)
+											<div>
+											|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--
+											<a href="#" >$l3.name</a>
+											</div>
+										#end
+									</div>
+								#end 
+						#end
+					</div>
+			#end 
+		#end
+		#end		
+	</form>
+</div>
+		
+</div>
+
+	<script type="text/javascript" >
+
+function clickItem(divID)
+{	
+	var item=$(divID);
+	
+	item.style.display=(item.style.display =='none')?'':'none';	
+
+}
+	
+function $(id)
+{
+	return document.getElementById(id)
+}
+function EventSubmit(id,event)
+{
+	document.getElementById('id').value=id;
+	document.getElementById('submit').name=event;
+	document.getElementById('form1').submit();
+}
+	</script>
+	#else
+	##没有超级管理员权限
+	对不起,您没有权限.
+#end
+</body>
+</HTML>
+
+	

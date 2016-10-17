@@ -1,0 +1,33 @@
+<ul class="diary_info">
+	#if($log.lastTime)
+		<li>删除时间：$date.format("yyyy-MM-dd HH:mm",$log.lastTime)</li>
+	#end
+	<li class="catalog_name">分类：<a href="$dlog.root()/html/diary/?sid=$g_site_id&amp;cat_id=$log.catalog.id">${log.catalog.name}</a></li>
+	#if(${log.replyCount}>5)
+		<li class="diary_comments"><a href="$dlog.root()/html/diary/showlog.vm?sid=$g_site_id&amp;cat_id=$catalog_id&amp;log_id=${log.id}#replies">评论(${log.replyCount})</a></li>
+	#else
+		<li class="diary_comment"><a href="$dlog.root()/html/diary/showlog.vm?sid=$g_site_id&amp;cat_id=$catalog_id&amp;log_id=${log.id}#replies">评论(${log.replyCount})</a></li>
+	#end
+	#if(${log.viewCount}>1000)
+		<li class="diary_views">阅读(${log.viewCount})</li>
+	#else
+		<li class="diary_view">阅读(${log.viewCount})</li>
+	#end
+	
+	<li class="diary_trackback">$text.ui("label.diary.trackback")(#if(${log.trackBackCount}>0)<a href="$dlog.root()/html/trackbacks.vm?sid=$g_site_id&amp;log_id=${log.id}">#end${log.trackBackCount}#if(${log.trackBackCount}>0)</a>#end)</li>
+	<li class="diary_setting" onmouseover="showMenu('dlog_${log.id}')" onmouseout="hideMenu('dlog_${log.id}')"><b>操作</b>
+		<ul id="dlog_${log.id}" class="diary_setting_ul">
+			#if($DIARY_tool.can_user_edit_diary($g_user, $log))
+				<li class="action_delete"><a href="#" onclick="if(confirm('您确实要彻底删除该日记吗？')) deleteForm_${log.id}.submit(); return false;">彻底删除</a></li>
+				<li class="action_Undelete"><a href="$link.setAction("html/diary")?sid=$g_site_id&amp;eventSubmit_Undelete=$log.id">恢复此文</a></li>
+            #end
+		</ul>
+	</li>
+</ul>
+<form name="deleteForm_${log.id}" action="$link.setAction("html/diary")" method="post">
+    <input type="hidden" name="sid" value="${g_site_id}"/>
+    <input type="hidden" name="id" value="${log.id}"/>
+    <input type="hidden" name="fromPage" value="$dlog.get_request_url()"/>
+    <input type="hidden" name="eventSubmit_DeleteFromTrash" value="${log.id}"/>
+</form>
+<div class="clear"></div>

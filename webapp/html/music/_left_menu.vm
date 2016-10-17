@@ -1,0 +1,5 @@
+<div class="side_module_top"></div>
+<div class="side_module catalog_tree">#parse("/html/music/_catalog_tree.vm")</div>
+<div class="side_module site_stat">#parse("/html/_sub/_site_stat.vm")</div>
+<div class="side_module site_support">#parse("/html/_sub/_site_support.vm")</div>
+<div class="side_module_bottom"></div>

@@ -1,0 +1,39 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  Define common global variable of DLOG,HTML,WML
+##
+###############################################################################
+#if(!$g_site_id)
+#set($g_site_id = $dlog.param("sid",-1))
+#set($g_site = $dlog.site($g_site_id))
+#end
+#if(!$g_user_id)
+#set($g_user_id = -1)
+#set($g_user = $dlog.get_current_user())
+#if($g_user)#set($g_user_id = ${g_user.id})#end
+#end
+#set($wap_home_url="http://wap.dlog.cn")
+#set($web_home_url="http://www.dlog.cn")
+##set($wap_home_url="$dlog.root()/wml")
+##set($web_home_url=$dlog.root())
+#set($page_title = "DLOG4J")
+#set($service_email = "javayou@gmail.com")
+#set($site_name = "DLOG4J")
+set($wap_home_url="http://blog")
+set($web_home_url="http://blog")
+set($page_title = "PBLOG")
+set($service_email = "feixuetuba@126.com")
+set($site_name = "个人blog")

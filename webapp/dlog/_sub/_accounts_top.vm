@@ -1,0 +1,1 @@
+<div class="logo"><a href="#" onclick="location.href='$dlog.root()/dlog/index.vm';">$html.img("home/logo/dlog.gif",null,"网记个人信息门户 Logo","absmiddle",0)</a></div>

@@ -1,0 +1,2 @@
+<a href="$wap_home_url">Ê×Ò³</a>
+#if($g_site)&gt;<a href="$dlog.root()/${g_site.uniqueName}">$text.friendly_text(${g_site.friendlyName})</a>#end

@@ -1,0 +1,21 @@
+<div class="side_module_top"><b>$text.ui("label.site_stat")</b></div>
+<div class="side_module_content">
+	<ul>
+    	#set($ssi = $STAT_tool.get_site_stat_info($g_site))
+    	#set($dsi = $STAT_tool.get_dlog_stat_info($g_site))
+		<li class="site_createTime">本站创建于<b>$date.format("yyyy/MM/dd", ${g_site.createTime})</b></li>
+    	<li class="dsi_article">日记：<b>$!{dsi.article}</b>篇</li>
+		<li class="dsi_photo">照片：<b>$!{dsi.photo}</b>张</li>
+		<li class="dsi_music">音乐：<b>0</b>首</li>
+    	##<li>话题：$!{dsi.topic} 篇</li>
+    	<li class="dsi_replyCount">评论：<b>$!{dsi.replyCount}</b>条</li>
+		<li class="dsi_tag">标签：0 个</li>
+    	<li class="dsi_user">注册用户：<a href="$dlog.root()/html/users.vm?sid=${g_site.id}">$!{dsi.user}</a>个</li>
+    	<li class="ssi_today">今日访问：$!{ssi.uvToday}</li>
+    	<li class="ssi_week">本周访问：$!{ssi.uvThisWeek}</li>
+    	<li class="ssi_monthk">本月访问：$!{ssi.uvThisMonth}</li>
+    	<li class="ssi_total">全部访问：$!{ssi.uvTotal}</li>
+	</ul>
+	<div class="clear"></div>
+</div>
+<div class="side_module_bottom"></div>

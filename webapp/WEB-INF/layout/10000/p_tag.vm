@@ -1,0 +1,15 @@
+#set($current_menu_item = 9)
+#set($left_template = "/html/_sub/_main_left.vm")
+#html_doctype()
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head>
+    #invoke("../_head.vm")
+</head>
+<body>
+#if($g_site)
+    #invoke("_screen.vm")
+#else
+	#parse("/html/_sub/_site_not_available.vm")
+#end
+</body>
+</html>

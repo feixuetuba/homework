@@ -1,0 +1,28 @@
+#set($objs = $SEARCH_tool.search_site($key))
+共有<b>${objs.size()}</b>项符合<b>${key}</b>的查询结果，(搜索用时<b>${SEARCH_tool.get_search_time()}</b>毫秒)<br/><br/>
+#if($objs && $objs.size() > 0)
+<table cellspacing=1 cellpadding=3 width="100%" border="0" class="table">
+<tr class="table_head">
+    <td nowrap><b>序号</b></td>
+    <td align="center"><b>网站名</b></td>
+    <td align="center"><b>站长</b></td>
+    <td align="center"><b>是否在线</b></td>
+    <td align="center"><b>开通时间</b></td>
+</tr>
+#foreach($obj in $objs)
+<tr class="table_cell">
+    <td align="right" nowrap><b>${velocityCount}</b></td>
+    <td><a href="$dlog.root()/${obj.uniqueName}">$text.html(${obj.friendlyName})</a></td>
+    <td><a href="$dlog.root()/dlog/viewuser.vm?sid=$g_site_id&amp;uid=${obj.owner.id}">$text.html(${obj.owner.nickname})</a></td>
+    <td align="center"> 
+		#if(${obj.owner.onlineStatus}==1)
+		$html.img("online.gif","当前在线",null,"absmiddle",0)
+		#else
+		$html.img("offline.gif","当前离线",null,"absmiddle",0)
+		#end 
+	</td>
+    <td nowrap>$date.format("yyyy/MM/dd HH:mm",${obj.createTime})</td>
+</tr>
+#end
+</table>
+#end

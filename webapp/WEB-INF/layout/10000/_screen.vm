@@ -1,0 +1,15 @@
+<div id="layout_10000">
+	<div id="operation_bar">#parse("/html/_sub/_operation_bar.vm")</div>
+    <div id="screen">
+    	<div id="banner">#parse("/html/_sub/_banner.vm")</div>
+    	<div id="function">#parse("/html/_sub/_function.vm")</div>
+    	<div id="body">
+        	<div id="side_template">
+				#parse($left_template)
+			</div>
+    		<div id="screen_content">${screen_content}</div>
+        </div>
+    	<div id="bottom">#parse("/html/_sub/_bottom.vm")</div>
+    </div>
+</div>
+#invoke("../_other.vm")

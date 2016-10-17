@@ -1,0 +1,15 @@
+#set($PAGE_SIZE = 10)
+#set($obj_count = $SEARCH_tool.search_diary_count($g_site, $g_user, $key))
+#if($obj_count > 0)
+#set($page_count = $dlog.page_count($obj_count, $PAGE_SIZE))
+共${obj_count}条,第${p_page}页,共${page_count}页,每页${PAGE_SIZE}条.<br/>
+#wml_pager("$dlog.root()/wml/search.vm?sid=$g_site_id&amp;scope=$scope&amp;key=$link.encodeURL($key)" $p_page $page_count)<br/>
+#set($objs = $SEARCH_tool.search_diary($g_site, $g_user, $key, $p_page, $PAGE_SIZE))
+#foreach($obj in $objs)
+	${velocityCount}.<a href="$dlog.root()/wml/diary/show.vm?sid=${obj.site.id}&amp;log_id=${obj.id}">$text.html(${obj.title})</a>($date.format("yyyy/MM/dd HH:mm",${obj.writeTime}))<br/>
+#end
+#if($page_count>1)
+#wml_pager("$dlog.root()/wml/search.vm?sid=$g_site_id&amp;scope=$scope&amp;key=$link.encodeURL($key)" $p_page $page_count)<br/>
+#wml_gopage("$dlog.root()/wml/search.vm?sid=$g_site_id&amp;scope=$scope&amp;key=$link.encodeURL($key)" $p_page $page_count)
+#end
+#end

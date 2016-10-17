@@ -1,0 +1,15 @@
+	#if($g_user)
+<div class="embed_module_top"></div>
+<div class="embed_module">
+	<div class="module_title"><b>风格管理分类</b></div>
+    <div class="module_content">
+        <span class="link_top"><b><a href="$dlog.root()/dlog_admin/style/style_list.vm">风格列表</a></b></span>
+		 <span class="link_top"><b><a href="$dlog.root()/dlog_admin/style/style_add.vm">添加风格</a></b></span>
+		<span class="link_top"><a href="$dlog.root()/dlog_admin/style/style_rank.vm"><b>风格排行榜</b></a></span>
+    </div>
+    <div class="module_foot"></div>
+</div>
+<div class="embed_module_bottom"></div>
+#else
+	#invoke("../login.vm")
+	#end

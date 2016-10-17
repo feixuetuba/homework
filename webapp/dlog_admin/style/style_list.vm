@@ -1,0 +1,173 @@
+#invoke("../_sub/_global.vm")
+#set($layout = "master.vm")
+#set($left_template = "/dlog_admin/_sub/_left_style.vm")
+#set($nav_template = "/dlog_admin/_sub/_nav_style.vm")
+
+
+	
+	
+##用户是否登录&&(超级权限||美工)
+#if($g_user&&($admin_tool.popIsSuper($manager)||$admin_tool.roleIsStyle($manager)))
+##删除 修改
+#set($pop1=($admin_tool.popIsAll($manager)||$admin_tool.popIsOperate($manager)||$admin_tool.popIsSuper($manager)))
+##推荐 屏蔽
+#set($pop2=($admin_tool.popIsAll($manager)||$admin_tool.popIsManage($manager)||$admin_tool.popIsSuper($manager)))
+
+#set($COUNT_PER_PAGE = 10)##每页显示
+#set($_count =$admin_tool.style_count())##站点总数
+#set($p_page = $dlog.param("p", 1))##当前页 默认1
+#set($page_count = $dlog.page_count($_count, $COUNT_PER_PAGE))##总页数(计算)
+##检查当前页索引
+#if($p_page > $page_count)
+	#set($p_page = $page_count)
+		#elseif($p_page < 1)
+				#set($p_page = 1)
+#end
+#set($pre_page = $p_page - 1)##上一页
+#set($next_page = $p_page + 1)##下一页
+#set($lists=$admin_tool.style_main_list($p_page, $COUNT_PER_PAGE))
+
+[风格列表]
+	#set($url="$dlog.root()/dlog_admin/style/style_list.vm?status=1")
+<div class="page_top">
+	##索引
+	#invoke("/dlog_admin/page_index.vm")
+</div>
+<br /><br />
+<tbody>
+<form action="$link.setAction('/html/admin/query')"  method="POST" name="form1" id="form1" >
+		<input type="hidden" name="id" id="id" value="">
+		<input type="hidden" name="fromPage" value="$url">
+		<input type="submit" name="submit" id="submit" value="" style="display:none">
+		
+			<table border="0" cellpadding="3" cellspacing="1" class="table_list">				
+						<tr class="titles">
+							<td></td>
+							<td>名称</td>
+							<td>子模板名称</td>
+							<td>模板状态</td>
+							<td>使用权限</td>
+							<td>css文件</td>
+							<td>浏览图文件</td>
+							<td>缩略图文件</td>						
+							<td>统计</td>
+							<td>操作</td>
+						</tr>
+				
+						#foreach($l in $lists)
+						<tr #if(${l.status} == -1) class="titles" #else class="contents"  #end>
+							<td title="${l.createTime}">
+								#if($admin_tool.isNewCreate($l.createTime))
+									新
+									#else
+							#end</td>
+							
+							<td><a href="#" title="$!{l.explain}">${l.name}</a></td>	
+							<td><a title="">${l.childName}</a></td>		
+							<td>
+				#if(${l.status}==0)
+					<a #if($pop1) href="javascript:EventSubmit($l.id,'eventSubmit_ShieldStyle')" title="点击关闭 为屏蔽状态" #end>
+						开启状态
+					</a>
+				#elseif(${l.status}==1)
+					<a #if($pop1) href="javascript:EventSubmit($l.id,'eventSubmit_CancelShieldStyle')" title="点击开启 为显示状态" #end>
+						关闭状态						
+					</a>
+				#elseif(${l.status}==-1)
+					<a href="#" title="">
+						异常状态
+					</a>
+				#end
+				</td>
+			<td>
+				#if(${l.type}==0)
+					<a #if($pop1) href="javascript:EventSubmit($l.id,'eventSubmit_VipStyle')" title="点击切换 为VIP用户" #end>
+						所有用户
+					</a>
+				#elseif(${l.type}==1)
+					<a #if($pop1) href="javascript:EventSubmit($l.id,'eventSubmit_CancelVipStyle')" title="点击切换 为所有用户" #end>
+						VIP用户
+					</a>
+				#end
+			</td>			
+					<td>${l.css}</td>
+					<td>${l.preview_l_image}</td>
+					<td>${l.preview_s_image}</td>			
+					<td>
+				#if(${l.count}>0)
+					##<a href="javascript:EventSubmit(0,'A')" title="点击查看用户列表"></a>
+					${l.count}
+						#else 
+							${l.count}
+				#end				
+				</td>
+				<td   >
+					#if($l.level==1&&${l.status}!=-1&&$pop2)
+						<a href="javascript:EventSubmit($l.id,'eventSubmit_RecommendStyle')">推荐</a>&nbsp;&nbsp;
+					#elseif($l.level>0&&${l.status}!=-1&&$pop2)
+						<a href="javascript:EventSubmit($l.id,'eventSubmit_CancelRecommendStyle')">取消推荐</a>&nbsp;&nbsp;
+					#end
+					#if($pop1)
+						<a href="javascript:EventSubmit($l.id,'eventSubmit_DeleteStyle')">删除</a>&nbsp;&nbsp;
+						<a href="#" onclick="editStyle($l.id);">修改</a>&nbsp;&nbsp;
+					#end
+								</td>							
+					</tr>			
+		#end
+		
+	</table>
+</form>
+</tbody>
+
+<div class="page_top">
+	##索引
+	#invoke("/dlog_admin/page_index.vm")
+</div>
+	</div>
+
+
+<link rel="stylesheet" href="$dlog.root()/css/default_002.css" type="text/css" media="all"/>
+<link rel="stylesheet" href="$dlog.root()/css/alphacube.css" type="text/css" media="all"/>
+<script type="text/javascript" src="$dlog.root()/js/prototype_160.js"></script>
+<script type="text/javascript" src="$dlog.root()/js/window.js"></script>
+<script>
+var global;
+function clickItem(obj,divID)
+{	
+	var item=$(divID);
+	if(global)
+		global.style.display=(global.style.display =='none')?'':'none';	
+	if(global==item)
+		return
+	item.style.display=(item.style.display =='none')?'':'none';	
+	global=item;
+}
+
+function EventSubmit(id,event)
+{
+	$('id').value=id;
+	$('submit').name=event;
+	$('submit').click();
+}
+
+function editStyle(arg0)
+{
+	if(!$("__editStyle"))
+	{
+		Window.hasEffectLib = false;
+		var win = new Window("__editStyle", {className: "alphacube", title:"修改", url: "$dlog.root()/dlog_admin/style/ajax/edit_style.vm?id="+arg0,width:400,height:280,maximizable:false,minimizable:false});
+		win.setDestroyOnClose();
+		win.showCenter();
+	}
+}
+
+
+function closeEditStyle(){
+	location.href="$url?p=$p_page";
+}
+</script>
+	#else
+	##没有超级管理员权限
+	对不起,您没有权限.
+#end
+

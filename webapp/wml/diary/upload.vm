@@ -1,0 +1,36 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  diary's photo upload (xhtml)
+##
+###############################################################################
+#parse("/wml/_sub/_xhtml_global.vm")
+#set($page_title="上传图片")
+#set($fromPage = $dlog.param("fromPage","/wml/diary/write.vm?sid=$g_site_id"))
+<div id="space_info">
+	图片上传总空间: <b>${g_site.capacity.diaryTotalFriendly}</b>&nbsp;
+	已用空间: <b>${g_site.capacity.diaryUsedFriendly}</b>&nbsp;
+	空间利用率: <b>${g_site.capacity.diarySpacePercent} %</b>
+</div>
+#wml_error_msg()
+<div id="note">注意事项:只能上传".jpg"和".gif"和格式的图片。</div>
+<div id="form">
+<form action="$link.setAction("wml/diary")" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="sid" value="$g_site_id"/>
+	#if($g_user)<input type="hidden" name="uuid" value="${g_user.uniqueCode}"/>#end
+   	图片文件:<input type="file" name="photo1"/>
+   	<input type="submit" name="eventSubmit_Upload" value="上传图片" />
+</form>
+</div>

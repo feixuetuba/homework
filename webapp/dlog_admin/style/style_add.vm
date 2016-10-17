@@ -1,0 +1,161 @@
+#invoke("../_sub/_global.vm")
+#set($layout = "master.vm")
+#set($left_template = "/dlog_admin/_sub/_left_style.vm")
+#set($nav_template = "/dlog_admin/_sub/_nav_style.vm")
+##权限 删除 修改
+#set($manage1=($admin_tool.popIsAll($manager)||$admin_tool.popIsOperate($manager)||$admin_tool.popIsSuper($manager)))
+##用户是否登录&&(管理员||美工||权限超级)
+#if($g_user&&($admin_tool.popIsSuper($manager)||$admin_tool.roleIsStyle($manager))&&$manage1)
+
+#set($name= $dlog.param("name"))
+<form action="$link.setAction('/html/admin/query')"  method="POST" name="form1" id="form1" onsubmit="return checkValue()">
+	<input type="hidden" name="eventSubmit_CreateStyle" id="submit" value="submit">
+	<input type="hidden" name="fromPage" id="fromPage" value="/dlog_admin/style/style_add.vm">
+	<input type="hidden" name="" id="" value="">
+<table >
+<tr >
+	<div>[添加]</div>
+</tr>
+<tr >
+	<td >路径:	
+	</td>
+	<td >
+		<input type="text" value="" name="name" id="name" />&nbsp;
+		&lt;<a href="javascript:addNmae()">浏览</a>&gt;
+
+	</td>
+</tr>
+
+<tr >
+	<td >风格名称:
+	</td>
+	<td ><input type="text" value="" name="childName" id="childName" />
+	</td>
+</tr>
+
+<tr >
+	<td >css:
+	</td>
+	<td ><input type="text" value="" name="css" id="css" />&nbsp;
+		&lt;<a href="javascript:addNmaeCss('name')">浏览</a>&gt;
+	</td>
+</tr>
+<tr >
+	<td >显示状态
+	</td>
+	<td >
+		<input type="radio" name="status"  value="0" checked="checked"/>开启
+		<input type="radio" name="status"  value="1" />关闭
+	</td>
+</tr>
+
+<tr >
+	<td >显示类型
+	</td>
+	<td >
+		<input type="radio" name="type"  value="0" checked="checked" />所有用户
+		<input type="radio" name="type"  value="1" />VIP用户
+	</td>
+</tr>
+
+<tr >
+	<td >注释
+	</td>
+	<td >
+		<textarea  name="explain" id="explain" >
+		</textarea>
+	</td>
+</tr>
+<tr >
+	<td ><input type="button"  value="提交" onclick="suForm()" >
+	</td>
+	<td >
+	</td>
+</tr>
+</table>
+</form>
+<link rel="stylesheet" href="$dlog.root()/css/default_002.css" type="text/css" media="all"/>
+<link rel="stylesheet" href="$dlog.root()/css/alphacube.css" type="text/css" media="all"/>
+<script type="text/javascript" src="$dlog.root()/js/prototype_160.js"></script>
+<script type="text/javascript" src="$dlog.root()/js/window.js"></script>
+<script>
+function addNmae()
+{
+	if(!$("__addName"))
+	{
+		Window.hasEffectLib = false;
+		var win = new Window("__addName", {className: "alphacube", title:"选择路径", url: "$dlog.root()/dlog_admin/style/ajax/show_name.vm",width:400,height:280,maximizable:false,minimizable:false});
+		win.setDestroyOnClose();
+		win.showCenter();
+	}
+}
+function closeAddNmae(){Windows.close('__addName');}
+
+function addNmaeCss(arg3)
+{
+
+	if($(arg3).value=="")
+	{
+		addNmae();
+		return;
+	}
+	if(!$("__addNameC"))
+	{
+		Window.hasEffectLib = false;
+		var win = new Window("__addNameCss", {className: "alphacube", title:"选择"+$(arg3).value+"目录下的css文件", url: "$dlog.root()/dlog_admin/style/ajax/show_css.vm?name="+$(arg3).value,width:400,height:280,maximizable:false,minimizable:false});
+		win.setDestroyOnClose();
+		win.showCenter();
+	}
+}
+function closeAddNmaeCss(){Windows.close('__addNameCss');}
+
+function clickName(arg)
+{
+	$("name").value=arg
+	closeAddNmae();
+}
+
+function clickNameCss(arg)
+{
+	$("css").value=arg
+	closeAddNmaeCss();
+}
+
+function EventSubmit(id,event)
+{
+	
+	
+	document.getElementById('id').value=id;
+	document.getElementById('submit').name=event;
+	document.getElementById('form1').submit;
+}
+
+function checkValue()
+{
+	if(($('name').value=="")||($('css').value==""))
+	{
+		alert('请输入完整信息')
+		return false;
+	}
+}
+
+
+function suForm()
+{
+	new Ajax.Request('$link.setAction('/html/admin/query')',{
+	method: 'post',parameters: $('form1').serialize(),
+	onComplete: ajax_personal_response});
+	}
+function ajax_personal_response(originalRequest) {
+		alert(originalRequest.responseText);
+		parent.closeEditStyle();
+}
+	
+
+
+</script>
+ 	#else
+	##没有超级管理员权限
+	对不起,您没有权限.
+#end
+

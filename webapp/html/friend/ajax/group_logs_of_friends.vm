@@ -1,0 +1,25 @@
+#parse("/WEB-INF/layout/_global.vm")
+#set($LOG_COUNT = 10)
+#set($groupid = $dlog.param("group_id"))
+#set($userid = ${dlog.toInt($dlog.param("userid"))})
+#set($logs = '')
+#set($logs = $FRIEND_tool.list_diarys_of_friends($userid,0,$LOG_COUNT,$groupid ))
+
+<hr size="1" noshade color="#CCCCCC"/>
+<strong>好友最新日志:</strong>#if($logs.size()<=0) 无内容现实 #end
+<table cellspacing="1" cellpadding="3" border="0" class="table" width="100%">
+	<tr class="table_head">
+		<td nowrap></td>
+		<td><b>日记标题</b></td>
+		<td nowrap><b>网记</b></td>
+		<td nowrap><b>发表时间</b></td>
+	</tr>
+#foreach($log in $logs)
+	<tr class="table_cell">
+		<td><b>$velocityCount</b></td>
+		<td><a href="$dlog.root()/html/diary/showlog.vm?sid=${log.site.id}&amp;log_id=${log.id}">$text.friendly_text(${log.title})</a></td>
+		<td nowrap><a href="$dlog.root()/${log.site.uniqueName}">$text.friendly_text(${log.site.friendlyName})</a></td>
+		<td nowrap>$date.format("MM-dd EEE HH:mm",${log.createTime},${request.locale})</td>
+	</tr>
+#end
+</table>

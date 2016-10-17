@@ -1,0 +1,18 @@
+一个模板是由一套布局文件(vm)和样式文件(css)组成
+
+布局文件->/WEB-INF/layout/xxx
+样式文件->/styles/xxx
+
+每个样式文件都要对应两个gif图片
+例如 main.css 对应的是一个模板预览图 main.gif 和略缩图 main_s.gif 
+
+布局文件如下:(一套模板至少要有下面几个布局控制文件)
+
+p_main.vm 	: 空间首页以及友情链接等相关的布局控制
+p_diary.vm	: 日记相关页面的布局
+p_photo.vm	: 相册相关的页面布局
+p_music.vm	: 音乐相关的页面布局
+p_bbs.vm	: 论坛相关的页面布局
+p_guestbook.vm	: 留言簿相关的页面布局
+p_setting.vm: 管理功能相关的页面布局
+p_friend.vm : 好友相关的页面布局

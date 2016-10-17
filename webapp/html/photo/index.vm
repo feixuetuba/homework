@@ -1,0 +1,87 @@
+#parse("/html/_sub/_global.vm")
+#select_layout("p_photo.vm")
+#set($page_title=$text.photo($g_site))
+###############################################################################
+#set($list = $PHOTO_tool.list_albums_view($g_site))
+
+
+
+<table border="0" cellspacing="5" cellpadding="5" width="100%">
+	<tr >
+		<td width="20%"></td>	
+		<td width="20%"></td>			
+		<td width="20%"></td>	
+		<td width="20%"></td>	
+		<td width="20%"></td>	
+	</tr>
+	#if($list.size()==0)
+		您未创建相册
+		#end
+			#foreach($l in $list)	
+				
+				#if((($velocityCount+5) %5) ==1)
+        		<tr>	
+				#end
+				
+				<td  class="photo_box" valign="bottom">						
+        			<div class="photo_cen">
+						#if($l.type!=4)
+							<a href="$dlog.root()/html/photo/photo_list.vm?sid=$g_site.id&aid=$l.id">
+							##封面
+							#if($l.cover)
+							<img src="$dlog.root()$l.cover.previewURL"  border="0" width="100"/>
+							#else
+							<img src="$dlog.root()/images/html/sharing/portrait/nophoto.gif"  border="0" width="100"/>
+							#end
+							</a>
+						#else
+							<a href="$dlog.root()/html/photo/diary_photo.vm?sid=$g_site.id&id=$g_user.id">
+							##封面
+							#if($l.photoCount>0)
+							<img src="$dlog.root()$l.cover.previewURL"  border="0" width="100"/>
+							#else
+							<img src="$dlog.root()/images/html/sharing/portrait/nophoto.gif"  border="0" width="100"/>
+							#end
+							</a>
+						#end
+						
+					</div>
+        			<div class="photo_name">
+						#if($l.type!=4)
+							<a href="$dlog.root()/html/photo/photo_list.vm?sid=$g_site.id&aid=$l.id">
+								$l.name&nbsp;
+							</a>
+						#elseif($l.type==4)
+							<a href="$dlog.root()/html/photo/diary_photo.vm?sid=$g_site.id&id=$g_user.id">
+								$l.name&nbsp;
+							</a>
+						#end
+					</div>	
+					<div class="photo_name">
+							<span align="">$l.photoCount 张</span>
+							#if(1==1&&$l.type!=4)
+							<a href="$dlog.root()/html/photo/album_edit.vm?sid=$g_site.id&aid=$l.id">$html.img("$dlog.root()/html/icon/default/icon_edit.gif","修改")
+							</a>
+							<a href="$link.setAction("/html/album")?sid=1&eventSubmit_Delete=7">$html.img("$dlog.root()/html/icon/default/icon_delete.gif","删除")
+							</a>
+									
+							#end
+							#if($l.type==0)
+								$html.img("$dlog.root()/html/icon/default/priv_1.gif","公开")
+							#elseif($l.type==1)
+								$html.img("$dlog.root()/html/icon/default/priv_2.gif","访问需要密码")
+							#elseif($l.type==2)
+								$html.img("$dlog.root()/html/icon/default/priv_3.gif","私有")
+							#elseif($l.type==4)
+								$html.img("$dlog.root()/html/icon/default/priv_4.gif","贴图相册")
+							#end
+					</div>	
+                </td>
+				#if((($velocityCount+5) %5) ==0||$l.size()==$velocityCount)
+					</tr>
+				#end
+			#end
+			
+			
+        
+	</table>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+	<session-factory>
+
+		<property name="connection.provider_class">
+			com.liusoft.dlog4j.db.DataSourceConnectionProvider
+		</property>
+
+		<!-- ********** database relative settings ********** -->
+		<!-- MySQL 3/4/5 -->
+		<!-- ?useUnicode=true&amp;characterEncoding=GBK -->
+
+		<property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+		<property name="dscp.driverClassName">com.mysql.jdbc.Driver</property>
+		<property name="dscp.url">jdbc:mysql://localhost/blog</property>
+		<property name="dscp.username">root</property>
+		<property name="dscp.password">admin</property>
+
+		<!-- Microsoft SQLServer (via jTDS)
+			
+			<property name="dialect">org.hibernate.dialect.SQLServerDialect</property>
+			<property name="dscp.driverClassName">net.sourceforge.jtds.jdbc.Driver</property>
+			<property name="dscp.url">jdbc:jtds:sqlserver://localhost:1433/dlog4j_e35;useCursors=true</property>				
+			<property name="dscp.username">sa</property>
+			<property name="dscp.password">l4444444</property>	
+		-->
+		<!-- 
+			<property name="dialect">org.hibernate.dialect.SQLServerDialect</property>
+			<property name="dscp.driverClassName">net.sourceforge.jtds.jdbc.Driver</property>
+			<property name="dscp.url">jdbc:jtds:sqlserver://192.168.0.110:1433/HYZQ_DLOG4J;useCursors=true</property>	 
+			<property name="dscp.username">sa</property>
+			<property name="dscp.password">password</property>	
+		-->
+		<!-- ********** database independence settings ********** -->
+		<!-- Connection Pool using DBCP -->
+		<property name="dscp.datasource">org.apache.commons.dbcp.BasicDataSource</property>
+		<property name="dscp.initialSize">1</property>
+		<property name="dscp.maxActive">200</property>
+		<property name="dscp.maxIdle">5</property>
+		<property name="dscp.maxWait">1000</property>
+		<property name="dscp.defaultAutoCommit">false</property>
+		<property name="dscp.poolPreparedStatements">true</property>
+		<property name="dscp.maxOpenPreparedStatements">1000</property>
+		<!-- TRANSACTION_READ_UNCOMMITTED -->
+		<property name="dscp.defaultTransactionIsolation">1</property>
+
+		<!-- ********** global settings ********** -->
+		<property name="show_sql">true</property>
+		<property name="use_outer_join">false</property>
+		<property name="default_batch_fetch_size">20</property>
+		<property name="jdbc.batch_size">100</property>
+		<property name="jdbc.use_scrollable_resultset">true</property>
+		<property name="jdbc.use_reflection_optimizer">true</property>
+		<property name="jdbc.use_get_generated_keys">true</property>
+
+		<property name="cache.use_query_cache">true</property>
+		<property name="cache.use_second_level_cache">true</property>
+		<!--property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property-->
+		<property name="cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</property>
+		<!--
+			<property name="cache.provider_class">com.liusoft.cache.memcached.MemcachedCacheProvider</property>
+		-->
+
+		<property name="memcached.servers">192.168.56.101:11211,192.168.56.101:11210</property>
+		<property name="memcached.failover">true</property>
+		<property name="memcached.initConn">5</property>
+		<property name="memcached.minConn">5</property>
+		<property name="memcached.maxConn">200</property>
+		<property name="memcached.maintSleep">30</property>
+		<property name="memcached.nagle">false</property>
+		<property name="memcached.socketTO">3000</property>
+		<property name="memcached.aliveCheck">true</property>
+
+		<property name="memcached.org.hibernate.cache.UpdateTimestampsCache">120s</property>
+		<property name="memcached.org.hibernate.cache.StandardQueryCache">120s</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.TypeBean">1d</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.ConfigBean">1d</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.SiteBean">6h</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.SiteBean.links">6h</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.SiteBean.catalogs">6h</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.SiteBean.albums">6h</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.SiteBean.songs">6h</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.UserBean">2h</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.LinkBean">2h</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.CatalogBean">2h</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.DiaryBean">5m</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.DiaryOutlineBean">5m</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.ForumBean">2h</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.TopicBean">5m</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.TopicOutlineBean">5m</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.AlbumBean">2h</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.AlbumBean.childs">2h</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.PhotoBean">5m</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.PhotoOutlineBean">5m</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.MusicBoxBean">2h</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.MusicBoxBean.songs">2h</property>
+		<property name="memcached.com.liusoft.dlog4j.beans.MusicBean">12h</property>
+
+
+
+
+		<property name="memcached.DLOG4J_layouts">30m</property>
+		<property name="memcached.DLOG4J_sites">30d</property>
+		<property name="memcached.DLOG4J_vhosts">1d</property>
+		<property name="memcached.DLOG4J_channels">12h</property>
+		<property name="memcached.DLOG4J_tags">6h</property>
+		<property name="memcached.DLOG4J_hot_tags">12h</property>
+		<property name="memcached.vstat">2m</property>
+		<property name="memcached.dlog_home_info">5m</property>
+		<property name="memcached.query.new_diarys">5m</property>
+		<property name="memcached.query.new_users">30m</property>
+		<property name="memcached.query.rec_diarys">10m</property>
+		<property name="memcached.query.hot_diarys">2h</property>
+		<property name="memcached.query.hot_photos">2h</property>
+		<property name="memcached.query.hot_topics">2h</property>
+		<property name="memcached.query.newest.sites">10m</property>
+		<property name="memcached.query.diary_calendar">1d</property>
+		<property name="memcached.query.photo_calendar">1d</property>
+		<property name="memcached.query.new_msg_count">5m</property>
+		<property name="memcached.query.data_of_friends">2h</property>
+		<property name="memcached.query.query.new_replies_of_site">10m</property>
+
+		<!-- ********** beans mapping ********** -->
+		<mapping resource="com/liusoft/dlog4j/hbm/dlog.hbm.xml" />
+		<mapping resource="com/liusoft/dlog4j/hbm/core.hbm.xml" />
+		<mapping resource="com/liusoft/dlog4j/hbm/diary.hbm.xml" />
+		<mapping resource="com/liusoft/dlog4j/hbm/photo.hbm.xml" />
+		<mapping resource="com/liusoft/dlog4j/hbm/music.hbm.xml" />
+		<mapping resource="com/liusoft/dlog4j/hbm/bbs.hbm.xml" />
+		<mapping resource="com/liusoft/dlog4j/hbm/query.hbm.xml" />
+		<mapping resource="com/liusoft/dlog4j/hbm/other.hbm.xml" />
+		<!-- ********** DOLG 3.5********** -->
+		<mapping resource="com/liusoft/dlog4j/hbm/message.hbm.xml" />
+		<mapping resource="com/liusoft/dlog4j/hbm/friend.hbm.xml" />
+		<mapping resource="com/liusoft/dlog4j/hbm/admin.hbm.xml" />
+	</session-factory>
+
+</hibernate-configuration>

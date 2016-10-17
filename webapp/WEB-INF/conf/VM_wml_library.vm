@@ -1,0 +1,26 @@
+#*
+ * Copyright 2005 Liusoft
+ *
+ * $Id: VM_wml_library.vm,v 1.5 2006/04/27 03:26:06 liudong Exp $
+ *#
+
+#macro(wml_error_msg)
+#if($messages.exist())<b>$!messages.getAll()</b><br/>#end
+#end
+
+#macro(wml_gopage $p_url $p_current_page $p_page_count)
+页次:${p_current_page}/${p_page_count}<input type="text" name="c_page" value="1" size="2" format="*N" /><anchor>转到该页<go href="$p_url"><postfield name="p" value="$(c_page)" /></go></anchor>
+#end
+
+#macro(wml_pager $p_url $p_current_page $p_page_count)	
+	#set($pre_page = $p_current_page - 1)
+	#set($next_page = $p_current_page + 1)
+	#if($p_current_page < $p_page_count)<a href="$p_url&amp;p=$next_page">下页</a>#end
+	#if($p_current_page>1)<a href="$p_url&amp;p=$pre_page">上页</a>#end
+	#if($p_current_page > 1)<a href="$p_url">首页</a>#end
+	#if($p_current_page < $p_page_count)<a href="$p_url&amp;p=$page_count">尾页</a>#end
+#end
+
+#macro(back)
+<anchor>&lt;$text.wml("back_to_prev_page")<prev/></anchor>
+#end

@@ -1,0 +1,9 @@
+#set($__layout_name = $dlog.param("template","1"))
+#set($__layout = $dlog.get_layout($__layout_name))
+<ul>
+	<li><img src="$dlog.root()/styles/函数/main_style.gif" /><p><input type="radio" name="cssFile" value="main.css" checked/>&nbsp;默认样式</p></li>
+	#foreach($css in $__layout.getStyles())
+	<li><img src="$dlog.root()/styles/函数/${css.color}.gif" /><p><input type="radio" name="cssFile" value="$css.fileName"/>&nbsp;$css.color</p></li>
+	#end
+</ul>
+	

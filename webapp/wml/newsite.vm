@@ -1,0 +1,48 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  create a new site
+##
+###############################################################################
+#invoke("_sub/_global.vm")
+#set($page_title="开通网记")
+#set($close_search_robots = true)
+<p>
+#if(!${g_user})
+	您最得心应手的网络日记、相册、音乐空间，互联网与无线互联网的完全同步，赶紧试试吧！<br/>
+	现在就<a href="$dlog.root()/wml/login.vm?sid=$g_site_id&amp;fromPage=$link.encodeURL($dlog.get_request_url())">$text.wml("login"),</a><a href="$dlog.root()/wml/reguser.vm?sid=$g_site_id">注册新用户</a>	
+#elseif(${g_user.ownSiteId}>0)
+	您已经开通了<a href="$dlog.root()/wml/?sid=${g_user.ownSiteId}">网记</a>,不允许再注册！<br/>	
+    <a href="$dlog.root()/wml/user.do?sid=$g_site_id&amp;eventSubmit_Logout=$link.encodeURL("/wml/login.vm")">$text.wml("logout")</a>
+#else
+	#wml_error_msg()
+	$text.html(${g_user.nickname})你好，请输入个人网记名称(只允许字母和数字)，以后您可以通过 http://wap.dlog.cn/[网记名称]来访问你的站点。<br/>
+	<input type="text" name="uniqueName" value="$!{g_user.name}" size="10"/>
+    <anchor>现在开通
+        <go href="$link.setAction("wml/site")" method="post">
+            <postfield name="uniqueName" value="$(uniqueName)"/>
+            <postfield name="friendlyName" value="$(uniqueName)"/>
+            <postfield name="__ClientId" value="$dlog.gen_client_id()"/>
+			#if($g_user)<postfield name="uuid" value="${g_user.uniqueCode}"/>#end
+            <postfield name="eventSubmit_CreateSite" value="WML"/>
+        </go>
+    </anchor>
+#end
+</p>
+<p>
+	注册后马上拥有100兆相册空间,无限制日记空间,赶紧哦!<br/>
+	开通成功后记得给你的网站起一个个性的名称:) <br/>
+	您也可以通过电脑直接访问http://www.dlog.cn 登录后维护您的个人网记，非常感谢您对网记的支持！
+</p>

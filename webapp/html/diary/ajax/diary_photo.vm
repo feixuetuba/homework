@@ -1,0 +1,114 @@
+#parse("/html/_sub/_global.vm")
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head> 
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	#select_css()
+</head>
+
+<body >
+#set($COUNT_PER_PAGE = 30)##每页显示
+#set($p_page = $dlog.param("page",1))##当前业
+#set($_count = $PHOTO_tool.diaryRelatingCount($g_site))##总数
+#set($page_count = $dlog.page_count($_count, $COUNT_PER_PAGE))##总页数(计算)
+##检查当前页索引
+#if($p_page > $page_count)
+	#set($p_page = $page_count)
+		#elseif($p_page < 1)
+				#set($p_page = 1)
+#end
+#set($pre_page = $p_page - 1)##上一页
+#set($next_page = $p_page + 1)##下一页
+#set($url="$dlog.root()/html/photo/diaey_ptoto.vm")
+#set($list=$PHOTO_tool.diaryRelating($g_site,$p_page,$COUNT_PER_PAGE))
+
+<a href="$dlog.root()/html/diary/ajax/insert_photo.vm?sid=$g_site.id">我的相簿</a>&gt;&gt;贴图相册
+        <table border="0" cellspacing="5" cellpadding="5" width="100%">
+		<tr class="table_head">
+			<td align="right" colspan="5">
+				第<b>${p_page}</b>页,共<b>${page_count}</b>页,每页<b>${COUNT_PER_PAGE}</b>张
+			#if($page_count > 1)|
+				#if($p_page>1)
+					<a href="#" onclick="return go_page(1);">首页</a>
+					<a href="#" onclick="return go_page($pre_page);">上页</a>
+				#end
+				#if($p_page < $page_count)
+						<a href="#" onclick="return go_page($next_page);">下页</a>
+						<a href="#" onclick="return go_page($page_count);">尾页</a>
+				#end
+			#end
+		</td>
+	</tr>
+		<tr>
+			<td width="20%">
+			</td>
+			<td width="20%">
+			</td>
+			<td width="20%">
+			</td>
+			<td width="20%">
+			</td>
+			<td width="20%">
+			</td>
+		</tr>
+	
+        #foreach($l in $list) 
+			#if((($velocityCount+5) %5) ==1)
+        		<tr>	
+				#end	
+			<td width="20%" class="photo_box" valign="bottom">
+			<div class="photo_cen"><a href="javascript://" ondblclick="InsertHtml_All('$l.uri')"><img src="$l.uri"  border="0" width="100"/></a></div>            			
+			
+			<div class="photo_name">
+				#set($photo_name = $dlog.abbreviate($dlog.plain_text($l.savePath), 6))
+				<input type="checkbox" name="url" id="url" vlaue="$l.uri" />
+				日记标题:<a href="javascript://"  title="日记标题:$l.savePath">$photo_name</a></div>
+			</td>			
+			#if((($velocityCount+5) %5) ==0||$l.size()==$velocityCount)
+				</tr>
+			#end
+#end	
+		</table>
+		<hr />
+		#if($_count>0)
+				全选<input type="checkbox" name="check" vlaue="all" onclick="select_all('url',this.checked)"/>
+				&nbsp;&nbsp;<input type="button" value="粘贴选中的图片" onclick="affixChecked('url')"/>
+			#end	
+			<script src="$dlog.root()/js/common.js" type="text/javascript"></script>
+	<script >
+	function InsertHtml_(url){
+		var oEditor = parent.FCKeditorAPI.GetInstance("content");
+		var html = "<img src='"+url+"'/>";
+		oEditor.InsertHtml(html);
+		closeWin();
+	}
+	function InsertHtml_All(url)
+	{
+		var oEditor = parent.FCKeditorAPI.GetInstance("content");
+		var html = "<img src='"+url+"'/>";
+		oEditor.InsertHtml(html);
+	}
+	
+	function closeWin(){
+		parent.closeSelectPhoto();	
+	}
+	
+	function checkAll(obj){
+			select_all('url',obj.checked)
+	}
+	
+	function affixChecked(n)
+	{
+		var s=document.getElementsByTagName('input');
+    	for (var i=0,c;c=s[i];i++){
+        	if (c.name==n&&c.checked==true){
+				InsertHtml_All(c.vlaue);			}
+        } 
+		closeWin();
+    }
+   	
+		
+	</script>
+			</body>
+				</html>

@@ -1,0 +1,98 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  Home page of style setting
+##
+###############################################################################
+#parse("/html/_sub/_global.vm")
+#select_layout("p_setting.vm")
+#set($page_title="网站风格设置")
+#alert_msg("site")
+#set($page = $dlog.param("p",1))
+#set($pre_page = $page - 1)
+#set($next_page = $page + 1)
+#set($PAGE_SIZE = 10)
+#set($fromIdx = ($page - 1) * $PAGE_SIZE)
+#set($toIdx2 = $fromIdx + $PAGE_SIZE)
+#set($all_layouts = $dlog.layouts())
+#set($toIdx = $math.min($all_layouts.size(),$toIdx2))
+#set($layouts = $all_layouts.subList($fromIdx, $toIdx))
+#set($page_count = $dlog.page_count($all_layouts.size(),$PAGE_SIZE))
+
+<div class="page_content">
+	#*模版推荐手动编写功能
+    	<div class"styles_tj">
+    		<table border="0" width="100%">
+    		<tr>
+    			<h5>模版推荐</h5>
+    		</tr>
+        	<tr>
+    			<td width="50%" align="center">
+    				<a href="styles2.vm?sid=${g_site_id}&amp;template=Terseness_4"><img src="$dlog.root()/styles/Terseness_4/preview.gif" border="0"/></a>
+                </td>
+    			<td width="50%" align="center">
+    				<a href="styles2.vm?sid=${g_site_id}&amp;template=2007_new_year_2"><img src="$dlog.root()/styles/2007_new_year_2/preview.gif" border="0"/></a>
+                </td>
+        		
+        	</tr>
+        	</table>
+    	</div>
+    	<div class="spacer_10"></div>
+    	<div class="line_solid"></div>
+    	<div class="spacer_10"></div>
+*#	
+	<div class="styles">
+	<table border="0" width="100%">
+	#set($COL_COUNT = 2)
+	#set($precent = 100 / $COL_COUNT)
+	#set($ROW_COUNT = $dlog.page_count($layouts.size(),$COL_COUNT) - 1)
+	#foreach($row in [0..$ROW_COUNT])
+	<tr>#set($begin_idx = $row * $COL_COUNT)
+        #set($end_idx = $begin_idx + $COL_COUNT - 1)				
+        #foreach($idx in [$begin_idx..$end_idx])
+			#if($idx < $layouts.size())
+            #set($lyt = $layouts.get($idx))
+    		<td width="${precent}%" align="center">
+				<a href="styles2.vm?sid=${g_site_id}&amp;template=${lyt.name}"><img src="$dlog.root()/styles/${lyt.name}/preview.gif" border="0"/></a>
+            </td>
+		#end
+		#end
+	</tr>
+	#end
+	</table>
+	</div>
+	<div class="spacer_20"></div>
+	<div class="line_solid"></div>
+	<div class="spacer_5"></div>
+	<div class="page">
+		<table border="0" width="100%"><tr>
+		<td>总共有${all_layouts.size()}种风格</td>
+		#if($page_count > 1)
+		<td align="right">			
+			#if($page > 1)
+			<a href="?sid=$g_site_id&amp;p=1">首页</a>&nbsp;
+			<a href="?sid=$g_site_id&amp;p=$pre_page">上一页</a>&nbsp;#end
+			#if($page < $page_count)
+			<a href="?sid=$g_site_id&amp;p=$next_page">下一页</a>&nbsp;
+			<a href="?sid=$g_site_id&amp;p=$page_count">尾页</a>#end
+		</td>
+		#end
+		</tr></table>
+	</div>
+</div>
+</form>
+
+
+<div class="page_bottom"></div>

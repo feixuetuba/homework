@@ -1,0 +1,25 @@
+#set($tags = $TAG_tool.list_hot_tags(null,100))
+#if($tags && $tags.size()>0)
+    <div class="content_module">
+    	<div class="content_module_top">ÈÈÃÅ¹Ø¼ü×Ö</div>
+    	<div class="content_module_content">
+			<ul class="tag">
+    		#foreach($tag in $tags)
+				<li><a href="$dlog.root()/html/showtag.vm?tag=$link.encodeURL($tag)"><font id=tag style="font-size:13px;">$text.html(${tag})</font></a></li>
+			#end
+			</ul>
+			<div class="clear"></div>
+    	</div>
+    </div>
+#end
+<script>
+    var obj = document.getElementsByTagName("font");
+    for(i=0;i<obj.length;i++)
+    {
+    var str = "0123456789abcdef";
+    var t = "#";
+    for(j=0;j<6;j++)
+    {t = t+ str.charAt(Math.random()*str.length);}
+    obj[i].style.color=t; 
+    }
+</script>

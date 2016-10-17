@@ -1,0 +1,49 @@
+#if($max_index)
+	#set($list=$admin_tool.index_page($p_page, $page_count,$max_index))
+	#set($dot=$max_index/2)
+	#set($dot=$dot + 1)
+#else
+	#set($list=$admin_tool.index_page($p_page, $page_count,11))
+	#set($dot=4)
+#end
+	
+<div class="p_right">
+		#if($p_page!="1")
+		<a href="$url&p=1">首页</a>&nbsp;
+		#end
+		#if($p_page!="1")
+		<a href="$url&p=$pre_page">上一页</a>&nbsp;
+		#end
+		
+		#if(1==1)
+			#set($p_temp=$p_page - $dot)
+			#if($p_temp < 1)
+				#set($p_temp=1)
+			#end
+		<a href="$url&p=$p_temp">&nbsp;&lt;&lt;&nbsp</a>
+		#end
+		#foreach($index in $list)
+		<a href="$url&p=$index">
+			#if($index==$p_page)&nbsp;<u>$index</u>&nbsp;
+				#else
+			&nbsp;$index&nbsp;
+			#end</a>			
+		#end
+		#if(1==1)
+			#set($p_temp=$p_page + $dot)
+			#if($p_temp > $page_count)
+				#set($p_temp=$page_count)
+			#end
+		<a href="$url&p=$p_temp">&nbsp;&gt;&gt;&nbsp</a>
+		#end
+		#if(!($p_page>=$page_count))
+		<a href="$url&p=$next_page">下一页</a>&nbsp;
+		#else
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		#end
+		#if(!($p_page>=$page_count))
+		<a href="$url&p=$page_count">末页</a>&nbsp;
+		#else
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		#end
+</div>

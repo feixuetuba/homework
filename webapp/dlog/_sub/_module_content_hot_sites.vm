@@ -1,0 +1,38 @@
+<div class="content_module">
+	<div class="content_module_top">
+		热门网记  <span>(<a href="$dlog.root()/dlog/sites.vm?s=diary">更多...</a>)</span>
+	</div>
+	<div class="content_module_content">
+		#set($s_count=5)
+		#set($hotsites = $DLOG4J_tool.list_sites_recommend(1, $s_count))
+		<ul class="site_hot">
+			#foreach($hotsite in $hotsites)
+    			<li class="sh_li">
+    				<div class="portrait">
+    					<a href="$dlog.root()/${hotsite.uniqueName}">
+                			#if($dlog.not_empty(${hotsite.owner.portrait}))
+                            	<img src="$dlog.root()/uploads/portrait/${hotsite.owner.portrait}"/>
+                            #else
+                        		$html.img("html/sharing/portrait/nophoto.gif","$!{owner.nickname}")
+                			#end
+            			</a>
+    				</div>
+    				<div class="info">
+                        <a href="$dlog.root()/${hotsite.uniqueName}">$dlog.abbreviate($dlog.plain_text(${hotsite.friendlyName}), 6)</a>
+    				</div>
+					<div class="clear"></div>
+    			</li>
+			#end
+		</ul>
+		<div class="clear"></div>
+	</div>
+	<div class="content_module_bottom">
+		#set($sites = $DLOG4J_tool.list_hot_sites_via_diary(1,40))
+    	<ul class="site_hot_li">
+        	#foreach($site in $sites)
+				<li><a href="$dlog.root()/${site.uniqueName}">$text.html(${site.friendlyName})</a></li>
+        	#end
+    	</ul>
+		<div class="clear"></div>
+	</div>
+</div>

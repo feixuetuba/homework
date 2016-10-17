@@ -1,0 +1,10 @@
+<div class="side_module_top"></div>
+<div class="side_module_content">
+	<ul>
+    	#set($ssi = $STAT_tool.get_site_stat_info($g_site))
+    	<li class="today">$!{ssi.uvToday}</li>
+    	<li class="total">$!{ssi.uvTotal}</li>
+	</ul>
+	<div class="clear"></div>
+</div>
+<div class="side_module_bottom"></div>

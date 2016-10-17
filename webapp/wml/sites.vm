@@ -1,0 +1,53 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  show all sites order by createTime
+##
+###############################################################################
+#invoke("_sub/_global.vm")
+#set($PAGE_SIZE = 10)
+#set($sort = $dlog.param("s",null))
+#set($p_page = $dlog.param("p", 1))
+#set($page_title="所有个人网记")
+#set($site_count = $STAT_tool.site_count())
+#set($page_count = $dlog.page_count($site_count, $PAGE_SIZE))
+<p>
+    共有${site_count}个网记.
+	#if($dlog.not_empty($sort))<a href="sites.vm">按时间排序</a>#else<a href="sites.vm?s=diary">按热门排序</a>#end<br/>
+	<input type="text" name="key" size="10" emptyok="true"/>
+    <anchor>$text.wml("search")
+        <go href="$dlog.root()/wml/search.vm" method="get">
+            <postfield name="sid" value="$g_site_id"/>
+            <postfield name="scope" value="4"/>
+            <postfield name="key" value="$(key)"/>
+        </go>
+    </anchor>
+</p>
+<p>
+	第${p_page}页,共${page_count}页,每页${PAGE_SIZE}条.<br/>
+	#wml_pager("$dlog.root()/wml/sites.vm?s=$!sort" $p_page $page_count)<br/>
+	#if($dlog.not_empty($sort))
+		#set($sites = $DLOG4J_tool.list_hot_sites_via_diary($p_page, $PAGE_SIZE))
+	#else
+		#set($sites = $DLOG4J_tool.list_newest_sites($p_page, $PAGE_SIZE))
+	#end
+	#set($base_idx = ($p_page - 1)*$PAGE_SIZE)
+#foreach($site in $sites)
+	#set($idx = $base_idx + $velocityCount)
+	${idx}.<a href="$dlog.root()/${site.uniqueName}">$text.html(${site.friendlyName})</a>#if(!$sort)($date.format("yyyy-MM-dd",${site.createTime}))#end<br/>
+#end
+	#wml_pager("$dlog.root()/wml/sites.vm?s=$!sort" $p_page $page_count)<br/>
+	#wml_gopage("$dlog.root()/wml/sites.vm?s=$!sort" $p_page $page_count)
+</p>

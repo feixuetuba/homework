@@ -1,0 +1,17 @@
+$date.format("yyyy/MM/dd HH:mm",${reply.replyTime}) &nbsp;&nbsp;
+#if($_photo)
+    #if($g_user && (${g_site.owner.id}==$g_user_id || (${reply.user} && ${reply.user.id}==$g_user_id)))
+      <a href="#" onclick="if(confirm('您真的要删除该评论吗？')) deleteRForm_${reply.id}.submit(); return false;"">
+		  $html.img("icon_delete.gif",null,"DEL","absmiddle",0)
+      </a>
+      <a href="$dlog.root()/html/photo/show.vm?sid=$g_site_id&amp;pid=${reply.photo.id}&reply_id=${reply.id}#reply">
+		  $html.img("icon_edit.gif",null,"EDIT","absmiddle",0)
+      </a>
+    #end
+    <form name="deleteRForm_${reply.id}" action="$link.setAction("html/reply")" method="post">
+        <input type="hidden" name="sid" value="${g_site_id}" />
+        <input type="hidden" name="pid" value="${reply.photo.id}" />
+        <input type="hidden" name="fromPage" value="$dlog.get_request_url()" />
+        <input type="hidden" name="eventSubmit_DeletePhotoReply" value="${reply.id}" />
+    </form>
+#end

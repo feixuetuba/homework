@@ -1,0 +1,9 @@
+<div class="bottom_module">
+	<div class="bottom_module_top">音乐掌门人</div>
+	<div class="bottom_module_content content_module_content">
+		<ul class="site_hot">
+			<li><a href="#"><font id=tag style="font-size:13px;">热门音乐站点</font></a></li>
+		</ul>
+		<div class="clear"></div>
+	</div>
+</div>

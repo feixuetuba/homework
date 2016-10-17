@@ -1,0 +1,6 @@
+#set($site_url = ${g_site.siteURL("$link.getContextURL()/")})
+<div id="site_name">
+	<a href="$dlog.root()/${g_site.uniqueName}" class="nostyle"><b>$text.html(${g_site.friendlyName})</b></a>
+</div>
+<div id="site_detail">$!{g_site.detail}</div>
+<div id="site_url">${site_url}</div>

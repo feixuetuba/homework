@@ -1,0 +1,114 @@
+#invoke("../_sub/_global.vm")
+#set($layout = "master.vm")
+#set($left_template = "/dlog_admin/_sub/_left_photo.vm")
+#set($nav_template = "/dlog_admin/_sub/_nav_photo.vm")
+##用户是否登录&&(用户是否为管理员名||用户是否为巡视者||用户是否为VIP)
+#if($g_user&&($admin_tool.roleIsAdmin($manager)||$admin_tool.roleIsInspector($manager)||$admin_tool.popIsVisit($manager)))
+##权限:删除 修改
+#set($pop1=($admin_tool.popIsAll($manager)||$admin_tool.popIsOperate($manager)||$admin_tool.popIsSuper($manager)))
+##推荐 屏蔽
+#set($pop2=($admin_tool.popIsAll($manager)||$admin_tool.popIsManage($manager)||$admin_tool.popIsSuper($manager)))
+
+#################################################################################
+#set($status=$dlog.param("status",1))##状态
+#set($p_page = $dlog.param("p", 1))##当前页 默认1
+#set($COUNT_PER_PAGE = 20)##每页显示
+#set($_count = $DIARY_tool.file_count())##总数
+#set($page_count = $dlog.page_count($_count, $COUNT_PER_PAGE))##总页数(计算)
+##检查当前页索引
+#if($p_page > $page_count)
+	#set($p_page = $page_count)
+		#elseif($p_page < 1)
+				#set($p_page = 1)
+#end
+#set($pre_page = $p_page - 1)##上一页
+#set($next_page = $p_page + 1)##下一页
+##################################################################################
+
+
+#set($url="$dlog.root()/dlog_admin/images/diary_images.vm?status=1")
+
+#set($files = $DIARY_tool.list_files($p_page, $COUNT_PER_PAGE))
+<div class="page_top">
+	##索引
+	#invoke("/dlog_admin/page_index.vm")
+</div>
+<div class="clear"></div>
+<div class="page_content">
+	<form action="$link.setAction('/html/admin/query')"  method="POST" name="form" id="form">	
+		<input type="hidden" name="extend1" id="extend1" value="">
+		<input type="hidden" name="fromPage" id="fromPage" value="$url&p=$p_page">
+	
+				
+			#if($pop1)<input type="submit" name="eventSubmit_DeleteDiaryImg" id="submit" value="删除选中"  onclick="">#end
+	<table  border="0" cellpadding="5" cellspacing="1" class="table_list">		
+				<tr class="titles">
+			<td >
+				#if($pop1)<input type="checkbox" onclick="checkAll(this)" id="checkall"/>#end
+				图片预览
+			</td>
+			<td>
+				图片信息
+			</td>
+			<td >
+				#if($pop1)<input type="checkbox" onclick="checkAll(this)" id="checkall"/>#end
+				图片预览
+			</td>
+			<td>
+				图片信息
+			</td>			
+		</tr>
+					#foreach($file in $files)
+						
+						#if((($velocityCount+2) %2) ==1)
+						<tr class="contents" >
+							#end
+							<td >
+								<div>
+									#if($pop1)<input type="checkbox" name="check" value="$file.id"/>#end
+									ID:$file.id
+								</div>						
+							<a href="$dlog.root()/html/diary/showlog.vm?sid=${file.site.id}&amp;log_id=${file.refId}" target="dlog_photo">
+								<img src="$dlog.root()${file.uri}" border="0" width="100" />
+							</a>	<br />
+							#if($pop1)<a href="javascript:setSID($file.id,'eventSubmit_DeleteDiaryImg')">删除此图片</a>#end
+							</td>
+						<td >
+							站点中文名:${file.site.friendlyName} 	<br />
+							站点英文名:${file.site.uniqueName}		<br />
+							站长:${file.site.owner.name}<br />
+						</td>	
+						#if($velocityCount==${size}||(($velocityCount+2) %2) ==0)
+							</tr>
+						#end						
+				#end
+	</table>
+	</form>
+</div>
+<div class="clear"></div>
+<div class="page_top">
+	##索引
+	#invoke("/dlog_admin/page_index.vm")
+</div>
+<div class="clear"></div>
+<script type="text/javascript" >
+function checkAll(obj)
+{
+	var form=document.forms[0];
+	for(var i=0;i<form.length;i++)
+	{	
+		if(form[i].type=="checkbox")
+		form[i].checked=obj.checked
+	}
+}
+
+	function setSID(extend1,event)
+{
+	document.getElementById('extend1').value=extend1;
+	document.getElementById('submit').name=event;
+	document.getElementById('submit').click();
+}
+
+</script>
+
+#end

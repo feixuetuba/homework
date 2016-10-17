@@ -1,0 +1,34 @@
+#invoke("../_sub/_global.vm")
+#set($layout = "master.vm")
+#set($left_template = "/dlog_admin/_sub/_left_style.vm")
+#set($nav_template = "/dlog_admin/_sub/_nav_style.vm")
+#if($g_user)
+#set($select=$dlog.param("select","0"))
+#set($list =$admin_tool.getMainStyle())
+
+<div>[列表]</div>
+<div><select name="name" id="name" onchange="" >
+		<option value="" #if($select==0)selected="true"#end ">[全部]</option>
+		#foreach($l in $list)
+		<option value="$l" #if($select==$velocityCount)selected="true"#end>$l</option>
+		#end
+</select>
+	<a href="#" onclick="add(this)" targe="">添加 </a>
+	
+</div>
+	
+	<div>[模板]</div>
+	
+	
+<script>
+	function add(obj)
+	{
+		//obj.href="$dlog.root()/dlog_admin/style/style_add.vm?name="+$('name').value;	
+		obj.href="$dlog.root()/dlog_admin/style/style_add.vm";
+	}
+	function $(name)
+	{
+		return document.getElementById(name);
+	}
+</script>
+#end

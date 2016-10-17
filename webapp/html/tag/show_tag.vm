@@ -1,0 +1,58 @@
+#invoke("/html/_sub/_global.vm")
+#select_layout("p_tag.vm")
+#set($tag=$dlog.param("tag"))
+#set($tag_type = $dlog.param("type"))
+#if($dlog.is_owner($g_site, $g_user))
+<div class="page_top">
+<form action="">
+	关键字:
+	<input type="text" name="tag" value="$!{tag}" size="20" />	 
+	<input type="hidden" name="sid" value="$!{g_site.id}"  />	
+	<select name="type">
+		<option value="0" #if($tag_type==0)selected#end>全部</option>
+		<option value="1" #if($tag_type==1)selected#end>日记</option>
+		<option value="2" #if($tag_type==2)selected#end>照片</option>
+	</select>
+	<input type="submit" name="" value="搜索关键字" />
+</form>
+
+</div>
+
+<hr size="1" color="#cccccc" noshade/>
+#set($start_time = $dlog.current_timestamp())
+#if($tag_type==0 || $tag_type==1)
+	##日记
+	#set($diary_c = $USER_tool.diary_count_of_tag($g_site, $tag))
+	#if($diary_c>0)
+		#set($diarys = $USER_tool.diarys_of_tag($g_site, $tag))
+	#end
+#end
+#if($tag_type==0 || $tag_type==2)
+	##照片
+	#set($photo_c = $USER_tool.photo_count_of_tag($g_site, $tag))
+	#if($photo_c>0)
+		#set($photos = $USER_tool.photos_of_tag($g_site, $tag))
+	#end
+#end
+
+#set($time_used = $dlog.time_consume($start_time))
+共有#if($diary_c)日记 <b>${diary_c}</b> 篇，#end#if($photo_c)照片 <b>${photo_c}</b> 张，#end 查询耗时 <b>${time_used}</b> 毫秒。					
+<hr size="1" color="#cccccc" noshade/>
+#if($diarys)
+	<b>日记${diary_c}篇</b><br /><br />
+	#foreach($diary in $diarys)
+		<li>${velocityCount}.
+			<a href="$dlog.root()/html/diary/showlog.vm?sid=${diary.site.id}&amp;log_id=${diary.id}" target="_blank" >$text.html($diary.title)</a>
+		</li>
+	#end
+	<br />
+#end
+#if($photos)
+	<br/><b>照片${photo_c}张</b><br /><br />
+	#foreach($photo in $photos)
+		<a href="$dlog.root()/html/photo/show.vm?sid=${photo.site.id}&amp;aid=${photo.album.id}&amp;pid=${photo.id}" title="$text.html(${photo.name})" target="_blank" ><img src="$dlog.root()$photo.previewURL" border="0" alt="${photo.name}" /></a>
+	#end
+	<br />
+#end
+#else
+#end

@@ -1,0 +1,43 @@
+body{margin:0px;padding:0px;text-align:center;font-size:13px;}
+
+a{color:#1a66b3;cursor:pointer;}
+a:hover{color:#1a66b3;text-decoration:none;}
+
+#accounts{width:734px;margin:0px auto;}
+#accounts_top{text-align:left;clear:both;overflow:auto;}
+.logo{clear:both;padding:10px;}
+#accounts_body{clear:both;overflow:auto;background:url(/images/home/styles/accounts_top_bg.gif) repeat-x left top;text-align:left;padding:10px 0;}
+
+.top{text-align:center;}
+.top p .post_now{color:red;font-weight:bold}
+
+.content{text-align:left;}
+
+.form_title{padding:10px 0;color:red;font-weight:bold;border-bottom:1px #E7E3E7 solid;}
+.form_module{clear:both;padding:10px 0;background:url(/images/home/styles/form_bg.gif) no-repeat left bottom;}
+.form_module_title{text-align:right;padding-right:10px;width:130px;float:left}
+.form_module_content{width:566px;float:left;padding-left:15px;}
+.tips{clear:both;padding-top:10px;color:#1a66b3;}
+.form_module_submit{clear:both;padding-top:20px;}
+
+ul.form_label{padding:0px;margin:0px;list-style-type:none;width:50%}
+ul.form_label li{clear:both;margin-bottom:15px;margin-top:15px;padding:10px 10px 10px 35px;border:1px #00A8FF solid;background:#E2F5FF url(/images/home/icon/label.gif) no-repeat 10px 12px;}
+ul.form_label li a{color:#0B76AE;background:none;text-decoration:none;}
+ul.form_label li a:hover{color:#FFFFFF;background:#0B76AE;text-decoration:none;}
+
+.bottom{clear:both;}
+
+.page_left{float:left;width:50%;padding:10px 0;}
+.page_left .top{background:url(/images/home/styles/login_title.gif) no-repeat left top;height:60px;}
+.form_login{width:340px;margin:10px auto;}
+.form_login_top{border:none;background:url(/images/home/styles/login_bg.gif) no-repeat left top;padding-top:20px;}
+.form_login_bottom{border:none;background:url(/images/home/styles/login_bg.gif) no-repeat left bottom;padding-top:20px;}
+
+.form_login_module{text-align:center;clear:both;padding:5px 0;background-color:#F5F5F5;border-left:1px #CFCFCF solid;border-right:1px #CFCFCF solid;}
+.form_login_title{text-align:right;padding-right:10px;width:110px;float:left}
+.form_login_content{width:210px;float:left;text-align:left;}
+
+.page_right{float:right;width:49%;padding:10px 0;}
+
+#accounts_footer{clear:both;border-top:1px #E7E3E7 solid;margin:15px auto 0;padding:10px;text-align:left;background-color:#E7FBFF}
+

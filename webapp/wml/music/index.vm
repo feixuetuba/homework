@@ -1,0 +1,55 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  music channel
+##
+###############################################################################
+#parse("/wml/_sub/_global.vm")
+#set($page_title=$text.ui("channel.music"))
+#set($PAGE_SIZE = 10)
+#set($p_page = $dlog.param("p", 1))
+#set($song_count = $MUSIC_tool.music_count($g_site))
+#set($page_count = $dlog.page_count($song_count, $PAGE_SIZE))
+#set($base_url = "$dlog.root()/wml/music/?sid=$g_site_id")
+<p>
+	#invoke("_music_nav_bar.vm")
+	共有${song_count}首歌曲。<br/>	
+#if($page_count > 1)
+	第${p_page}页,共${page_count}页,每页${PAGE_SIZE}首.<br/>
+	#wml_pager($base_url $p_page $page_count)<br/>
+#end
+
+#set($songs = $MUSIC_tool.list_new_songs($g_site,$p_page,$PAGE_SIZE))
+#set($base_idx = ($p_page - 1)*$PAGE_SIZE)
+#foreach($song in $songs)
+	#set($idx = $base_idx + $velocityCount)
+	${idx}.
+    #if($dlog.not_empty(${song.url}))
+    	<a href="show.vm?sid=$g_site_id&amp;mid=${song.id}">$text.html(${song.title})</a>
+    #else
+    	$text.html(${song.title})
+    #end
+    #if($dlog.not_empty(${song.singer}))(${song.singer})#end
+	<br/>
+#end
+
+#if($page_count > 1)
+	#wml_pager($base_url $p_page $page_count)<br/>
+	#wml_gopage($base_url $p_page $page_count)
+#end
+</p>
+<p><a href="#bottom">如何添加歌曲？</a></p>
+#set($screen_extend_template = "/wml/music/_tip.vm")
+#set($page_title_bottom = "网记提示")

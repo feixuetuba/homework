@@ -1,0 +1,22 @@
+	#if($g_user)
+		
+		
+<div class="embed_module_top"></div>
+<div class="embed_module">
+	<div class="module_title"><b>管理员设置</b></div>
+    <div class="module_content">
+        <span class="link_top"><a href="$dlog.root()/dlog_admin/manager/rework_password.vm"><b>修改登录口令</b></a></span>
+		<span class="link_top"><b>公告设置</b></span>
+		<span class="link"><a href="$dlog.root()/dlog_admin/manager/send_affiche.vm">发送公告</a></span>
+		<span class="link"><a href="$dlog.root()/dlog_admin/manager/affiche_list.vm">公告列表</a></span>
+		<span class="link_top"><b>管理</b></span>
+		<span class="link"><a href="$dlog.root()/dlog_admin/manager/managers.vm">管理员列表</a></span>
+    	<span class="link"><a href="$dlog.root()/dlog_admin/manager/manager_add.vm">添加新的管理员</a></span>
+    	
+    </div>
+    <div class="module_foot"></div>
+</div>
+<div class="embed_module_bottom"></div>
+#else
+	#invoke("../login.vm")
+	#end

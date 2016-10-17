@@ -1,0 +1,81 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  Home page of style setting
+##
+###############################################################################
+#parse("/html/_sub/_global.vm")
+#select_layout("p_setting.vm")
+#set($page_title="网站风格设置")
+#alert_msg("site")
+
+#set($p_page = $dlog.param("p", 1))##当前页 默认1
+#set($COUNT_PER_PAGE = 10)##每页显示
+#set($_count = $admin_tool.site_style_count())##总数
+#set($page_count = $dlog.page_count($_count, $COUNT_PER_PAGE))##总页数(计算)
+#set($pre_page = $page - 1)##上一页
+#set($next_page = $page + 1)##下一页
+#set($list=$admin_tool.site_style_list($p_page,$COUNT_PER_PAGE))
+
+##检查当前页索引
+#if($p_page >= $page_count)
+	#set($p_page = $page_count)
+		#elseif($p_page <= 1)
+				#set($p_page = 1)
+#end
+#set($pre_page = $p_page - 1)##上一页
+#set($next_page = $p_page + 1)##下一页
+<div class="page_content">
+	
+	<div class="styles">
+	<table border="0" width="100%">
+	#foreach($l in $list)
+		#if((($velocityCount+2)%2)==1)
+			<tr>
+		#end
+		<td width="50%" align="center">
+			<b>${l.childName}</b>#if($l.type == 0 ) [所有用户] #elseif($l.type == 1 ) [VIP用户] #end<br />
+				
+				#if(1==1)## VIP
+					<a href="styles2_.vm?sid=${g_site_id}&amp;template_id=$l.id&p=$p_page">
+				#end
+					<img src="$dlog.root()/styles/${l.name}/preview.gif" border="0"/>
+				#if(1==1)## VIP
+					</a>
+				#end
+            </td>
+		#if((($velocityCount+2)%2)==0)
+			</tr>
+		#end
+	#end
+	</table>
+	</div>
+	<div class="spacer_20"></div>
+	<div class="line_solid"></div>
+	<div class="spacer_5"></div>
+	<div class="page">
+		<td>总共有${_count}种风格</td>
+			#if($page > 1)
+			<a href="?sid=$g_site_id&amp;p=1">首页</a>&nbsp;
+			<a href="?sid=$g_site_id&amp;p=$pre_page">上一页</a>&nbsp;#end
+			#if($page < $page_count)
+			<a href="?sid=$g_site_id&amp;p=$next_page">下一页</a>&nbsp;
+			<a href="?sid=$g_site_id&amp;p=$page_count">尾页</a>#end
+	</div>
+</div>
+</form>
+
+
+<div class="page_bottom"></div>

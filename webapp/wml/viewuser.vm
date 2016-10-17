@@ -1,0 +1,50 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  viewuser
+##
+###############################################################################
+#invoke("_sub/_global.vm")
+#set($page_title="用户资料")
+#set($uid = $dlog.param("uid",-1))
+#set($user = $USER_tool.user($uid))
+#if(!$user)
+#set($uname = $dlog.param("uname",null))
+#set($user = $USER_tool.user($uname))
+#end
+<p>
+    <b>+用户基本资料</b><br/>
+    用户名：$text.friendly_text(${user.name})<br/>
+    昵称：$text.friendly_text(${user.nickname})(#if(${g_site.owner.onlineStatus}==1)$text.wml("online")#else$text.wml("offline")#end)<br/>
+	$text.wml("sex")#if(${g_site.owner.sex}==1)$text.wml("male")#elseif($g_site.owner.sex==2)$text.wml("female")#else$text.wml("unknown")#end&nbsp;
+	$text.wml("age")#if(${g_site.owner.age}>0)${g_site.owner.age}#else$text.wml("unknown")#end <br/>
+    注册时间：$date.format("yyyy/MM/dd HH:mm",${user.regTime})<br/>
+    最近访问：$!date.format("yyyy/MM/dd EEE HH:mm",${user.lastTime},${request.locale})<br/>
+    <b>+联系信息</b><br/>
+    地区:$!{user.province} $!{user.city}<br/>
+    Email：#if(!$dlog.is_empty(${user.contactInfo.email}))<a href="mailto:${user.contactInfo.email}">$!{user.contactInfo.email}</a>#end<br/>
+    QQ：$!{user.contactInfo.qq}<br/>
+    MSN：$!{user.contactInfo.msn}<br/>
+    <b>+参与情况</b><br/>
+    注册网站：
+	#if(${user.ownSiteId}>0)
+		#set($his_site = $dlog.site(${user.ownSiteId}))
+		<a href="$dlog.root()/${his_site.uniqueName}">$text.friendly_text(${his_site.friendlyName})</a>
+	#else 无#end<br/>
+    <b>+个人宣言</b><br/>#if($dlog.not_empty(${user.resume}))$text.friendly_text(${user.resume})#else 这人很懒，什么也没写。#end<br/>
+	----------<br/>
+    <a href="$dlog.root()/wml/sendmsg.vm?sid=$g_site_id&amp;uid=${user.id}&amp;r=$math.random(1,1000)">发送短消息&gt;</a>
+	<a href="$link.setAction("wml/user")?sid=$g_site_id&amp;uid=$uid&amp;__ClientId=$dlog.gen_client_id()&amp;fromPage=$link.encodeURL($dlog.get_request_url())&amp;eventSubmit_AddFriend=WML">加为好友&gt;</a>	
+</p>

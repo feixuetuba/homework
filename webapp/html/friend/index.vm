@@ -1,0 +1,94 @@
+#invoke("/html/_sub/_global.vm")
+#select_layout("p_friend.vm")
+#set($page_title="我的好友")	
+#set($frindegrouplist = $FRIEND_tool.showFriendV( $!{g_site.owner.id}))##站点拥有者的好友分组列表
+#set($fgcount=$frindegrouplist.size())##列表总数
+	#if($!{fgcount})
+		
+<form action="$link.setAction("/html/friend")"  method="POST" name="form" id="form">
+	<input type="hidden" name="groupid" id="groupid" value="">
+	<input type="hidden" name="userid" id="userid" value="$!{g_site.owner.id}">	
+	<input type="hidden" name="fromPage" id="fromPage" value="$dlog.root()/html/friend/?sid=$!{g_site.id}">
+	<input type="submit" name="" id="submit" value="HTML" style="display:none">
+</form>
+<div class="page_top">
+	<div class="pagecontent">
+		<div class="pagecontent_left fleft">
+			<b>好友分组</b>&nbsp;&nbsp;共有 $!{fgcount} 个分组
+			#if($dlog.is_owner($g_site, $g_user))
+				(<a href="javascript://"onclick="href='$dlog.root()/html/sitemgr/add_f_group.vm?sid=$!{g_site.id}'">$html.img("/html/icon/default/add.gif","添加分组")添加分组</a>)
+				#end
+		</div>
+		<div class="pagecontent_right fright">
+			今天是: $date.get("MMMMM d, yyyy  EEEEE")
+		</div>
+	</div>
+	<div class="spacer_1"></div>
+</div>
+	#end
+	#if($fgcount>0)	
+	<div class="page_content">
+    	<div class="setting_body">	
+			<table cellspacing="1" cellpadding="3" border="0" width="100%" class="table">
+    			<tr class="table_head">
+					<td>名称</td>
+					<td>类型</td>
+        			#if($dlog.is_owner($g_site, $g_user))
+					<td>设置</td>
+            		<td>删除</td>
+					#end
+    			</tr>
+				#if($dlog.is_owner($g_site, $g_user))
+				<tr class="table_cell">	
+					<td ><a href="$dlog.root()/html/friend/blacklist.vm?sid=$g_site.id">[黑名单]</a></td>
+					<td >&lt;系统&gt;</td>
+					<td ></td>
+					<td ></td>
+				</tr>
+				#end
+				#foreach(${friend} in ${frindegrouplist})
+				#if($dlog.is_owner($g_site, $g_user))##站点拥有着
+					<tr class="table_cell">						
+    					<td><a href="/html/friend/show_friend.vm?sid=$g_site_id&group_id=$!{friend.groupid}">
+								[$!{friend.groupname}]</a></td>
+    					<td>#if(${friend.grouptype}==0)<公开>#elseif($!{friend.grouptype}==1)<私有>#elseif($!{friend.grouptype}==2)<默认>#end</td>												
+    					#if($dlog.is_owner($g_site, $g_user))<td align="center"><a href="$dlog.root()/html/sitemgr/update_f_group.vm?sid=$g_site_id&group_id=$!{friend.groupid}">$html.img("/html/icon/default/settings.gif",null,"setting","absmiddle",0)</a></td>#end
+                		#if($dlog.is_owner($g_site, $g_user))<td align="center">#if($!{friend.grouptype}!=2)<a href="javascript://" onclick="setSID($!{friend.groupid},'eventSubmit_Delete')" >$html.img("/html/icon/default/icon_delete.gif",null,"del","absmiddle",0)</A>#end</td>#end
+					</tr>
+				#else##站点拥有非拥有这着
+					#if($!{friend.grouptype}!=1)
+						<tr class="table_cell">				
+    					<td><a href="/html/friend/show_friend.vm?sid=$g_site_id&group_id=$!{friend.groupid}">
+								[$!{friend.groupname}]</a></td>
+    					<td>#if(${friend.grouptype}==0)<公开>#elseif($!{friend.grouptype}==1)<私有>#elseif($!{friend.grouptype}==2)<默认>#end</td>												
+    					
+						</tr>
+					#end	
+				#end
+					
+				#end
+    		</table>
+    	</div><div class="spacer_10"></div>
+    </div>
+	
+#end
+#if($fgcount>=0)
+<div class="form_row">
+	<div class="form_row_submit">
+		<a href="javascript://" onclick="history.go(-1)" >返回上页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    	<a href="javascript://"	onclick="location.href='$dlog.root()/#if($g_site)?sid=${g_site_id}#end';">返回首页</a>	
+	</div>
+</div>
+#end	
+	<script type="text/javascript" >
+	function setSID(sid,event)
+{
+	if(confirm('是否真的删除分组?删除后系统会将该分组下所有用户转移至默认分组'))
+	{
+		document.getElementById('groupid').value=sid;
+		document.getElementById('submit').name=event;
+		document.getElementById('submit').click();
+	}
+}
+	</script>
+

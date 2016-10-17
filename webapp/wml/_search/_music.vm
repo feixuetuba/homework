@@ -1,0 +1,6 @@
+#set($objs = $SEARCH_tool.search_music($g_site,$g_user, $key))
+共有${objs.size()}项符合"${key}"的查询结果，(搜索用时${SEARCH_tool.get_search_time()}毫秒)<br/>
+#foreach($obj in $objs)
+	${velocityCount}.<a href="$dlog.root()/wml/music/show.vm?sid=${obj.site.id}&amp;mid=${obj.id}">$text.html(${obj.title})</a>
+	#if($dlog.not_empty(${obj.url})&& ${obj.url.startsWith("http://")})<a href="${obj.url.replaceAll("&","&amp;")}">[尝试下载]</a>#end<br/>
+#end

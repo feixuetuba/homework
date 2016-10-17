@@ -1,0 +1,1 @@
+#parse("/wml/_sub/_nav_bar.vm")&gt;<a href="$dlog.root()/wml/music/?sid=$g_site_id">$text.music($g_site)</a><br/>

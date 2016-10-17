@@ -1,0 +1,9 @@
+<div class="side_module_top"><b>Ω≈”°</b></div>
+<div class="side_module_content">
+	<ul>
+        <li><a href="$dlog.root()/dlog/viewuser.vm?sid=$g_site_id&amp;uid=${g_user.id}">$text.html(${g_user.nickname})</a>&nbsp;|&nbsp;<span class="en8pt">$date.format("yyyy-MM-dd",$g_user.regTime)</span></li>
+    	<li class="ul_more"><a href="$dlog.root()/html/users.vm?sid=$g_site_id">more...</a></li>
+	</ul>
+	<div class="clear"></div>
+</div>
+<div class="side_module_bottom"></div>

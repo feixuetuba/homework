@@ -1,0 +1,23 @@
+#set($tmp_nothing = $response.setContentType("text/vnd.wap.wml;charset=UTF-8"))
+<?xml version="1.0"?>
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" "http://www.wapforum.org/DTD/wml_1.1.xml">
+<wml>
+	<head>
+		<meta http-equiv="Content-Type" content="text/vnd.wap.wml;charset=UTF-8"/>
+	</head>
+	<card title="error">
+	<p>
+#set($excp = $dlog.excp())
+#if(${excp.class.name}=="com.liusoft.dlog4j.SiteNotFoundException")
+	<b>网站没找到或者已被关闭</b><br/>
+#else
+    $escape.html("您访问的页面发生错误!")<br/><br/>
+	$escape.html("请将此错误信息报告给我们的系统管理员，以便我们尽快为您解决该问题。")<br/><br/>
+	<a href="$dlog.root()/wml/sendmsg.vm?sid=${g_site_id}&amp;uid=1">给管理员留言</a>
+#end
+	</p>
+	<p>
+	<a href="$dlog.root()/">返回首页</a>
+	</p>
+	</card>
+</wml>

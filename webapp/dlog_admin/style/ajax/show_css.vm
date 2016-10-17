@@ -1,0 +1,44 @@
+#invoke("/dlog_admin/_sub/_global.vm")
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head> 
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="/css/default_002.css" type="text/css" media="all"/>
+	<link rel="stylesheet" href="/css/alphacube.css" type="text/css" media="all"/>
+	<link rel="stylesheet" href="$dlog.root()/styles/master.css" type="text/css" media="all"/>
+	<link rel="stylesheet" href="$dlog.root()/styles/global.css" type="text/css" media="all"/>
+</head>
+<body >
+#set($level=$dlog.param("level",0))## 模板名称
+#set($name=$dlog.param("name",""))## 模板名称
+
+	#set($fileList=$admin_tool.getCssToFileList($name))
+	#if($$fileList.size()==0)
+		未找到可用文件
+	#end
+	<table >	
+		<tr >
+			<td width="25%">
+			</td>
+			<td width="25%">
+			</td>
+			<td width="25%">
+			</td>
+			<td width="25%">
+			</td>
+		</tr>
+	#foreach($l1 in $fileList)	
+			#if((($velocityCount+4) %4) ==1)
+				<tr >
+			#end
+		<td>
+			 <a  href="javascript:parent.clickNameCss('$l1.name')">$html.img("$dlog.root()/html/icon/default/flie.gif","")<br />$l1.name</a>
+		</td>
+		
+			#if((($velocityCount+4) %4) ==0)		
+				</tr>
+			#end
+	#end
+</table>
+</body></html>

@@ -1,0 +1,46 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  home page of DLOG4J v3
+##
+###############################################################################
+#invoke("_sub/_global.vm")
+#set($layout = "home.vm")
+#set($page_title = "标签")
+<div class="side">
+	<div class="module_login module_first">
+		#invoke("_sub/_module_side_login.vm")
+	</div>
+	
+	<div class="hot_diary_sites module_secondly">
+		#invoke("_sub/_module_side_hot_diary_sites.vm")
+	</div>
+	
+	<div class="ad"><a href="$dlog.root()/dlog/simulator.vm" target="_blank">$html.img("home/ad/ad_wap.gif","手机体验网记博客更精彩！")</a></div>
+	
+	<div class="recommend_diarys">
+		#invoke("_sub/_module_side_recommend_diarys.vm")
+	</div>
+	
+</div>
+<div class="content">
+	<div class="ad" align="center">
+		###<a href="$dlog.root()/dlog/accounts/reguser.vm" target="_blank">$html.img("home/ad/ad_reg.gif","网记家园 | 时时分享，刻刻精彩！")</a>
+	</div>
+	<div class="hot_tags">
+		#invoke("_sub/_module_content_hot_tags.vm")
+	</div>
+</div>
+<div class="bottom"></div>

@@ -1,0 +1,104 @@
+#invoke("/html/_sub/_global.vm")
+#select_layout("p_main.vm")
+#set($groupid = $dlog.param("group_id",-1))
+#set($page_title="我的好友")
+#set($userGroup_=$FRIEND_tool.getGroup(${groupid}))
+#set($slist= $FRIEND_tool.showGroupFriend($!{g_user.id},$!{groupid}))
+#if($g_user)##用户是否登录
+	#if($g_user.id==$userGroup_.userid)
+        <div class="page_top">
+			<strong>分组共有$slist.size()个好友！</strong>&nbsp;&nbsp;&nbsp;&nbsp;	
+			<a href="javascript:history.go(-1);" onclick="">返回</a>		
+		</div>
+		<div id="data_of_friends"></div>
+        <hr size="1" noshade color="#CCCCCC"/>
+        <form action="$link.setAction("dlog/user")" method="post" onsubmit="return confirm('是否真的把选中的用户从好友列表中删除吗？');">
+        <input type="hidden" name="__ClientId" value="$dlog.gen_client_id()"/>
+        <input type="hidden" name="fromPage" value="$dlog.get_request_url()"/>
+        <input type="hidden" name="sid" value="$g_site_id"/>		
+		<div class="page_body">
+        <table cellspacing="1" cellpadding="3" border="0" class="table" width="100%">
+		<tr class="table_head">	
+			<td></td>
+			<td nowrap>名称</td>
+			<td nowrap>电邮</td>
+			<td align="center" nowrap>在线状态</td>
+			<td nowrap>最近登录时间</td>
+    		<td align="center" nowrap>短消息</td>
+		</tr>
+        #foreach($user in $slist)
+            #set($show_user_url = "$dlog.root()/dlog/accounts/viewuser.vm?sid=$g_site_id&amp;uid=${user.friend.id}")
+            <tr class="table_cell">
+				<td><input type="checkbox" name="uid" value="${user.friend.id}"></td>
+               <td>
+				#if(${user.friend.ownSiteId}<1)
+					#set($user_link = "$dlog.root()/dlog/accounts/viewuser.vm?sid=$g_site_id&amp;uid=${user.friend.id}")
+			    #else
+					#set($user_link = "$dlog.root()/?sid=${user.friend.ownSiteId}")
+				#end
+                <a href="${user_link}">
+                  $text.html(${user.friend.nickname})
+                </a>
+               </td>
+                <td><a href="mailto:$!{user.friend.contactInfo.email}">$!{user.friend.contactInfo.email}</a></td>
+                <td align="center">
+					#if(${user.friend.onlineStatus}==1)
+            		$html.img("online.gif","当前在线",null,"absmiddle",0)
+            		#else
+            		$html.img("offline.gif","当前离线",null,"absmiddle",0)
+            		#end
+				</td>
+                <td>$!date.format("yyyy-MM-dd HH:mm",${user.friend.lastTime})</td>
+                <td align="center">
+                    <a href="$dlog.root()/dlog/accounts/sendmsg.vm?sid=$g_site_id&amp;uid=${user.friend.id}" title="给该用户发送短消息">
+                        $html.img("msg.gif")
+                    </a>
+                </td>
+            </tr>
+			
+		#end
+		<tr> 
+			<input type="checkbox" name="bt_all" value="" onclick="select_all('uid',this.checked)"/>全选		
+            <input type="submit" name="eventSubmit_DelFriend" value="删除选中"/></tr>
+        </table>
+		</div>
+		
+        </form>
+		<div id="data_of_friends1"></div>	
+		<div id="data_of_friends2"></div>
+		<div id="data_of_friends3"></div>
+<div class="form_row">
+	<div class="form_row_submit">
+		<a href="javascript://" onclick="history.go(-1)" >返回上页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    	<a href="javascript://"	onclick="location.href='$dlog.root()/#if($g_site)?sid=${g_site_id}#end';">返回首页</a>	
+	</div>
+</div>
+		
+
+<script language="javascript">
+		function list_logs_of_friends(){
+		$('data_of_friends1').innerHTML = "正在读取数据,请稍候...";
+		new Ajax.Updater("data_of_friends1","$dlog.root()/html/friend/ajax/group_logs_of_friends.vm?group_id=$groupid&userid=$!{g_user.id}&r="+Math.random());
+		}
+		function list_photos_of_friends(){
+		$('data_of_friends2').innerHTML = "正在读取数据,请稍候...";
+		new Ajax.Updater("data_of_friends2","$dlog.root()/html/friend/ajax/group_photos_of_friends.vm?group_id=$groupid&userid=$!{g_user.id}&r="+Math.random());
+		}
+		function list_songs_of_friends(){
+		$('data_of_friends3').innerHTML = "正在读取数据,请稍候...";
+		new Ajax.Updater("data_of_friends3","$dlog.root()/html/friend/ajax/group_songs_of_friends.vm?group_id=$groupid&userid=$!{g_user.id}&r="+Math.random());
+		}
+		#if($slist.size()>0)
+		list_logs_of_friends();
+		list_photos_of_friends();
+		list_songs_of_friends();
+		#end
+		</script>
+             
+#else
+	对不起,您无权访问!&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:history.go(-1);" onclick="">返回</a>		
+	#end
+#else
+	#show_msg_box($text.ui("login.tip","$dlog.root()/dlog/login.vm?sid=$g_site_id&fromPage=$link.encodeURL($dlog.get_request_url())"))
+#end
+

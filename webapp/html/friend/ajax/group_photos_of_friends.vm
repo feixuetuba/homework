@@ -1,0 +1,32 @@
+#parse("/WEB-INF/layout/_global.vm")
+#set($groupid = $dlog.param("group_id"))
+#set($userid = ${dlog.toInt($dlog.param("userid"))})
+#set($PHOTO_COUNT = 10)
+#set($photos = $FRIEND_tool.list_photos_of_friends($userid,0,$PHOTO_COUNT,$groupid))
+#set($COL_COUNT = 5)  ##每行最多显示五张照片
+#set($ROW_COUNT = $dlog.page_count($photos.size(), $COL_COUNT) - 1)
+<hr size="1" noshade color="#CCCCCC"/>
+<strong>好友最新照片:</strong>#if($photos.size()==0) 无内容现实 #end
+<table border="0" cellspacing="5" cellpadding="5" width="100%">
+#foreach($row in [0..$ROW_COUNT])
+<tr>
+	#set($col_photo_count = 0)
+    #set($begin_idx = $row * $COL_COUNT)
+    #set($end_idx = $begin_idx + $COL_COUNT - 1)				
+    #foreach($idx in [$begin_idx..$end_idx])
+    #if($idx < $photos.size())
+        #set($_photo = $photos.get($idx))
+		<td width="20%" class="photo_box" valign="bottom">
+			#if($dlog.is_owner($g_site,$g_user) || ${_photo.status}==0)
+			<div class="photo_cen"><a href="$dlog.root()/html/photo/show.vm?sid=${_photo.site.id}&amp;pid=${_photo.id}"><img src="$dlog.root()${_photo.previewURL}" title="(${_photo.replyCount}评/${_photo.viewCount}阅)" border="0"/></a></div>            			
+			#set($photo_name = $dlog.abbreviate($dlog.plain_text(${_photo.name}), 6))
+			<div class="photo_name">#if(${_photo.status}!=0)<img src="$dlog.root()/images/lock.gif" align="absmiddle"/>#end&nbsp;${photo_name}</div>
+			#end
+        </td>
+		#set($col_photo_count = $col_photo_count + 1)
+	#end
+	#end
+	#if($col_photo_count < $COL_COUNT)<td>&nbsp;</td>#end
+</tr>
+#end
+</table>

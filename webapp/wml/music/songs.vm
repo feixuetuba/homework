@@ -1,0 +1,46 @@
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU Library General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+##
+##  list all of songs
+##
+###############################################################################
+#parse("/wml/_sub/_global.vm")
+#set($PAGE_SIZE = 10)
+#set($p_page = $dlog.param("p", 1))
+#set($page_title="最新歌曲")
+#set($song_count = $MUSIC_tool.all_music_count())
+#set($page_count = $dlog.page_count($song_count, $PAGE_SIZE))
+<p>
+	#invoke("_music_nav_bar.vm")
+    共有${song_count}首歌曲.<br/>
+    <input type="text" name="q" size="10" emptyok="true"/>
+    <anchor>$text.wml("search")<go href="$dlog.root()/wml/search.vm?sid=$g_site_id&amp;scope=2"><postfield name="key" value="$(q)"/></go></anchor>
+</p>
+<p>
+#if($page_count > 1)
+	第${p_page}页,共${page_count}页,每页${PAGE_SIZE}首.<br/>
+	#wml_pager("$dlog.root()/wml/music/songs.vm?" $p_page $page_count)<br/>
+#end
+#set($songs = $MUSIC_tool.list_all_music($p_page, $PAGE_SIZE))
+#set($base_idx = ($p_page - 1)*$PAGE_SIZE)
+#foreach($song in $songs)
+	#set($idx = $base_idx + $velocityCount)
+	${idx}.<a href="show.vm?sid=${song.site.id}&amp;mid=${song.id}">$text.html(${song.title})</a><br/>
+#end
+#if($page_count > 1)
+	#wml_pager("$dlog.root()/wml/music/songs.vm?" $p_page $page_count)<br/>
+	#wml_gopage("$dlog.root()/wml/music/songs.vm?" $p_page $page_count)	
+#end
+</p>

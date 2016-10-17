@@ -1,0 +1,11 @@
+<div class="side_module_top"></div>
+<div class="side_module site_rss">#invoke("_site_rss.vm")</div>
+<div class="side_module site_counter">#invoke("_site_counter.vm")</div>
+<div class="side_module personal">#invoke("_personal.vm")</div>
+<div class="side_module site_operation">#invoke("_site_operation.vm")</div>
+<div class="side_module links">#invoke("_links.vm")</div>
+<div class="side_module new_users">#invoke("_new_users.vm")</div>
+<div class="side_module new_users">#invoke("_user_active.vm")</div>
+<div class="side_module site_stat">#invoke("_site_stat.vm")</div>
+<div class="side_module site_support">#invoke("_site_support.vm")</div>
+<div class="side_module_bottom"></div>

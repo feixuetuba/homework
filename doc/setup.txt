@@ -1,0 +1,56 @@
+
+DLOG4J 3.0 的安装步骤
+
+你必须知道如何在你所用的应用服务器中部署一个web应用程序,否则请就此打住,学会了再来!
+
+JDK 1.5
+如果你使用的是MySQL，请确保数据库的版本是4.1.18以后的版本！
+
+===========================================================================
+
+前提条件：JDK 1.5
+
+1. 解压dlog4j.zip文件
+
+2. 创建数据库，并执行doc目录下的dlog_(db).sql脚本创建表结构
+
+3. 打开/src/hibernate.cfg.xml修改数据库服务器的地址、端口、用户名、口令以及数据库名
+   【重要】
+   如果是oracle数据库，请将/res/oracle/hibernate.cfg.xml拷贝并覆盖到/src/hibernate.cfg.xml文件，
+   然后修改相应的数据库服务器的地址、端口、用户名、口令以及数据库名   
+   从Oracle服务器的安装目录下的jdbc目录中拷贝jdbc驱动程序到/WEB-INB/lib 目录
+   
+4. 
+	根据实际情况修改 webapp/WEB-INF/layout/_global.vm 中下面几个变量的值
+	
+#set($wap_home_url="$dlog.root()/wml")
+#set($web_home_url=$dlog.root())
+#set($page_title = "DLOG4J企业版")
+#set($service_email = "dlog4j@gmail.com")
+#set($site_name = "DLOG4J企业版")
+	
+
+5. 执行build.bat编译dlog4j (或者将解压后的目录导入到eclipse自动编译)
+
+6. 在应用服务器中发布程序指向webapp目录
+
+7. 启动应用服务器后 使用 http://xxxxx:xx/snoop.vm 来测试数据库配置是否正确。
+
+
+======== 如何设置超级管理员 =========
+
+超级管理员可用来管理DLOG4J发布的所有信息,超级管理员是一个特殊的权限
+被设为超级管理员的用户不管访问任何一个DLOG4J上的空间,都被当成是该空间的所有者
+因此超级管理员可以管理任何空间发布的任何信息.
+
+如果使用Eclipse开发环境则直接编辑src/administrators文件,如果是生产环境则编辑
+/WEB-INF/classes/administrators文件
+
+该文件记录着所有被赋予超级管理员权限的用户编号,每行写一个用户编号
+用户编号是记录在dlog_user表中每个用户对应的userid字段的值,你也可以在查看用户资料时
+根据url后面带的uid参数来确定用户的编号,将该编号写入administrators文件后重启应用服务器即可生效.
+
+======== DLOG4J默认首页数据 ========
+
+DLOG4J默认的首页数据是由程序自动生成,其中友情链接是从第一个空间的友情链接中读取
+因此一般把DLOG4J搭建后创建的第一个空间做为系统空间,用来做为人工编辑首页的方式,例如发布一些公告等.

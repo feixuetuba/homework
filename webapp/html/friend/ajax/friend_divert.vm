@@ -1,0 +1,57 @@
+#invoke("/html/_sub/_global.vm")
+
+#set($grouplist = $FRIEND_tool.showFriendV($!{g_user.id}))
+#set($fid=$dlog.param("fid"))
+#set($groupid=$dlog.param("groupid"))
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/prototype.js"></script>
+<script type="text/javascript" src="/fckeditor/fckeditor.js"></script>
+<script type="text/javascript" src="$dlog.root()/js/prototype_160.js"></script>
+	#select_css()
+</head>
+<body> 
+<form  action="$link.setAction("/html/friend")" method="post" id="divert">
+	<input type="hidden" name="__ClientId" value="$dlog.gen_client_id()"/>
+    <input type="hidden" name="fromPage" value="$dlog.get_request_url()"/>
+	<input type="hidden" name="userid" value="$!{g_user.id}"/>
+	<input type="hidden" name="friendid" value="$fid"/>
+	
+<table>	
+
+	请选择分组<select name="groupid">
+			#foreach(${friend} in ${grouplist})
+				<option value="${friend.groupid}" #if(${friend.groupid}==$groupid) selected="selected" #end>
+				[${friend.groupname}]#if(${friend.grouptype}==0)&lt;公开&gt;#elseif(${friend.grouptype}==1)&lt;私有&gt;#elseif(${friend.grouptype}==2)&lt;默认&gt;#end</option>
+			#end	
+			<option value="-1" #if($groupid==-1)  selected="selected" #end >[黑名单]&lt;系统&gt;</option>
+			</select>	
+		<input type="button" name="eventSubmit_FriendDivert" value="提交" onclick="Divert()"/>
+
+</table>
+</form>
+	<script type="text/javascript">
+function Divert()
+	{
+		new Ajax.Request('$link.setAction("/html/friend")',{
+		method: 'post',parameters: $('divert').serialize(),
+		onComplete: _response});
+	}
+	function _response(originalRequest)
+	{		
+		if((originalRequest.responseText.split(";")).length==2)
+		var msg= (originalRequest.responseText).split(";")[0]
+		var error=(originalRequest.responseText).split(";")[1]
+		alert(msg);		
+		if( error=="1")
+		{
+			parent.hide_div($fid);
+		}
+		
+	}
+	
+	</script>
+	</body>
+		</html>

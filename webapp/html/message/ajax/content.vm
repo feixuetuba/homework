@@ -1,0 +1,64 @@
+#set($uid=$dlog.param("uid",-1))
+#set($status=$dlog.param("status",-1))
+#set($msgid=$dlog.param("msgid",-1))
+#set($tableID=$dlog.param("tableID",-1))
+#set($msgStatus=$dlog.param("msgStatus",-1))
+############################################
+
+
+############################################
+
+#if($status==1)
+		#set($mcontent=$USER_tool.read_friend_content($msgid,$tableID))
+		#if(!$mcontent.content)
+			读取信息失败
+		#else
+			内容:<br />
+			$mcontent.content				
+		#end	
+#elseif($status==2)
+		#set($mcontent=$USER_tool.read_stranger_content($msgid,$tableID))
+		#if(!$mcontent.content)
+			读取信息失败
+		#else
+			内容:<br />
+			$mcontent.content
+		#end
+#elseif($status==3)	
+		#set($mcontent=$USER_tool.read_system_content($msgid,$uid))
+		#if(!$mcontent.content)
+			读取信息失败
+		#else
+			<br />
+			$mcontent.content
+		#end				
+#elseif($status==4)		
+		#set($mcontent=$USER_tool.read_mysend_content($msgid,-1,$uid))##回复内容
+		#if(!$mcontent.content)
+			读取信息失败
+		#else
+			#if($msgStatus>0)
+				#set($mcontentS=$USER_tool.read_mysend_content($msgStatus,$uid,-1))##回复原件
+				====== 短消息原件 ======<br />
+				<div>
+				#if($mcontentS)								
+				时间:&nbsp&nbsp $date.format("yyyy/MM/dd EEEEE HH:mm",${mcontentS.sendTime}, ${request.locale})<br />
+				内容:&nbsp&nbsp $mcontentS.content				
+				#else
+					读取信息失败	
+				#end
+				</div><br />
+				
+				#end 
+				发送内容:<br />
+			$mcontent.content
+		#end	
+#elseif($status==5)	
+		#set($mcontent=$USER_tool.read_affiche_content($msgid,0))
+		#if(!$mcontent.content)
+			读取信息失败
+		#else
+			$mcontent.content
+		#end
+
+#end

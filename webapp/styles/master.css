@@ -1,0 +1,92 @@
+/* ======================================================================== */
+/* style of personal admin page 												*/
+/* ======================================================================== */
+
+body{color:#000;font-family:Verdana, Arial, Helvetica, sans-serif;margin:0;padding:20px;font-size:9pt;background-color:#fff;margin:0 auto;max-width:1024px;min-width:800px}
+
+/* links */
+a{color:#03f;text-decoration:none;}
+a:hover{background-color:#03f;color:white;text-decoration:none;}
+
+/* master */
+#master{margin:0 auto;padding:10px;background:#fff url(Terseness_2/images/blue_sweep.jpg) repeat-x;border:1px solid #aaa;color: #000}
+
+/* header */
+#header{padding:0;margin:0;text-align:center;color:#03f;height:100px}
+.logo{padding:0;margin:0;float:left}
+.float_bar{padding:0;margin:0;float:right}
+
+/* body */
+#body{margin:0;padding:10px 0}
+
+/* nav */
+#nav{font-size:9pt;margin:0;padding:0;height:24px;border-top:1px solid #aaa;border-bottom:1px solid #aaa;background:#fff}
+.channel_bar_left, .channel_bar_right{margin:0;padding:0;}
+.channel_bar_bg{margin:auto 0px}
+.channel_bar_bg div{height:24px;line-height:24px;padding:0}
+.channel_bar_bg div.sitenav a{font-weight:bold;font-size:9pt;height:24px;line-height:24px;display:block;float:left;padding:0 5px}
+.channel_bar_bg div.sitesetting a{font-weight:bold;font-size:9pt;height:24px;line-height:24px;display:block;float:left;padding:0 5px}
+.channel_bar_bg div{font-size:9pt;font-weight:bold;color:#FFFFFF}
+.channel_bar_bg div.fright{float:left}
+.channel_bar_bg div a{padding:0 5px}
+.channel_bar_bg div a.selected{background-color:#03f;color:#fff;padding:0 15px}   
+.channel_bar_bg div a.nav_on{width:0px;padding:0;margin:0 auto}
+.channel_bar_bg div a.split{width:0px;padding:0;margin:0 auto;background-color:none}      
+.channel_bar_bg div a:hover{color:#FFFFFF;text-decoration:none;}
+
+
+/* side */
+#side{padding-right:10px;width:20%;text-align:left;float:left;position:relative}
+
+/* module */
+.embed_module_top, .embed_module_bottom{padding:0;margin:0;}
+.embed_module{text-align:left;margin-bottom:10px;}
+.module_title{padding:0;margin:0;height:26px;color:#174B65;font-weight:bold;font-size:9pt;line-height:26px;border-bottom:#6190A7 1px dotted}
+.module_title b{color:#174B65;font-weight:normal;font-size:10.5pt}
+.module_content{padding:5px; margin:0 auto;font-size:9pt;color:#000000}
+.module_content ul{padding:0px;margin:0px;list-style-type:none}
+.module_content li{color:#000000;display:block;padding-left:10px;height:18px;line-height:18px;text-decoration:none;}
+.module_content li a{color:#0B76AE;background:none;}
+.module_content li a:hover{color:#0B76AE;background:none;border-bottom:#6190A7 1px dotted}
+.module_content li.module_more{background:none;color:#0B76AE;display:block;text-align:right;height:18px;line-height:18px;text-decoration:none}
+.module_content select{padding:1px;margin:2px;font-size:9pt;color:#0B76AE}
+.module_content input{padding:1px;margin:2px;font-size:9pt;color:#0B76AE}
+.module_content module_more{text-align:right;text-decoration: none; color:#0B76AE;}
+.module_foot{padding:0;margin:0}
+
+.link{display:block;padding-left:10px;height:18px;line-height:18px;text-decoration:none;border-left:#C8D0EB 1px solid;margin:2px 0;}
+.link b{background:#0090DA;color:#fff;}
+.link_top{display:block;height:20px;line-height:20px;text-decoration:none;border-bottom:#C8D0EB 1px solid}
+
+/* screen_content */
+#screen_content{padding:0;margin:0;width:78%;float:right;position:relative;overflow:hidden;}
+
+.page_top{padding:0;margin:0;clear:both;}
+.page_content{padding:0;margin:0;margin-top:10px;clear:both}
+.page_footer{padding:0;margin:0;margin-top:10px;clear:both}
+
+.p_left{padding:0;margin:0;float:left;}
+.p_right{padding:0;margin:0;float:right;}
+
+.table_list{background:#EEE;width:100%;padding:0;margin:0;}
+.titles{background:#DDD;line-height:18px;height:18px;font-weight:bold;}
+.contents{background:#FFF;line-height:18px;height:18px;}
+
+ul.diarys{padding:0;margin:0;list-style-type:none}
+ul.diarys li.diary_title{padding:0;margin:0;line-height:24px;height:24px}
+ul.diarys li.diary_title a{background-color:#03f;color:white;text-decoration:none;padding:2px;font-weight:bold;}
+ul.diarys li.diary_title span{color:#F00}
+ul.diarys li.diary_sitting{border-top:1px dashed #EEE;line-height:20px;height:20px;}
+ul.diarys li.diary_sitting b{color:#03f;}
+
+ul.photos{padding:0;margin:0;list-style-type:none}
+ul.photos li{padding:8px;margin:5px;float:left;width:75px;height:140px;border:1px dashed #EEE;}
+ul.photos li span{color:#F00;line-height:24px;height:24px}
+
+ul.pics{padding:0;margin:0;list-style-type:none}
+ul.pics li{padding:8px;margin:5px;float:left;width:90px;height:160px;border:1px dashed #EEE;}
+ul.pics li img{width:90px;}
+ul.pics li span{color:#F00;line-height:24px;height:24px}
+
+/* footer */
+#footer{font-size:9pt;padding:20px 0;margin:0;text-align:center}

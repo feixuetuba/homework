@@ -1,0 +1,115 @@
+#invoke("../_sub/_global.vm")
+#set($layout = "master.vm")
+#set($left_template = "/dlog_admin/_sub/_left_site.vm")
+#set($nav_template = "/dlog_admin/_sub/_nav_site.vm")
+##用户是否登录&&(用户是否为管理员名||用户是否为巡视者||用户是否为VIP)
+#if($g_user&&($admin_tool.roleIsAdmin($manager)||$admin_tool.roleIsInspector($manager)||$admin_tool.roleIsVip($manager)))
+##删除 修改
+#set($pop1=($admin_tool.popIsAll($manager)||$admin_tool.popIsOperate($manager)||$admin_tool.popIsSuper($manager)))
+##推荐 屏蔽
+#set($pop2=($admin_tool.popIsAll($manager)||$admin_tool.popIsManage($manager)||$admin_tool.popIsSuper($manager)))
+
+#set($status=$dlog.param("status",1))##状态
+#set($p_page = $dlog.param("p", 1))##当前页 默认1
+#set($COUNT_PER_PAGE = 10)##每页显示
+#set($_count = $admin_tool.site_count())##站点总数
+#set($page_count = $dlog.page_count($_count, $COUNT_PER_PAGE))##总页数(计算)
+##检查当前页索引
+#if($p_page > $page_count)
+	#set($p_page = $page_count)
+		#elseif($p_page < 1)
+				#set($p_page = 1)
+#end
+#set($pre_page = $p_page - 1)##上一页
+#set($next_page = $p_page + 1)##下一页
+
+
+<form action="$link.setAction('/html/admin/query')"  method="POST" name="form1" id="form1">
+	<input type="hidden" name="sid" id="sid" value="">
+	<input type="hidden" name="fromPage" id="fromPage" value="$dlog.root()/dlog_admin/site/site_recommend.vm?selected=$selected&p=$p_page">
+	<input type="submit" name="" id="submit" value="HTML" style="display:none">
+</form>
+#set($slist=$admin_tool.site_recommend($p_page, $COUNT_PER_PAGE))
+#set($url="$dlog.root()/dlog_admin/site/site_recommend.vm?status=1")
+<div class="page_top">
+	##索引
+	#invoke("/dlog_admin/page_index.vm")
+</div>
+<div class="clear"></div>
+<div class="page_content">
+	<table  border="0" cellpadding="3" cellspacing="1" class="table_list">
+		<tr class="titles">
+			<td>SID</td>
+			<td>站点中文名</td>
+			<td>站点英文名</td>
+			<td>站长</td>
+			<td>日记数</td>
+			<td>照片数</td>
+			<td>今日访问</td>
+			<td>全部访问</td>
+			#if($status==3||$status==4)
+			<td>更新时间</td>
+			#else
+				<td>建站时间</td>
+			#end
+			
+			<td>管理</td>
+		</tr>
+		
+		
+		#foreach($list in $slist)
+				<tr class="contents">
+					#set($ssi = $admin_tool.get_site_stat_info($list.id))
+					#set($dsi = $STAT_tool.get_dlog_stat_info($list))
+			<td>$list.id</td>
+			<td><a href="$dlog.root()/$list.uniqueName" target="_blank" title="点击查看用户站点">$!{list.author}$list.friendlyName</a></td>
+			<td><a href="$dlog.root()/dlog/accounts/viewuser.vm?sid=$list.id&uid=$g_user.id" target="_blank" title="点击查看用户详细资料">$list.uniqueName</a></td>
+			<td><a #if($pop1) href="$dlog.root()/dlog_admin/rework_datum.vm?rid=$list.owner.id" target="_blank" title="点击修改用户信息"#end>$list.owner.name</a></td>
+			<td><a href="$dlog.root()/html/diary/?sid=$list.id" target="_blank" title="点击查看用户日记">$!{dsi.article}篇</a></td>
+			<td><a href="$dlog.root()/html/photo/?sid=$list.id" target="_blank" title="点击查看用户相册">$!{dsi.photo}张</a></td>
+			<td>$!{ssi.uvToday}次</td>
+			<td>$!{ssi.uvTotal}次</td>
+			<td>$date.format("yyyy/MM/dd HH:mm",$list.createTime)</td>
+			<td>
+			#if($!{list.level}==1&&$pop2)
+					<a href="javascript:setSID($list.id,'eventSubmit_SiteRecommend') ">推荐
+					</a>&nbsp;&nbsp;
+			#elseif($!{list.level}>1&&$pop2 )
+						<a href="javascript:setSID($list.id,'eventSubmit_CancelSiteRecommend') ">取消推荐
+					</a>&nbsp;&nbsp;
+			#end
+			
+			#if($!{list.status}!=-1&&$pop2)
+					<a href="javascript: setSID($list.id,'eventSubmit_SiteShield')">屏蔽
+					</a>
+			#elseif($!{list.status}==-1&&$pop2) 
+					<a href="javascript: setSID($list.id,'eventSubmit_CancelSiteShield')">取消屏蔽
+					</a>
+			#end		
+			</td>
+		</tr>
+		#end
+</td>
+
+	</table>
+</div>
+<div class="clear"></div>
+<div class="page_top">
+	##索引
+	#invoke("/dlog_admin/page_index.vm")
+</div>
+
+<div class="clear"></div>
+	</div>
+<script type="text/javascript" >
+function setSID(sid,event)
+{
+	document.getElementById('sid').value=sid;
+	document.getElementById('submit').name=event;
+	document.getElementById('submit').click();
+}
+
+</script>
+#else
+	对不起,您没有权限.
+#end

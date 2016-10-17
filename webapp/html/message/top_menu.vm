@@ -1,0 +1,388 @@
+
+<script type="text/javascript" src="/fckeditor/fckeditor.js"></script>  
+<script src="$dlog.root()/js/prototype_160.js" type="text/javascript"></script>
+
+#set($MsgInfo=$$USER_tool.msg_info($!{g_user.id}))
+	<div>
+		<form id="revertMessage">
+		     <input type="hidden" name="index" id="index" value=""/>
+			 <input type="hidden" name="tableID" id="tableID" value=""/>
+			 <input type="hidden" name="status"  id="status" value=""/>			
+			 <input type="hidden" name="msgID" id="msgID" value=""/>
+			 <input type="hidden" name="msgContent" id="msgContent" value=""/>
+			 <input type="hidden" name="revertName" id="revertName" value="$!{g_user.nickname}"/>
+			 <input type="hidden" name="revertId" id="revertId" value="$!{g_user.id}"/>
+			 <input type="hidden" name="receiverName" id="receiverName" value=""/>			
+			 <input type="hidden" name="receiverId" id="receiverId" value=""/>
+			 <input type="hidden" name="sendTime" id="sendTime" value=""/>
+			 <input type="submit" name="eventSubmit_RevertMessage" id="eventSubmit_RevertMessage" style="display:none">
+		     <input type="hidden" name="__ClientId" id="__ClientId" value="$dlog.gen_client_id()"/>
+		</form>
+	</div>
+	
+	<hr size="1" noshade color="#CCCCCC">
+	  <div>
+		<a href="javascript: showFriendM($!{g_user.id});">[好友消息]</a>&nbsp<span id="friendNum"><font style="color:red">$MsgInfo.f_not_read</font>/$MsgInfo.f_read</span>&nbsp&nbsp
+		<a href="javascript: showStrangerM($!{g_user.id});">[陌生人消息]</a>&nbsp<span id="strangerNum"><font style="color:red">$MsgInfo.s_not_read</font>/$MsgInfo.s_read</span>&nbsp&nbsp
+		<a href="javascript: showSystemM($!{g_user.id});">[系统消息]</a>&nbsp<span id="systemNum"><font style="color:red">$MsgInfo.sys_not_read</font>/$MsgInfo.sys_read</span>&nbsp&nbsp
+		<a href="javascript: showMySendM($!{g_user.id});">[我发送的消息]</a>&nbsp<span id="mySendNum"><font style="color:red">$MsgInfo.my_send</font></span>&nbsp&nbsp		
+		<a href="javascript: showAfficheM($!{g_user.id});">[公告]</a>&nbsp<span id="afficheNum"><font style="color:red">$MsgInfo.affiche</font></span>&nbsp&nbsp
+		<a href="$dlog.root()/html/message/send_message.vm?uid=$!{g_user.id}&sid=$g_site_id">[写短信]</a>
+	  </div>
+	<div id="showMessage" class="page_footer">
+		
+	</div>
+	
+	<div id="sendMessage" class="page_footer">
+		
+	</div>
+	
+    <script type="text/javascript">
+	
+	function showFriendM(uid){
+		if(uid==$!{g_user.id})
+		{
+			$('index').value=0;			
+			$('showMessage').innerHTML = "<div class='msgbox'>正在读取数据,请稍候...</div>";
+			var url="$dlog.root()/html/message/ajax/show_friend_message.vm?uid=$!{g_user.id}&sid=$g_site_id&status=1";
+			new Ajax.Updater("showMessage",url);
+			
+		}
+	}
+	
+	function showStrangerM(uid){
+		if(uid==$!{g_user.id})
+		{
+		$('index').value=0;
+    		$('showMessage').innerHTML = "<div class='msgbox'>正在读取数据,请稍候...</div>";
+    		new Ajax.Updater("showMessage","$dlog.root()/html/message/ajax/show_stranger_message.vm?uid=$!{g_user.id}&&status=2");
+		}
+	}
+	
+	function showSystemM(uid){
+	if(uid==$!{g_user.id})
+		{
+		$('index').value=0;
+    		$('showMessage').innerHTML = "<div class='msgbox'>正在读取数据,请稍候...</div>";
+    		new Ajax.Updater("showMessage","$dlog.root()/html/message/ajax/show_system_message.vm?uid=$!{g_user.id}&status=3");
+		}		
+	}
+	
+	function showMySendM(uid){
+	if(uid==$!{g_user.id})
+		{
+		$('index').value=0;
+    		$('showMessage').innerHTML = "<div class='msgbox'>正在读取数据,请稍候...</div>";
+    		new Ajax.Updater("showMessage","$dlog.root()/html/message/ajax/show_mysend_message.vm?uid=$!{g_user.id}&status=4");
+		}
+	}
+	
+	function showAfficheM(uid){
+	if(uid==$!{g_user.id})
+		{
+		$('index').value=0;
+    		$('showMessage').innerHTML = "<div class='msgbox'>正在读取数据,请稍候...</div>";
+    		new Ajax.Updater("showMessage","$dlog.root()/html/message/ajax/show_affiche_message.vm?uid=$!{g_user.id}&status=5");
+		}
+	}   
+	
+	
+	function showSendM(uid){
+	if(uid==$!{g_user.id}){
+	$('index').value=0;
+    		$('showMessage').innerHTML = "<div class='msgbox'>正在读取数据,请稍候...</div>";
+    		new Ajax.Updater("showMessage","$dlog.root()/dlog/sendmsg.vm?uid=$!{g_user.id}&sid=$g_site_id");
+		}
+	} 
+	
+	
+	function showMessageCount(index,status,msgid,tableID)
+	{	
+		
+		var url="$dlog.root()/html/message/ajax/content.vm?uid=$!{g_user.id}&status="+status+"&msgid="+msgid+"&tableID="+tableID;
+		if($('msgStatus'+index))
+			url+='&msgStatus='+$('msgStatus'+index).value
+		var name="messageContent"+index;		
+		var msgObj=$(name);			
+		msgObj.style.display=='none'?msgObj.style.display='':msgObj.style.display='none';		
+		var name2="operate"+index
+		var msgObj2=$(name2);
+		if(msgObj2)
+			msgObj2.style.display=='none'?msgObj2.style.display='':msgObj2.style.display='none';
+		if(msgObj.style.display=='')
+		{
+			if($('look'+index).value!=1)
+			{
+				msgObj.innerHTML = "<div >正在读取数据,请稍候...</div>";
+				new Ajax.Updater(name,url);
+				
+				$('look'+index).value=1;
+			}
+			$('tableID').value=tableID;
+		}else
+		{			
+			if(msgObj2)
+			closeM(index);
+		}
+		alternate(index);
+		
+	}
+	
+	function revertMessage(index)
+	{
+		var name="messageContent"+index;
+		var url="$dlog.root()/html/message/ajax/send_message.vm?index="+index
+		var msgObj=$(name);		
+		var name2="operate"+index
+		var msgObj2=$(name2);
+		if(msgObj2)
+		{
+			new Ajax.Request(url,{
+    		method: 'post',
+    		onComplete: function(originalRequest){ 
+				$(name2).innerHTML=originalRequest.responseText;
+				showFCKeditor()
+    		}});			
+		}
+	}
+	
+	function closeM(index)
+	{	 
+		if($("sendContent"))
+		{
+			if(!is_empty($("sendContent").value))
+			{
+    			if(confirm('短信内容还未保存,是否真的关闭？'))
+    			{		
+    				var name2="operate"+index
+    				var msgObj2=$(name2);
+    				if(msgObj2)
+    				{
+    					if($('validate').value==1)
+    					{
+            				msgObj2.innerHTML='<a href="javascript:revertMessage('+index+')">'
+            								+'$html.img("msg.gif")回复</a>'
+                							+'&nbsp&nbsp'
+            								+'<a href="#" onclick="return confirm(\'真的要删除该短消息嘛？\');">'
+            								+'$html.img("icon_delete.gif")删除</a>';
+    					}			
+    				}
+    			}
+			}else{
+			var name2="operate"+index
+				var msgObj2=$(name2);
+				if(msgObj2)
+				{
+					if($('validate').value==1)
+					{
+        				msgObj2.innerHTML='<a href="javascript:revertMessage('+index+')">'
+        								+'$html.img("msg.gif")回复</a>'
+            							+'&nbsp&nbsp'
+        								+'<a href="#" onclick="return confirm(\'真的要删除该短消息嘛？\');">'
+        								+'$html.img("icon_delete.gif")删除</a>';
+					}			
+				}
+		}
+		}
+		
+	}
+	function submitFrom(index)
+	{
+		if(is_empty(GetContents("sendContent")))
+		{
+    		alert('发送内容不能为空');
+    		return;
+		}	
+		$('msgContent').value=GetContents("sendContent");
+		$('receiverId').value=($('friend'+index).value.split(','))[0];
+		$('receiverName').value=($('friend'+index).value.split(','))[1];
+		$('status').value=($('friend'+index).value.split(','))[2];
+		$('index').value=index;
+		new Ajax.Request('$link.setAction("dlog/message")',{
+		method: 'post',parameters: $('revertMessage').serialize(),
+		onComplete: ajax_personal_response});
+
+	}
+
+	function deleteMsg(msgid,uid,tableID,named){
+
+		if(uid==$!{g_user.id})
+		{	
+			if(named=="DELETE_RECEIVER_FRIEND")
+			{
+				var url = '$link.setAction("dlog/message")?tableID='+tableID+'&id=$!{g_user.id}&msgID='+msgid+'&eventSubmit_DeleteFriendMsg=HTML';
+        		var myAjax = new Ajax.Request(url,{method: 'get', onComplete: ajax_personal_response});
+			}
+			else if(named=="DELETE_RECEIVER_STRANGR")
+			{
+				var url = '$link.setAction("dlog/message")?tableID='+tableID+'&id=$!{g_user.id}&msgID='+msgid+'&eventSubmit_DeleteFriendMsg=HTML';
+        		var myAjax = new Ajax.Request(url,{method: 'get', onComplete: ajax_personal_response});
+			}
+			else if(named=="DELETE_SYSTEM")
+			{
+				var url = '$link.setAction("dlog/message")?tableID='+tableID+'&id=$!{g_user.id}&msgID='+msgid+'&eventSubmit_DeleteSystemMsg=HTML';
+        		var myAjax = new Ajax.Request(url,{method: 'get', onComplete: ajax_personal_response});
+			}
+			else if(named=="DELETE_SEND")
+			{				
+				var url = '$link.setAction("dlog/message")?tableID='+tableID+'&id=$!{g_user.id}&msgID='+msgid+'&eventSubmit_DeleteSendMsg=HTML';
+        		var myAjax = new Ajax.Request(url,{method: 'get', onComplete: ajax_personal_response});
+				
+			}
+		}
+	}
+	
+	
+	
+	
+	function ajax_personal_response(originalRequest) {
+		//alert(originalRequest.responseText);	
+		if(originalRequest.responseText=='FRIEND_MESSAGE_DELETE_OK')
+		{
+			alert('删除成功!!!');
+			showFriendM($!{g_user.id});
+			return;
+		}
+		else if(originalRequest.responseText=='FRIEND_MESSAGE_DELETE_ERROR')
+		{
+			alert('删除失败!!!');	
+			return;
+		}
+		else if(originalRequest.responseText=='STRANGER_MESSAGE_DELETE_OK')
+		{}
+		else if(originalRequest.responseText=='STRANGER_MESSAGE_DELETE_ERROR')
+		{}
+		else if(originalRequest.responseText=='SYSTEM_MESSAGE_DELETE_OK')
+		{
+			alert('删除成功!!!');
+			showSystemM($!{g_user.id});
+			return;
+		}
+		else if(originalRequest.responseText=='SYSTEM_MESSAGE_DELETE_ERROR')
+		{
+			alert('删除失败!!!');
+			return;
+		}
+		else if(originalRequest.responseText=='SEND_MESSAGE_DELETE_OK')
+		{
+			alert('删除成功!!!');
+			showMySendM($!{g_user.id});
+			return;
+		}
+		else if(originalRequest.responseText=='SEND_MESSAGE_DELETE_ERROR')
+		{
+			alert('删除失败!!!');
+			return;
+		}
+		else if(originalRequest.responseText=='SEND_MESSAGE_OK')
+		{}
+		else if(originalRequest.responseText=='SEND_MESSAGE_ERROR')
+		{}
+		else if(originalRequest.responseText=='REVERT_MESSAGE_OK')
+		{
+			alert('发送成功!!!');
+			$("sendContent").value="";
+			closeM($('index').value);
+			return;
+		}
+		else if(originalRequest.responseText=='REVERT_MESSAGE_ERROR')
+		{
+			alert('发送失败!!!');
+			$("sendContent").value="";
+			closeM($('index').value);
+			return;
+		}
+	
+    }
+	
+	function alternate(index)
+	{	
+	
+		index_=$('index').value
+		if(index==index_)
+		return;
+		var name="messageContent"+index_;		
+		var msgObj=$(name);	
+		var name2="operate"+index_;
+		var msgObj2=$(name2);
+		closeM(index_)
+		if(msgObj)
+			msgObj.style.display=='none'?null:msgObj.style.display='none';
+		if(msgObj2)
+			msgObj2.style.display=='none'? null:msgObj2.style.display='none';
+		$('index').value=index;
+			
+	}
+	function go_page(pageidx,status,uid){
+		if(uid==$!{g_user.id})
+		{
+			$('showMessage').innerHTML = "<div>正在读取数据,请稍候...</div>";
+			var url='';
+			if(status==1)
+				url+='$dlog.root()/html/message/ajax/show_friend_message.vm';
+			else if(status==2)
+				url+='$dlog.root()/html/message/ajax/show_stranger_message.vm';
+			else if(status==3)
+				url+='$dlog.root()/html/message/ajax/show_system_message.vm';
+			else if(status==4)
+				url+='$dlog.root()/html/message/ajax/show_mysend_message.vm';
+			else if(status==5)
+				url+='$dlog.root()/html/message/ajax/show_affiche_message.vm';	
+			url+='?uid='+uid+'&status='+status+'&p='+pageidx;
+			new Ajax.Updater("showMessage",url);
+		}
+    }
+	
+	function deleteAll(status,uid)
+	{
+		if(uid==$!{g_user.id})
+		{
+    		var action='$link.setAction("dlog/message")';
+    		//alert(action+$('deleteAll').serialize());
+    		new Ajax.Request(action,{
+    		method: 'post',parameters: $('deleteAll').serialize(),
+    		onComplete: function(originalRequest){
+    			alert(originalRequest.responseText);
+    			if(status==1)
+					showFriendM(uid)
+    			else if(status==2)
+					showStrangerM(uid)
+    			else if(status==3)
+					showSystemM(uid)
+    			else if(status==4)
+    				showMySendM(uid);
+    			else if(status==5)
+					showAfficheM(uid)
+    		}});
+		}
+		
+	}
+	
+	function addFriend(sid)
+	{
+		var url = '$link.setAction("dlog/user")?id=$!{g_user.id}&sid='+sid+'&eventSubmit_AddFriend=HTML&__ClientId=$dlog.gen_client_id()&status=-1';
+    	var myAjax = new Ajax.Request(url,{method: 'get', onComplete: add_user_to_friend_response});
+	}
+	function add_user_to_friend_response(originalRequest) {
+		alert(originalRequest.responseText);
+    }
+	
+		showAfficheM($!{g_user.id});
+		
+    function showFCKeditor()
+    {
+			var oFCKeditor = new FCKeditor( 'sendContent' ) ;
+			oFCKeditor.BasePath = '/fckeditor/';
+            oFCKeditor.Height = 180;
+            oFCKeditor.ToolbarSet = "Basic";
+            oFCKeditor.ReplaceTextarea() ;
+    }
+	
+	
+	function GetContents(countName)
+ 	{     
+     	var oEditor = FCKeditorAPI.GetInstance(countName) ;  
+   		return  oEditor.GetXHTML( true ) ;       
+  	}
+    </script>
+	

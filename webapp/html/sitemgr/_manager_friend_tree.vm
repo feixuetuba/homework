@@ -1,0 +1,36 @@
+#set($album_id = $dlog.param("aid", -1))
+
+<div class="module_title"><b>好友管理</b></div>
+<div class="module_content">
+#if($!{g_user.id}>=0)
+	#if($dlog.is_owner($g_site, $g_user))
+		#set($frindegrouplist = $FRIEND_tool.showFriendV($!{g_user.id}))
+		<a href="/html/sitemgr/manage_group.vm?sid=$g_site_id">[分组管理]</a></br>
+		#foreach(${friend} in ${frindegrouplist})
+					
+							<a href="/html/sitemgr/show_group.vm?sid=$g_site_id&group_id=$!{friend.groupid}">
+								[$!{friend.groupname}]</a>
+						
+							#if($!{friend.grouptype}==0)<公开>
+									#elseif($!{friend.grouptype}==1)<私有>
+											#elseif($!{friend.grouptype}==2)<默认>
+							#end
+							</br>
+		#end		
+	#else
+		#set($frindegrouplist = $FRIEND_tool.showFriendV($!{g_site.id}))
+			#foreach(${friend} in ${frindegrouplist})
+					
+							<a href="/html/sitemgr/show_group.vm?sid=$g_site_id&group_id=$!{friend.groupid}">
+								[$!{friend.groupname}]</a>
+						
+							#if($!{friend.grouptype}==0)<公开>
+									#elseif($!{friend.grouptype}==1)<私有>
+											#elseif($!{friend.grouptype}==2)<默认>
+							#end
+							</br>
+			#end
+			#end
+#end
+</div>
+<div class="module_foot"></div>

@@ -1,0 +1,58 @@
+#set($site_id=$dlog.param("sid",-1))
+#set($fbean = $form.getBean())
+<div class="page_left">
+    <div class="top"></div>
+    <div class="content">
+    	#show_error_msg()
+    	<form action="$link.setAction("dlog/user")" method="post">
+        <input type="hidden" name="__ClientId" value="$dlog.gen_client_id()"/>
+    	#if($dlog.not_empty(${fbean.fromPage}))
+        <input type="hidden" name="fromPage" value="${fbean.fromPage}"/>
+    	#else
+        <input type="hidden" name="fromPage" value="$dlog.root()/dlog_admin/"/>
+    	#end
+    	#if($site_id > 0)<input type="hidden" name="sid" value="$site_id"/>#end
+    	<div class="form_login">
+			<div class="form_login_top"></div>
+			<div class="form_login_module">
+    			<div class="form_login_title">用户名:</div>
+        		<div class="form_login_content"><input type="text" name="name" value="$!{fbean.name}"/></div>
+				<div class="clear"></div>
+			</div>
+			<div class="form_login_module">
+    			<div class="form_login_title">口令:</div>
+        		<div class="form_login_content"><input type="password" name="password" value=""/></div>
+				<div class="clear"></div>
+			</div>
+			<div class="form_login_module">
+    			<div class="form_login_title">登录信息:</div>
+        		<div class="form_login_content">
+					<select name="keepDays">
+                        <option value="-1">不保存</option>
+                        <option value="1">保存一天</option>
+                        <option value="7">保存一周</option>
+                        <option value="30">保存一月</option>
+                        <option value="365" selected>保存一年</option>
+                    </select>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="form_login_module">
+				<input type="submit" name="eventSubmit_Login" value="登录"/>
+				&nbsp;
+				<a href="#" onclick="fetchpwd();return false;">忘了密码？</a>
+			</div>
+			<div class="form_login_bottom"></div>
+    	</div>
+    	</form>
+    </div>
+    <div class="bottom"></div>
+</div>
+<div class="page_right"></div>
+
+<script language="javascript" type="text/javascript">
+function fetchpwd(){
+	var url = "$dlog.root()/dlog/accounts/fetchpwd.vm?sid=$g_site_id";
+	window.open(url,'share',"height=200,width=400,status=yes,toolbar=no,menubar=no,location=no");
+}
+</script>

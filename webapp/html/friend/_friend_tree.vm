@@ -1,0 +1,23 @@
+<div class="side_module_top"><b>好友分组</b></div>
+<div class="side_module_content">
+	<ul>
+		#if($dlog.is_owner($g_site, $g_user))
+    		<li><a href="$dlog.root()/html/friend/blacklist.vm?sid=$g_site.id">[黑名单]</a>&lt;系统&gt;</li>
+		#end
+		#if($!{g_user.id}>=0)
+        	#if($dlog.is_owner($g_site, $g_user))
+        		#set($frindegrouplist = $FRIEND_tool.showFriendV($!{g_site.owner.id}))
+        		#foreach(${friend} in ${frindegrouplist})
+        			<li><a href="/html/friend/show_friend.vm?sid=$g_site_id&group_id=$!{friend.groupid}">[$!{friend.groupname}]</a>#if($!{friend.grouptype}==0)公开#elseif($!{friend.grouptype}==1)私有#elseif($!{friend.grouptype}==2)默认#end</li>
+        		#end
+        	#else
+        		#set($frindegrouplist = $FRIEND_tool.showFriendV($!{g_site.owner.id}))
+        		#foreach(${friend} in ${frindegrouplist})
+        				#if($!{friend.grouptype}!=1)<li><a href="/html/friend/show_friend.vm?sid=$g_site_id&group_id=$!{friend.groupid}">[$!{friend.groupname}]</a>#if($!{friend.grouptype}==0)公开#elseif($!{friend.grouptype}==2)默认#end</li>#end
+        		#end
+        	#end
+        #end
+	</ul>
+	<div class="clear"></div>
+</div>
+<div class="side_module_bottom"></div>

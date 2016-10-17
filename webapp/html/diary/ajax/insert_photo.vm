@@ -1,0 +1,72 @@
+#parse("/html/_sub/_global.vm")
+#set($list = $PHOTO_tool.list_albums_view($g_site))
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="UTF-8">
+<head> 
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	#select_css()
+</head>
+
+<body >
+<table border="0" cellspacing="5" cellpadding="5" width="700">
+	<tr >
+		<td width="20%"></td>	
+		<td width="20%"></td>			
+		<td width="20%"></td>	
+		<td width="20%"></td>	
+		<td width="20%"></td>	
+	</tr>
+		#foreach($l in $list)	
+			#if((($velocityCount+5) %5) ==1)
+        		<tr>	
+				#end				
+				<td  class="photo_box" valign="bottom" width="20%">						
+        			<div class="photo_cen">						
+					
+						#if($l.type!=4)
+							<a href="$dlog.root()/html/diary/ajax/photo_list.vm?sid=$g_site.id&aid=$l.id">
+							##封面
+							#if($l.cover)
+							<img src="$dlog.root()$l.cover.previewURL"  border="0" width="100"/>
+							#else
+							<img src="$dlog.root()/images/html/sharing/portrait/nophoto.gif"  border="0" width="100"/>
+							#end
+							</a>
+						#else
+							<a href="$dlog.root()/html/diary/ajax/diary_photo.vm?sid=$g_site.id&id=$g_user.id">
+							##封面
+							#if($l.photoCount!=0)
+							<img src="$dlog.root()$l.cover.previewURL"  border="0" width="100"/>
+							#else
+							<img src="$dlog.root()/images/html/sharing/portrait/nophoto.gif"  border="0" width="100"/>
+							#end
+							</a>
+						#end
+						</a>
+					</div>
+        			<div class="photo_name">
+							<a href="$dlog.root()/html/diary/ajax/photo_list.vm?sid=$g_site.id&aid=$l.id">
+								$l.name&nbsp;
+							</a>
+					</div>	
+					<div class="photo_name">
+							<span align="">$l.photoCount 张</span>
+							#if($l.type==0)
+								$html.img("$dlog.root()/html/icon/default/priv_1.gif","公开")
+							#elseif($l.type==1)
+								$html.img("$dlog.root()/html/icon/default/priv_2.gif","访问需要密码")
+							#elseif($l.type==2)
+								$html.img("$dlog.root()/html/icon/default/priv_3.gif","私有")
+							#elseif($l.type==4)
+								$html.img("$dlog.root()/html/icon/default/priv_4.gif","贴图相册")
+							#end
+					</div>	
+                </td>
+				#if((($velocityCount+5) %5) ==0||$l.size()==$velocityCount)
+					</tr>
+				#end
+		#end			  
+	</table>
+</body>
+</html>
